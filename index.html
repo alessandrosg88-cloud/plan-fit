@@ -52,6 +52,10 @@ button:hover{filter:brightness(1.07)}
 .stat small{color:var(--muted)}
 .alert{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:14px}
 .cal-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.legend b{font-weight:500}
+.langs{display:flex;gap:6px;justify-content:flex-end;margin-bottom:8px}
+.langs button{padding:5px 10px;font-size:13px;background:var(--surface2);color:var(--text);border:1px solid var(--line)}
+.langs button.on{background:var(--accent);color:var(--surface);border-color:var(--accent)}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
@@ -98,51 +102,52 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 <body>
 <div class="wrap">
 <header>
-  <h1>Plan Fit · 30 días</h1>
-  <p>Dime qué no puedes o no quieres comer y te monto un mes de comidas sanas con calendario y lista de la compra.</p>
+  <div class="langs" id="langs"></div>
+  <h1 data-i="title"></h1>
+  <p data-i="subtitle"></p>
 </header>
 
 <section class="card" id="prefs">
-  <h2>1. Tus restricciones</h2>
-  <p class="hint">Marca todo lo que aplique. Se guarda en este navegador.</p>
+  <h2 data-i="s1"></h2>
+  <p class="hint" data-i="s1hint"></p>
   <div class="grid2">
     <fieldset>
-      <legend>Tipo de dieta</legend>
+      <legend data-i="diet"></legend>
       <div class="chips" id="diet"></div>
     </fieldset>
     <fieldset>
-      <legend>Objetivo</legend>
+      <legend data-i="goal"></legend>
       <div class="chips" id="goal"></div>
     </fieldset>
     <fieldset>
-      <legend>Comidas al día</legend>
+      <legend data-i="meals"></legend>
       <div class="chips" id="meals"></div>
     </fieldset>
     <fieldset>
-      <legend>Fecha de inicio</legend>
+      <legend data-i="start"></legend>
       <input type="date" id="start">
     </fieldset>
   </div>
   <fieldset style="margin-top:20px">
-    <legend>No me gusta / no puedo comer</legend>
+    <legend data-i="dislikes"></legend>
     <div class="chips" id="dislikes"></div>
   </fieldset>
   <fieldset style="margin-top:20px">
-    <legend>Mis favoritos (saldrán más a menudo)</legend>
+    <legend data-i="favs"></legend>
     <div class="chips" id="favs"></div>
   </fieldset>
   <fieldset style="margin-top:16px">
-    <legend>Otros favoritos</legend>
-    <input type="text" id="customFav" placeholder="Ej.: quinoa, kiwi, gambas (separados por comas)">
+    <legend data-i="otherFavs"></legend>
+    <input type="text" id="customFav">
   </fieldset>
   <fieldset style="margin-top:16px">
-    <legend>Otros alimentos a evitar</legend>
-    <input type="text" id="custom" placeholder="Ej.: berenjena, pepino, mango (separados por comas)">
+    <legend data-i="otherAvoid"></legend>
+    <input type="text" id="custom">
   </fieldset>
   <div class="row">
-    <button class="primary" id="gen">Generar mi plan</button>
-    <button class="ghost" id="shuffle">Otra combinación</button>
-    <button class="ghost" id="reset">Borrar restricciones</button>
+    <button class="primary" id="gen" data-i="gen"></button>
+    <button class="ghost" id="shuffle" data-i="shuffle"></button>
+    <button class="ghost" id="reset" data-i="reset"></button>
   </div>
 </section>
 
@@ -151,27 +156,27 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 <section class="card">
   <div class="cal-head">
     <div>
-      <h2>2. Tu calendario</h2>
-      <p class="hint" style="margin:0">Toca un día para ver recetas, cantidades y pasos.</p>
+      <h2 data-i="s2"></h2>
+      <p class="hint" style="margin:0" data-i="s2hint"></p>
     </div>
     <div class="legend">
-      <span><i class="dot" style="background:var(--d)"></i>Desayuno</span>
-      <span><i class="dot" style="background:var(--l)"></i>Comida</span>
-      <span><i class="dot" style="background:var(--s)"></i>Snack</span>
-      <span><i class="dot" style="background:var(--c)"></i>Cena</span>
+      <span><i class="dot" style="background:var(--d)"></i><b data-t="d"></b></span>
+      <span><i class="dot" style="background:var(--l)"></i><b data-t="l"></b></span>
+      <span><i class="dot" style="background:var(--s)"></i><b data-t="s"></b></span>
+      <span><i class="dot" style="background:var(--c)"></i><b data-t="c"></b></span>
     </div>
   </div>
   <div class="cal" id="cal"></div>
 </section>
 
 <section class="card">
-  <h2>3. Lista de la compra</h2>
-  <p class="hint" style="margin:0">Por semana, con las veces que aparece cada ingrediente.</p>
+  <h2 data-i="s3"></h2>
+  <p class="hint" style="margin:0" data-i="s3hint"></p>
   <div class="tabs" id="weekTabs"></div>
   <ul class="shop" id="shop"></ul>
 </section>
 
-<footer>Orientativo: las calorías son aproximadas. Si tienes alergias o alguna condición médica, consúltalo con un profesional.</footer>
+<footer data-i="footer"></footer>
 </div>
 
 <dialog id="dlg">
@@ -179,6 +184,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   <div class="dlg-body" id="dlgBody"></div>
 </dialog>
 
+<script src="recetas-i18n.js"></script>
 <script>
 /* Flags: g gluten, l lactosa, m carne roja, c cerdo, p pollo/pavo, f pescado, s marisco, e huevo, n frutos secos */
 const R = {
@@ -264,43 +270,138 @@ s:[
 ["Plátano y chocolate negro","",190,3,["1 plátano","2 onzas chocolate negro 85%"],"Listo para comer."]
 ]};
 
-const TYPES = {d:"Desayuno",l:"Comida",s:"Snack",c:"Cena"};
+const LANGS = ["es","en","nl","it"];
+const LOCALE = {es:"es-ES",en:"en-GB",nl:"nl-NL",it:"it-IT"};
+const UI = {
+title:["Plan Fit · 30 días","Fit Plan · 30 days","Fit Plan · 30 dagen","Piano Fit · 30 giorni"],
+subtitle:["Dime qué no puedes o no quieres comer y qué te encanta, y te monto un mes de comidas sanas con calendario y lista de la compra.","Tell me what you can't or won't eat and what you love, and I'll build a month of healthy meals with a calendar and shopping list.","Vertel wat je niet mag of wilt eten en waar je dol op bent, en je krijgt een maand gezonde maaltijden met kalender en boodschappenlijst.","Dimmi cosa non puoi o non vuoi mangiare e cosa ami, e ti preparo un mese di pasti sani con calendario e lista della spesa."],
+s1:["1. Tus restricciones y gustos","1. Your restrictions and tastes","1. Jouw beperkingen en voorkeuren","1. Le tue restrizioni e preferenze"],
+s1hint:["Marca todo lo que aplique. Se guarda en este navegador.","Tick everything that applies. It's saved in this browser.","Vink alles aan wat van toepassing is. Wordt in deze browser opgeslagen.","Seleziona tutto ciò che vale per te. Viene salvato in questo browser."],
+diet:["Tipo de dieta","Diet type","Soort dieet","Tipo di dieta"],
+goal:["Objetivo","Goal","Doel","Obiettivo"],
+meals:["Comidas al día","Meals per day","Maaltijden per dag","Pasti al giorno"],
+start:["Fecha de inicio","Start date","Startdatum","Data di inizio"],
+dislikes:["No me gusta / no puedo comer","I don't like / can't eat","Lust ik niet / mag ik niet","Non mi piace / non posso mangiare"],
+favs:["Mis favoritos (saldrán más a menudo)","My favourites (will appear more often)","Mijn favorieten (komen vaker voor)","I miei preferiti (compariranno più spesso)"],
+otherFavs:["Otros favoritos","Other favourites","Andere favorieten","Altri preferiti"],
+otherFavsPh:["Ej.: quinoa, kiwi, gambas (separados por comas)","E.g. quinoa, kiwi, prawns (comma-separated)","Bijv. quinoa, kiwi, garnalen (met komma's)","Es.: quinoa, kiwi, gamberi (separati da virgole)"],
+otherAvoid:["Otros alimentos a evitar","Other foods to avoid","Andere producten om te vermijden","Altri alimenti da evitare"],
+otherAvoidPh:["Ej.: berenjena, pepino, mango (separados por comas)","E.g. aubergine, cucumber, mango (comma-separated)","Bijv. aubergine, komkommer, mango (met komma's)","Es.: melanzana, cetriolo, mango (separati da virgole)"],
+gen:["Generar mi plan","Generate my plan","Maak mijn plan","Genera il mio piano"],
+shuffle:["Otra combinación","Another combination","Andere combinatie","Un'altra combinazione"],
+reset:["Borrar selección","Clear selection","Selectie wissen","Cancella selezione"],
+s2:["2. Tu calendario","2. Your calendar","2. Jouw kalender","2. Il tuo calendario"],
+s2hint:["Toca un día para ver recetas, cantidades y pasos.","Tap a day to see recipes, amounts and steps.","Tik op een dag voor recepten, hoeveelheden en stappen.","Tocca un giorno per vedere ricette, quantità e passaggi."],
+s3:["3. Lista de la compra","3. Shopping list","3. Boodschappenlijst","3. Lista della spesa"],
+s3hint:["Por semana, con las veces que aparece cada ingrediente.","Per week, with how many times each ingredient appears.","Per week, met hoe vaak elk ingrediënt voorkomt.","Per settimana, con quante volte compare ogni ingrediente."],
+footer:["Orientativo: las calorías son aproximadas. Si tienes alergias o alguna condición médica, consúltalo con un profesional.","For guidance only: calories are approximate. If you have allergies or a medical condition, check with a professional.","Ter indicatie: calorieën zijn bij benadering. Heb je allergieën of een medische aandoening, overleg dan met een professional.","Indicativo: le calorie sono approssimative. In caso di allergie o condizioni mediche, consulta un professionista."],
+summary:["Resumen de tu plan","Your plan summary","Samenvatting van je plan","Riepilogo del tuo piano"],
+perder:["Raciones un 15 % más pequeñas para crear un déficit suave.","Portions 15% smaller for a gentle deficit.","Porties 15% kleiner voor een licht tekort.","Porzioni più piccole del 15% per un leggero deficit."],
+mantener:["Raciones estándar y equilibradas.","Standard, balanced portions.","Standaard, evenwichtige porties.","Porzioni standard ed equilibrate."],
+ganar:["Raciones un 20 % más grandes. Prioriza la proteína y añade el snack.","Portions 20% larger. Prioritise protein and add the snack.","Porties 20% groter. Geef eiwit voorrang en neem de snack.","Porzioni più grandi del 20%. Dai priorità alle proteine e aggiungi lo snack."],
+adjusted:["Cantidades ajustadas automáticamente. ★ = tus favoritos.","Amounts adjusted automatically. ★ = your favourites.","Hoeveelheden automatisch aangepast. ★ = je favorieten.","Quantità regolate automaticamente. ★ = i tuoi preferiti."],
+kcalDay:["kcal/día aprox.","kcal/day approx.","kcal/dag ca.","kcal/giorno circa"],
+protDay:["proteína/día","protein/day","eiwit/dag","proteine/giorno"],
+compat:["recetas compatibles","compatible recipes","passende recepten","ricette compatibili"],
+days30:["30 días","30 days","30 dagen","30 giorni"],
+noRecipes:["Con tus restricciones no queda ninguna receta para:","With your restrictions there are no recipes left for:","Met je beperkingen blijven er geen recepten over voor:","Con le tue restrizioni non resta nessuna ricetta per:"],
+tryRemove:["Prueba a quitar alguna restricción.","Try removing a restriction.","Probeer een beperking te verwijderen.","Prova a togliere una restrizione."],
+few:["Tienes pocas opciones en alguna comida, así que algunas recetas se repetirán bastante.","You have few options for some meals, so some recipes will repeat quite a bit.","Je hebt weinig opties voor sommige maaltijden, dus sommige recepten komen vaak terug.","Hai poche opzioni per alcuni pasti, quindi alcune ricette si ripeteranno spesso."],
+day:["Día","Day","Dag","Giorno"],
+total:["Total aprox.:","Approx. total:","Totaal ca.:","Totale circa:"],
+protein:["proteína","protein","eiwit","proteine"],
+none:["Sin recetas compatibles.","No compatible recipes.","Geen passende recepten.","Nessuna ricetta compatibile."],
+week:["Semana","Week","Week","Settimana"],
+noIngr:["Sin ingredientes","No ingredients","Geen ingrediënten","Nessun ingrediente"],
+close:["Cerrar","Close","Sluiten","Chiudi"],
+dow:[["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],["Ma","Di","Wo","Do","Vr","Za","Zo"],["Lun","Mar","Mer","Gio","Ven","Sab","Dom"]]
+};
+const TYPES = {d:["Desayuno","Breakfast","Ontbijt","Colazione"],l:["Comida","Lunch","Lunch","Pranzo"],s:["Snack","Snack","Snack","Spuntino"],c:["Cena","Dinner","Avondeten","Cena"]};
 const COLORS = {d:"var(--d)",l:"var(--l)",s:"var(--s)",c:"var(--c)"};
+/* [id, flags excluidos, etiquetas] */
 const DIETS = [
-  ["omni","Como de todo",""],["veget","Vegetariana","mcpfs"],["vegan","Vegana","mcpfsle"],
-  ["pesce","Pescetariana","mcp"],["singluten","Sin gluten","g"],["sinlactosa","Sin lactosa","l"]
+  ["omni","",["Como de todo","I eat everything","Ik eet alles","Mangio di tutto"]],
+  ["veget","mcpfs",["Vegetariana","Vegetarian","Vegetarisch","Vegetariana"]],
+  ["vegan","mcpfsle",["Vegana","Vegan","Veganistisch","Vegana"]],
+  ["pesce","mcp",["Pescetariana","Pescatarian","Pescotarisch","Pescetariana"]],
+  ["singluten","g",["Sin gluten","Gluten-free","Glutenvrij","Senza glutine"]],
+  ["sinlactosa","l",["Sin lactosa","Lactose-free","Lactosevrij","Senza lattosio"]]
 ];
-const GOALS = [["perder","Perder grasa",0.85],["mantener","Comer sano",1],["ganar","Ganar músculo",1.2]];
-const MEALS = [["d","Desayuno"],["l","Comida"],["s","Snack"],["c","Cena"]];
-/* [id, etiqueta, flags, palabras clave] */
+const GOALS = [
+  ["perder",0.85,["Perder grasa","Lose fat","Vet verliezen","Perdere grasso"]],
+  ["mantener",1,["Comer sano","Eat healthy","Gezond eten","Mangiare sano"]],
+  ["ganar",1.2,["Ganar músculo","Build muscle","Spieren opbouwen","Aumentare muscoli"]]
+];
+const MEALS = ["d","l","s","c"];
+/* [id, flags, palabras clave (en el texto en español), etiquetas] */
 const DISLIKES = [
-  ["cebolla","Cebolla","",["cebolla","puerro"]],["ajo","Ajo","",["ajo"]],["tomate","Tomate","",["tomate","gazpacho"]],
-  ["setas","Setas / champiñones","",["setas","champinon"]],["pimiento","Pimiento","",["pimiento"]],
-  ["brocoli","Brócoli","",["brocoli"]],["espinaca","Espinacas / kale","",["espinaca","kale"]],
-  ["calabacin","Calabacín","",["calabacin"]],["aguacate","Aguacate","",["aguacate"]],
-  ["legumbres","Legumbres","",["lenteja","garbanzo","alubia","hummus","edamame"]],
-  ["soja","Soja / tofu","",["tofu","tempeh","soja","edamame","tamari"]],["coco","Coco","",["coco"]],
-  ["platano","Plátano","",["platano"]],["picante","Picante / curry","",["guindilla","curry","chile"]],
-  ["carne","Carne roja","m",[]],["cerdo","Cerdo","c",[]],["ave","Pollo / pavo","p",[]],
-  ["pescado","Pescado","f",[]],["marisco","Marisco","s",[]],["huevo","Huevo","e",[]],
-  ["fsecos","Frutos secos","n",[]],["lacteos","Lácteos","l",[]],["gluten","Gluten","g",[]]
+  ["cebolla","",["cebolla","puerro"],["Cebolla","Onion","Ui","Cipolla"]],
+  ["ajo","",["ajo"],["Ajo","Garlic","Knoflook","Aglio"]],
+  ["tomate","",["tomate","gazpacho"],["Tomate","Tomato","Tomaat","Pomodoro"]],
+  ["setas","",["setas","champinon"],["Setas / champiñones","Mushrooms","Paddenstoelen","Funghi"]],
+  ["pimiento","",["pimiento"],["Pimiento","Pepper","Paprika","Peperone"]],
+  ["brocoli","",["brocoli"],["Brócoli","Broccoli","Broccoli","Broccoli"]],
+  ["espinaca","",["espinaca","kale"],["Espinacas / kale","Spinach / kale","Spinazie / boerenkool","Spinaci / cavolo riccio"]],
+  ["calabacin","",["calabacin"],["Calabacín","Courgette","Courgette","Zucchina"]],
+  ["aguacate","",["aguacate"],["Aguacate","Avocado","Avocado","Avocado"]],
+  ["legumbres","",["lenteja","garbanzo","alubia","hummus","edamame"],["Legumbres","Legumes","Peulvruchten","Legumi"]],
+  ["soja","",["tofu","tempeh","soja","edamame","tamari"],["Soja / tofu","Soy / tofu","Soja / tofu","Soia / tofu"]],
+  ["coco","",["coco"],["Coco","Coconut","Kokos","Cocco"]],
+  ["platano","",["platano"],["Plátano","Banana","Banaan","Banana"]],
+  ["picante","",["guindilla","curry","chile"],["Picante / curry","Spicy / curry","Pittig / kerrie","Piccante / curry"]],
+  ["carne","m",[],["Carne roja","Red meat","Rood vlees","Carne rossa"]],
+  ["cerdo","c",[],["Cerdo","Pork","Varkensvlees","Maiale"]],
+  ["ave","p",[],["Pollo / pavo","Chicken / turkey","Kip / kalkoen","Pollo / tacchino"]],
+  ["pescado","f",[],["Pescado","Fish","Vis","Pesce"]],
+  ["marisco","s",[],["Marisco","Seafood","Schaal- en schelpdieren","Frutti di mare"]],
+  ["huevo","e",[],["Huevo","Egg","Ei","Uova"]],
+  ["fsecos","n",[],["Frutos secos","Nuts","Noten","Frutta secca"]],
+  ["lacteos","l",[],["Lácteos","Dairy","Zuivel","Latticini"]],
+  ["gluten","g",[],["Gluten","Gluten","Gluten","Glutine"]]
 ];
-
-/* Favoritos: [id, etiqueta, grupo, palabras clave] */
+/* [id, palabras clave (español), etiquetas] */
 const FAVS = [
-  ["pollo","Pollo","Carnes",["pollo"]],["pavo","Pavo","Carnes",["pavo"]],["ternera","Ternera","Carnes",["ternera"]],["cerdo","Cerdo","Carnes",["cerdo"]],
-  ["salmon","Salmón","Pescado",["salmon"]],["merluza","Merluza / bacalao","Pescado",["merluza","bacalao"]],["atun","Atún","Pescado",["atun"]],
-  ["dorada","Dorada","Pescado",["dorada"]],["marisco","Gambas / sepia","Pescado",["gamba","sepia"]],["huevo","Huevo","Proteína",["huevo","claras"]],
-  ["tofu","Tofu / tempeh","Proteína",["tofu","tempeh"]],["legumbres","Legumbres","Proteína",["lenteja","garbanzo","alubia"]],
-  ["brocoli","Brócoli","Vegetales",["brocoli"]],["espinaca","Espinacas","Vegetales",["espinaca"]],["calabacin","Calabacín","Vegetales",["calabacin"]],
-  ["esparrago","Espárragos","Vegetales",["esparrago"]],["boniato","Boniato / patata","Vegetales",["boniato","patata"]],["zanahoria","Zanahoria","Vegetales",["zanahoria"]],
-  ["setas","Setas","Vegetales",["setas","champinon"]],["aguacate","Aguacate","Vegetales",["aguacate"]],["calabaza","Calabaza","Vegetales",["calabaza"]],
-  ["platano","Plátano","Fruta",["platano"]],["frutosrojos","Frutos rojos","Fruta",["frutos rojos"]],["mango","Mango","Fruta",["mango"]],
-  ["manzana","Manzana","Fruta",["manzana"]],["citricos","Naranja / mandarina","Fruta",["naranja","mandarina"]],["pina","Piña","Fruta",["pina"]],["kiwi","Kiwi","Fruta",["kiwi"]]
+  ["pollo",["pollo"],["Pollo","Chicken","Kip","Pollo"]],["pavo",["pavo"],["Pavo","Turkey","Kalkoen","Tacchino"]],
+  ["ternera",["ternera"],["Ternera","Beef","Rundvlees","Manzo"]],["cerdo",["cerdo"],["Cerdo","Pork","Varkensvlees","Maiale"]],
+  ["salmon",["salmon"],["Salmón","Salmon","Zalm","Salmone"]],["merluza",["merluza","bacalao"],["Merluza / bacalao","Hake / cod","Heek / kabeljauw","Nasello / merluzzo"]],
+  ["atun",["atun"],["Atún","Tuna","Tonijn","Tonno"]],["dorada",["dorada"],["Dorada","Sea bream","Dorade","Orata"]],
+  ["marisco",["gamba","sepia"],["Gambas / sepia","Prawns / cuttlefish","Garnalen / zeekat","Gamberi / seppia"]],
+  ["huevo",["huevo","claras"],["Huevo","Egg","Ei","Uova"]],["tofu",["tofu","tempeh"],["Tofu / tempeh","Tofu / tempeh","Tofu / tempeh","Tofu / tempeh"]],
+  ["legumbres",["lenteja","garbanzo","alubia"],["Legumbres","Legumes","Peulvruchten","Legumi"]],
+  ["brocoli",["brocoli"],["Brócoli","Broccoli","Broccoli","Broccoli"]],["espinaca",["espinaca"],["Espinacas","Spinach","Spinazie","Spinaci"]],
+  ["calabacin",["calabacin"],["Calabacín","Courgette","Courgette","Zucchina"]],["esparrago",["esparrago"],["Espárragos","Asparagus","Asperges","Asparagi"]],
+  ["boniato",["boniato","patata"],["Boniato / patata","Sweet potato / potato","Zoete aardappel / aardappel","Patata dolce / patata"]],
+  ["zanahoria",["zanahoria"],["Zanahoria","Carrot","Wortel","Carota"]],["setas",["setas","champinon"],["Setas","Mushrooms","Paddenstoelen","Funghi"]],
+  ["aguacate",["aguacate"],["Aguacate","Avocado","Avocado","Avocado"]],["calabaza",["calabaza"],["Calabaza","Pumpkin","Pompoen","Zucca"]],
+  ["platano",["platano"],["Plátano","Banana","Banaan","Banana"]],["frutosrojos",["frutos rojos"],["Frutos rojos","Berries","Rood fruit","Frutti di bosco"]],
+  ["mango",["mango"],["Mango","Mango","Mango","Mango"]],["manzana",["manzana"],["Manzana","Apple","Appel","Mela"]],
+  ["citricos",["naranja","mandarina"],["Naranja / mandarina","Orange / mandarin","Sinaasappel / mandarijn","Arancia / mandarino"]],
+  ["pina",["pina"],["Piña","Pineapple","Ananas","Ananas"]],["kiwi",["kiwi"],["Kiwi","Kiwi","Kiwi","Kiwi"]]
 ];
 
 const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
 const $ = id => document.getElementById(id);
+const esc = w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
+
+let state = {lang:"", diet:["omni"], goal:"mantener", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1};
+try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
+if(!state.start) state.start = new Date().toISOString().slice(0,10);
+if(!LANGS.includes(state.lang)){ const nav = (navigator.language||"es").slice(0,2); state.lang = LANGS.includes(nav) ? nav : "es"; }
+
+const L = () => LANGS.indexOf(state.lang);
+const t = k => UI[k][L()];
+/* receta en el idioma actual: [nombre, flags, kcal, prot, ingredientes, pasos] */
+function tr(type, idx){
+  const r = R[type][idx];
+  const x = state.lang !== "es" && RT[state.lang] && RT[state.lang][type][idx];
+  return x ? [x[0], r[1], r[2], r[3], x[1], x[2]] : r;
+}
+/* texto para buscar: español + idioma actual */
+function searchText(type, idx){
+  const r = R[type][idx], x = tr(type, idx);
+  return norm(r[0] + " " + r[4].join(" ") + " " + x[0] + " " + x[4].join(" "));
+}
 
 function chip(container, type, name, value, label, checked, cls=""){
   const l = document.createElement("label");
@@ -309,74 +410,84 @@ function chip(container, type, name, value, label, checked, cls=""){
   $(container).appendChild(l);
 }
 
-let state = {diet:["omni"], goal:"mantener", meals:["d","l","s","c"], dislikes:[], custom:"", start:"", seed:1};
-try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
-if(!state.start){ state.start = new Date().toISOString().slice(0,10); }
+function buildForm(){
+  const i = L();
+  document.documentElement.lang = state.lang;
+  document.title = UI.title[i];
+  document.querySelectorAll("[data-i]").forEach(el => el.textContent = t(el.dataset.i));
+  document.querySelectorAll("[data-t]").forEach(el => el.textContent = TYPES[el.dataset.t][i]);
+  $("custom").placeholder = t("otherAvoidPh");
+  $("customFav").placeholder = t("otherFavsPh");
+  $("close").setAttribute("aria-label", t("close"));
+  ["diet","goal","meals","dislikes","favs"].forEach(id => $(id).innerHTML = "");
+  DIETS.forEach(([v,,l]) => chip("diet","checkbox","diet",v,l[i],state.diet.includes(v)));
+  GOALS.forEach(([v,,l]) => chip("goal","radio","goal",v,l[i],state.goal===v));
+  MEALS.forEach(v => chip("meals","checkbox","meals",v,TYPES[v][i],state.meals.includes(v)));
+  DISLIKES.forEach(([v,,,l]) => chip("dislikes","checkbox","dis",v,l[i],state.dislikes.includes(v),"no"));
+  FAVS.forEach(([v,,l]) => chip("favs","checkbox","fav",v,"★ "+l[i],state.favs.includes(v),"fav"));
+  document.querySelectorAll('input[name=diet]').forEach(inp => inp.addEventListener("change", e => {
+    const boxes = [...document.querySelectorAll('input[name=diet]')];
+    if(e.target.value==="omni" && e.target.checked) boxes.forEach(b => { if(b.value!=="omni") b.checked=false; });
+    else if(e.target.checked) boxes.find(b=>b.value==="omni").checked=false;
+  }));
+  $("langs").innerHTML = LANGS.map(l => `<button class="${l===state.lang?"on":""}" data-l="${l}">${l.toUpperCase()}</button>`).join("");
+  $("langs").querySelectorAll("button").forEach(b => b.onclick = () => { readForm(); state.lang = b.dataset.l; save(); buildForm(); run(); });
+}
 
-DIETS.forEach(([v,l]) => chip("diet","checkbox","diet",v,l,state.diet.includes(v)));
-GOALS.forEach(([v,l]) => chip("goal","radio","goal",v,l,state.goal===v));
-MEALS.forEach(([v,l]) => chip("meals","checkbox","meals",v,l,state.meals.includes(v)));
-DISLIKES.forEach(([v,l]) => chip("dislikes","checkbox","dis",v,l,state.dislikes.includes(v),"no"));
-FAVS.forEach(([v,l]) => chip("favs","checkbox","fav",v,"★ "+l,(state.favs||[]).includes(v),"fav"));
-$("customFav").value = state.customFav || "";
-$("custom").value = state.custom;
-$("start").value = state.start;
-
-document.querySelectorAll('input[name=diet]').forEach(i => i.addEventListener("change", e => {
-  const boxes = [...document.querySelectorAll('input[name=diet]')];
-  if(e.target.value==="omni" && e.target.checked) boxes.forEach(b => { if(b.value!=="omni") b.checked=false; });
-  else if(e.target.checked) boxes.find(b=>b.value==="omni").checked=false;
-}));
+function save(){ try { localStorage.setItem("planfit", JSON.stringify(state)); } catch(e){} }
 
 function readForm(){
   state.diet = [...document.querySelectorAll('input[name=diet]:checked')].map(i=>i.value);
   state.goal = (document.querySelector('input[name=goal]:checked')||{}).value || "mantener";
-  state.meals = [...document.querySelectorAll('input[name=meals]:checked')].map(i=>i.value);
+  state.meals = MEALS.filter(m => document.querySelector(`input[name=meals][value=${m}]`).checked);
   state.dislikes = [...document.querySelectorAll('input[name=dis]:checked')].map(i=>i.value);
-  state.custom = $("custom").value;
   state.favs = [...document.querySelectorAll('input[name=fav]:checked')].map(i=>i.value);
+  state.custom = $("custom").value;
   state.customFav = $("customFav").value;
   state.start = $("start").value || new Date().toISOString().slice(0,10);
-  try { localStorage.setItem("planfit", JSON.stringify(state)); } catch(e){}
+  save();
 }
 
-function allowed(rec){
+const userWords = s => norm(s||"").split(",").map(w=>w.trim()).filter(Boolean);
+
+function allowed(type, idx){
+  const rec = R[type][idx];
   let flags = "", words = [];
-  state.diet.forEach(d => flags += (DIETS.find(x=>x[0]===d)||["","",""])[2]);
+  state.diet.forEach(d => flags += (DIETS.find(x=>x[0]===d)||["",""])[1]);
   if(state.diet.includes("vegan")) words.push("miel");
-  state.dislikes.forEach(id => { const d = DISLIKES.find(x=>x[0]===id); if(d){ flags += d[2]; words.push(...d[3]); } });
-  norm(state.custom).split(",").map(w=>w.trim()).filter(Boolean).forEach(w=>words.push(w));
+  state.dislikes.forEach(id => { const d = DISLIKES.find(x=>x[0]===id); if(d){ flags += d[1]; words.push(...d[2]); } });
+  words.push(...userWords(state.custom));
   if([...rec[1]].some(f => flags.includes(f))) return false;
-  const text = norm(rec[0] + " " + rec[4].join(" "));
-  return !words.some(w => new RegExp("(^|[^a-z])" + w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).test(text));
+  const text = searchText(type, idx);
+  return !words.some(w => wordRe(w).test(text));
 }
 
-const wordRe = w => new RegExp("(^|[^a-z])" + w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
-function isFav(rec){
+function isFav(type, idx){
   const words = [];
-  (state.favs||[]).forEach(id => { const f = FAVS.find(x=>x[0]===id); if(f) words.push(...f[3]); });
-  norm(state.customFav||"").split(",").map(w=>w.trim()).filter(Boolean).forEach(w=>words.push(w));
-  const text = norm(rec[0] + " " + rec[4].join(" "));
+  state.favs.forEach(id => { const f = FAVS.find(x=>x[0]===id); if(f) words.push(...f[1]); });
+  words.push(...userWords(state.customFav));
+  const text = searchText(type, idx);
   return words.some(w => wordRe(w).test(text));
 }
 
 function rng(seed){ return () => { seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }; }
 function shuffle(arr, rand){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(rand()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
+/* el plan guarda índices de receta, así cambia de idioma sin cambiar el menú */
 let plan = [], pools = {};
 function generate(){
   const rand = rng(state.seed * 7919 + 13);
   pools = {}; plan = [];
   const queues = {};
-  state.meals.forEach(t => { pools[t] = R[t].filter(allowed); queues[t] = []; });
+  state.meals.forEach(t => { pools[t] = R[t].map((_,i)=>i).filter(i => allowed(t,i)); queues[t] = []; });
   for(let i=0;i<30;i++){
     const day = {};
     state.meals.forEach(t => {
       if(!pools[t].length){ day[t]=null; return; }
       if(!queues[t].length){
         // los favoritos entran 3 veces en cada ronda, así salen más a menudo
-        const weighted = pools[t].flatMap(r => isFav(r) ? [r,r,r] : [r]);
-        let q = shuffle(weighted, rand);
+        const weighted = pools[t].flatMap(r => isFav(t,r) ? [r,r,r] : [r]);
+        const q = shuffle(weighted, rand);
         for(let k=1;k<q.length;k++) if(q[k]===q[k-1]){ const j=q.findIndex((x,idx)=>idx>k && x!==q[k]); if(j>0) [q[k],q[j]]=[q[j],q[k]]; }
         queues[t] = q;
       }
@@ -389,31 +500,33 @@ function generate(){
   }
 }
 
-const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[2];
+const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1];
 const dayDate = i => { const d = new Date(state.start+"T12:00:00"); d.setDate(d.getDate()+i); return d; };
-const fmt = (d,o) => d.toLocaleDateString("es-ES", o);
+const fmt = (d,o) => d.toLocaleDateString(LOCALE[state.lang], o);
+const sumDay = (day, k) => state.meals.reduce((a,t)=>a+(day[t]!=null?R[t][day[t]][k]:0),0);
 
 function renderSummary(){
-  const m = mult();
-  const kcal = plan.reduce((a,d)=>a+Object.values(d).reduce((s,r)=>s+(r?r[2]:0),0),0)/30*m;
-  const prot = plan.reduce((a,d)=>a+Object.values(d).reduce((s,r)=>s+(r?r[3]:0),0),0)/30*m;
-  const missing = state.meals.filter(t => !pools[t].length).map(t=>TYPES[t]);
+  const m = mult(), i = L();
+  const kcal = plan.reduce((a,d)=>a+sumDay(d,2),0)/30*m;
+  const prot = plan.reduce((a,d)=>a+sumDay(d,3),0)/30*m;
+  const missing = state.meals.filter(t => !pools[t].length).map(t=>TYPES[t][i]);
   const n = state.meals.reduce((a,t)=>a+pools[t].length,0);
-  const goalTxt = {perder:"Raciones un 15 % más pequeñas para crear un déficit suave.",mantener:"Raciones estándar y equilibradas.",ganar:"Raciones un 20 % más grandes. Prioriza la proteína y añade el snack."}[state.goal];
-  $("summary").innerHTML = `<h2>Resumen de tu plan</h2><p class="hint">${goalTxt} Cantidades de las recetas ajustadas automáticamente.</p>
+  $("summary").innerHTML = `<h2>${t("summary")}</h2><p class="hint">${t(state.goal)} ${t("adjusted")}</p>
   <div class="stats">
-    <div class="stat"><b>${Math.round(kcal)}</b><small>kcal/día aprox.</small></div>
-    <div class="stat"><b>${Math.round(prot)} g</b><small>proteína/día</small></div>
-    <div class="stat"><b>${n}</b><small>recetas compatibles</small></div>
-    <div class="stat"><b>${fmt(dayDate(0),{day:"numeric",month:"short"})} – ${fmt(dayDate(29),{day:"numeric",month:"short"})}</b><small>30 días</small></div>
+    <div class="stat"><b>${Math.round(kcal)}</b><small>${t("kcalDay")}</small></div>
+    <div class="stat"><b>${Math.round(prot)} g</b><small>${t("protDay")}</small></div>
+    <div class="stat"><b>${n}</b><small>${t("compat")}</small></div>
+    <div class="stat"><b>${fmt(dayDate(0),{day:"numeric",month:"short"})} – ${fmt(dayDate(29),{day:"numeric",month:"short"})}</b><small>${t("days30")}</small></div>
   </div>
-  ${missing.length ? `<div class="alert">Con tus restricciones no queda ninguna receta para: <b>${missing.join(", ")}</b>. Prueba a quitar alguna restricción.</div>` : ""}
-  ${!missing.length && state.meals.some(t=>pools[t].length<5) ? `<div class="alert">Tienes pocas opciones en alguna comida, así que algunas recetas se repetirán bastante.</div>` : ""}`;
+  ${missing.length ? `<div class="alert">${t("noRecipes")} <b>${missing.join(", ")}</b>. ${t("tryRemove")}</div>` : ""}
+  ${!missing.length && state.meals.some(x=>pools[x].length<5) ? `<div class="alert">${t("few")}</div>` : ""}`;
 }
+
+const star = (type, idx) => isFav(type, idx) ? '<span class="star">★</span> ' : '';
 
 function renderCalendar(){
   const cal = $("cal"); cal.innerHTML = "";
-  ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"].forEach(d => cal.insertAdjacentHTML("beforeend",`<div class="dow">${d}</div>`));
+  UI.dow[L()].forEach(d => cal.insertAdjacentHTML("beforeend",`<div class="dow">${d}</div>`));
   const offset = (dayDate(0).getDay()+6)%7;
   for(let i=0;i<offset;i++) cal.insertAdjacentHTML("beforeend",`<div class="day empty"></div>`);
   const todayStr = new Date().toDateString();
@@ -421,8 +534,8 @@ function renderCalendar(){
     const d = dayDate(i);
     const b = document.createElement("button");
     b.className = "day" + (d.toDateString()===todayStr ? " today":"");
-    b.innerHTML = `<div class="num">${fmt(d,{weekday:"short",day:"numeric",month:"short"})}<em>Día ${i+1}</em></div>` +
-      state.meals.map(t => day[t] ? `<div class="meal" style="border-color:${COLORS[t]}">${isFav(day[t])?'<span class="star">★</span> ':''}${day[t][0]}</div>` : "").join("");
+    b.innerHTML = `<div class="num">${fmt(d,{weekday:"short",day:"numeric",month:"short"})}<em>${t("day")} ${i+1}</em></div>` +
+      state.meals.map(x => day[x]!=null ? `<div class="meal" style="border-color:${COLORS[x]}">${star(x,day[x])}${tr(x,day[x])[0]}</div>` : "").join("");
     b.onclick = () => openDay(i);
     cal.appendChild(b);
   });
@@ -433,41 +546,53 @@ function scaleQty(line, m){
   return line.replace(/^(\d+(?:[.,]\d+)?)(?=\s*(g|ml)\b)/, n => Math.round(parseFloat(n.replace(",","."))*m/5)*5);
 }
 
+let openIdx = null;
 function openDay(i){
-  const m = mult(), day = plan[i];
-  $("dlgTitle").textContent = `Día ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
-  const tot = state.meals.reduce((a,t)=>a+(day[t]?day[t][2]:0),0)*m;
-  $("dlgBody").innerHTML = `<p class="macro">Total aprox.: <b>${Math.round(tot)} kcal</b></p>` + state.meals.map(t => {
-    const r = day[t];
-    if(!r) return `<div class="recipe"><span class="tag" style="color:${COLORS[t]}">${TYPES[t]}</span><p>Sin recetas compatibles.</p></div>`;
-    return `<div class="recipe"><span class="tag" style="color:${COLORS[t]}">${TYPES[t]}</span><h4>${isFav(r)?'<span class="star">★</span> ':''}${r[0]}</h4>
-      <div class="macro">${Math.round(r[2]*m)} kcal · ${Math.round(r[3]*m)} g proteína</div>
-      <ul>${r[4].map(x=>`<li>${scaleQty(x,m)}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
+  openIdx = i;
+  const m = mult(), day = plan[i], li = L();
+  $("dlgTitle").textContent = `${t("day")} ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
+  $("dlgBody").innerHTML = `<p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b></p>` + state.meals.map(x => {
+    if(day[x]==null) return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><p>${t("none")}</p></div>`;
+    const r = tr(x, day[x]);
+    return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><h4>${star(x,day[x])}${r[0]}</h4>
+      <div class="macro">${Math.round(r[2]*m)} kcal · ${Math.round(r[3]*m)} g ${t("protein")}</div>
+      <ul>${r[4].map(y=>`<li>${scaleQty(y,m)}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
   }).join("");
-  $("dlg").showModal();
+  if(!$("dlg").open) $("dlg").showModal();
 }
 
 let week = 0;
+const UNIT = /^[\d\/.,+\s]+(?:(g|ml|cdas?|cdtas?|tbsp|tsp|el|tl|cucchia(?:i|io|ino)(?: di| d')?|cacito|scoop|schepje|misurino(?: di)?)\b)?\s*/i;
 function renderShop(){
   const weeks = Math.ceil(30/7);
-  $("weekTabs").innerHTML = Array.from({length:weeks},(_,w)=>`<button class="ghost ${w===week?"on":""}" data-w="${w}">Semana ${w+1}</button>`).join("");
+  $("weekTabs").innerHTML = Array.from({length:weeks},(_,w)=>`<button class="ghost ${w===week?"on":""}" data-w="${w}">${t("week")} ${w+1}</button>`).join("");
   $("weekTabs").querySelectorAll("button").forEach(b => b.onclick = () => { week = +b.dataset.w; renderShop(); });
   const count = {};
-  plan.slice(week*7, week*7+7).forEach(day => Object.values(day).forEach(r => r && r[4].forEach(x => {
-    const name = x.replace(/^[\d\/.,]+\s*(g|ml|cdas?|cdtas?|cacito|rebanadas?|puñados?|dientes? de|manojo de|lata de|onzas|rama de)?\s*/i,"");
+  plan.slice(week*7, week*7+7).forEach(day => state.meals.forEach(x => day[x]!=null && tr(x,day[x])[4].forEach(y => {
+    const name = y.replace(UNIT,"").trim();
     const key = name.charAt(0).toUpperCase()+name.slice(1);
     count[key] = (count[key]||0)+1;
   })));
-  $("shop").innerHTML = Object.entries(count).sort((a,b)=>a[0].localeCompare(b[0],"es"))
-    .map(([k,v])=>`<li>${k} <span>×${v}</span></li>`).join("") || "<li>Sin ingredientes</li>";
+  $("shop").innerHTML = Object.entries(count).sort((a,b)=>a[0].localeCompare(b[0],state.lang))
+    .map(([k,v])=>`<li>${k} <span>×${v}</span></li>`).join("") || `<li>${t("noIngr")}</li>`;
 }
 
-function run(){ readForm(); generate(); renderSummary(); renderCalendar(); renderShop(); }
+function run(){
+  readForm(); generate(); renderSummary(); renderCalendar(); renderShop();
+  if($("dlg").open && openIdx!=null) openDay(openIdx);
+}
+
+$("custom").value = state.custom;
+$("customFav").value = state.customFav;
+$("start").value = state.start;
+buildForm();
 $("gen").onclick = () => { run(); $("summary").scrollIntoView({behavior:"smooth"}); };
 $("shuffle").onclick = () => { state.seed++; run(); };
 $("reset").onclick = () => {
-  document.querySelectorAll('#prefs input[type=checkbox]').forEach(i => i.checked = ["omni","d","l","s","c"].includes(i.value) && i.name!=="dis");
-  $("custom").value = ""; $("customFav").value = ""; run();
+  readForm();
+  Object.assign(state, {diet:["omni"], goal:"mantener", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:""});
+  $("custom").value = ""; $("customFav").value = "";
+  buildForm(); run();
 };
 $("close").onclick = () => $("dlg").close();
 $("dlg").addEventListener("click", e => { if(e.target === $("dlg")) $("dlg").close(); });
