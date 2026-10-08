@@ -60,7 +60,7 @@ button:hover{filter:brightness(1.07)}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
 .dow{font-size:12px;font-weight:600;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.5px}
-.day{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:8px;min-height:130px;cursor:pointer;text-align:left;color:var(--text);font:inherit;font-weight:400;display:flex;flex-direction:column;gap:3px;transition:.15s}
+.day{position:relative;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:8px;min-height:130px;cursor:pointer;text-align:left;color:var(--text);font:inherit;font-weight:400;display:flex;flex-direction:column;gap:3px;transition:.15s}
 .day:hover{border-color:var(--accent);transform:translateY(-1px)}
 .day.empty{background:transparent;border:none;cursor:default;transform:none}
 .day .num{font-weight:700;font-size:13px;display:flex;justify-content:space-between}
@@ -85,6 +85,40 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .shop{columns:2 240px;gap:24px;padding-left:18px;margin:6px 0 0}
 .shop li{break-inside:avoid;margin-bottom:4px}
 .shop li span{color:var(--muted);font-size:12.5px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sec-head h2{margin:0 0 4px}
+.toggle{flex:none;width:36px;height:36px;padding:0;border-radius:50%;background:var(--surface2);color:var(--text);border:1px solid var(--line);font-size:16px;line-height:1}
+.chev{display:inline-block;transition:transform .2s}
+.card.closed .chev{transform:rotate(-90deg)}
+.card.closed .sec-body,.card.closed .sec-head .hint{display:none}
+.sec-body{margin-top:14px}
+.small{padding:7px 14px;font-size:13px}
+.day.ok{background:var(--accent-soft);border-color:var(--accent)}
+.day.ko{background:var(--warn-soft);border-color:var(--warn)}
+.marks{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+.mk{flex:1;padding:4px 0;font-size:12px;font-weight:600;border-radius:8px;background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.mk.y.on{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.mk.n.on{background:var(--warn);border-color:var(--warn);color:var(--surface)}
+.dlg-marks{display:flex;gap:8px;margin:12px 0 4px}
+.dlg-marks .mk{flex:none;padding:8px 14px;font-size:13.5px}
+.bars{display:grid;grid-template-columns:minmax(110px,max-content) 1fr;gap:6px 12px;align-items:center}
+.bars .lbl{font-size:13.5px;color:var(--text);text-align:right}
+.bars .track{position:relative;height:22px;cursor:default}
+.bars .bar{height:100%;background:var(--accent);border-radius:0 4px 4px 0;min-width:2px;transition:width .3s}
+.bars .track:hover .bar{filter:brightness(1.12)}
+.bars .val{position:absolute;top:50%;transform:translateY(-50%);font-size:12.5px;color:var(--muted);padding-left:6px;white-space:nowrap}
+.tip{position:fixed;z-index:10;pointer-events:none;background:var(--text);color:var(--bg);font-size:12.5px;padding:6px 10px;border-radius:8px;box-shadow:var(--shadow)}
+.money{display:flex;align-items:center;gap:8px}
+.money input{max-width:140px}
+.money span{color:var(--muted);font-size:13.5px;white-space:nowrap}
+.money b{font-weight:500}
+.budget-bar{height:10px;background:var(--surface2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.budget-bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.budget-bar.over i{background:var(--warn)}
+.okmsg{color:var(--accent);font-weight:600}
+.overmsg{color:var(--warn);font-weight:600}
+.shop-total{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:14px;margin-top:6px}
+.cost{color:var(--muted);font-size:12.5px}
 footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 @media (max-width:760px){
   .cal{grid-template-columns:1fr}
@@ -93,7 +127,8 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   .meal{-webkit-line-clamp:1}
 }
 @media print{
-  #prefs,.row,.tabs,footer{display:none}
+  #prefs,.row,.tabs,footer,.toggle,.marks{display:none}
+  .card.closed .sec-body{display:block}
   body{background:#fff}
   .card{box-shadow:none;border:none}
 }
@@ -105,79 +140,77 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   <div class="langs" id="langs"></div>
   <h1 data-i="title"></h1>
   <p data-i="subtitle"></p>
+  <div class="row" style="margin-top:12px">
+    <button class="ghost small" id="openAll" data-i="openAll"></button>
+    <button class="ghost small" id="closeAll" data-i="closeAll"></button>
+  </div>
 </header>
 
-<section class="card" id="prefs">
-  <h2 data-i="s1"></h2>
-  <p class="hint" data-i="s1hint"></p>
+<section class="card" id="prefs" data-sec="prefs">
+  <div class="sec-head"><div><h2 data-i="s1"></h2><p class="hint" data-i="s1hint"></p></div><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
+  <div class="sec-body">
   <div class="grid2">
-    <fieldset>
-      <legend data-i="diet"></legend>
-      <div class="chips" id="diet"></div>
-    </fieldset>
-    <fieldset>
-      <legend data-i="goal"></legend>
-      <div class="chips" id="goal"></div>
-    </fieldset>
-    <fieldset>
-      <legend data-i="protLvl"></legend>
-      <div class="chips" id="prot"></div>
-    </fieldset>
-    <fieldset>
-      <legend data-i="meals"></legend>
-      <div class="chips" id="meals"></div>
-    </fieldset>
-    <fieldset>
-      <legend data-i="start"></legend>
-      <input type="date" id="start">
-    </fieldset>
+    <fieldset><legend data-i="diet"></legend><div class="chips" id="diet"></div></fieldset>
+    <fieldset><legend data-i="goal"></legend><div class="chips" id="goal"></div></fieldset>
+    <fieldset><legend data-i="protLvl"></legend><div class="chips" id="prot"></div></fieldset>
+    <fieldset><legend data-i="meals"></legend><div class="chips" id="meals"></div></fieldset>
+    <fieldset><legend data-i="start"></legend><input type="date" id="start"></fieldset>
+    <fieldset><legend data-i="budget"></legend><div class="money"><input type="number" id="budget" min="0" step="5" inputmode="decimal"><span>€ / <b data-i="weekLow"></b></span></div></fieldset>
+    <fieldset><legend data-i="country"></legend><div class="chips" id="country"></div></fieldset>
   </div>
-  <fieldset style="margin-top:20px">
-    <legend data-i="dislikes"></legend>
-    <div class="chips" id="dislikes"></div>
-  </fieldset>
-  <fieldset style="margin-top:20px">
-    <legend data-i="favs"></legend>
-    <div class="chips" id="favs"></div>
-  </fieldset>
-  <fieldset style="margin-top:16px">
-    <legend data-i="otherFavs"></legend>
-    <input type="text" id="customFav">
-  </fieldset>
-  <fieldset style="margin-top:16px">
-    <legend data-i="otherAvoid"></legend>
-    <input type="text" id="custom">
-  </fieldset>
+  <fieldset style="margin-top:20px"><legend data-i="dislikes"></legend><div class="chips" id="dislikes"></div></fieldset>
+  <fieldset style="margin-top:20px"><legend data-i="favs"></legend><div class="chips" id="favs"></div></fieldset>
+  <fieldset style="margin-top:16px"><legend data-i="otherFavs"></legend><input type="text" id="customFav"></fieldset>
+  <fieldset style="margin-top:16px"><legend data-i="otherAvoid"></legend><input type="text" id="custom"></fieldset>
   <div class="row">
     <button class="primary" id="gen" data-i="gen"></button>
     <button class="ghost" id="shuffle" data-i="shuffle"></button>
     <button class="ghost" id="reset" data-i="reset"></button>
   </div>
+  </div>
 </section>
 
-<section class="card" id="summary"></section>
+<section class="card" data-sec="summary">
+  <div class="sec-head"><h2 data-i="summary"></h2><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
+  <div class="sec-body" id="summary"></div>
+</section>
 
-<section class="card">
-  <div class="cal-head">
-    <div>
-      <h2 data-i="s2"></h2>
-      <p class="hint" style="margin:0" data-i="s2hint"></p>
-    </div>
-    <div class="legend">
+<section class="card" data-sec="cal">
+  <div class="sec-head">
+    <div><h2 data-i="s2"></h2><p class="hint" style="margin:0" data-i="s2hint"></p></div>
+    <button class="toggle" aria-expanded="true"><span class="chev">▾</span></button>
+  </div>
+  <div class="sec-body">
+    <div class="legend" style="margin-top:12px">
       <span><i class="dot" style="background:var(--d)"></i><b data-t="d"></b></span>
       <span><i class="dot" style="background:var(--l)"></i><b data-t="l"></b></span>
       <span><i class="dot" style="background:var(--s)"></i><b data-t="s"></b></span>
       <span><i class="dot" style="background:var(--c)"></i><b data-t="c"></b></span>
+      <span>✓ <b data-i="doneLbl"></b></span>
+      <span>✗ <b data-i="missedLbl"></b></span>
     </div>
+    <div class="cal" id="cal"></div>
   </div>
-  <div class="cal" id="cal"></div>
 </section>
 
-<section class="card">
-  <h2 data-i="s3"></h2>
-  <p class="hint" style="margin:0" data-i="s3hint"></p>
-  <div class="tabs" id="weekTabs"></div>
-  <ul class="shop" id="shop"></ul>
+<section class="card" data-sec="chart">
+  <div class="sec-head"><div><h2 data-i="s4"></h2><p class="hint" style="margin:0" data-i="s4hint"></p></div><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
+  <div class="sec-body">
+    <div class="tabs" id="chartTabs"></div>
+    <div class="stats" id="chartStats"></div>
+    <p class="hint" id="chartNote" style="margin:14px 0 6px"></p>
+    <div class="bars" id="chart" role="img"></div>
+    <div class="tip" id="tip" hidden></div>
+  </div>
+</section>
+
+<section class="card" data-sec="shop">
+  <div class="sec-head"><div><h2 data-i="s3"></h2><p class="hint" style="margin:0" data-i="s3hint"></p></div><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
+  <div class="sec-body">
+    <div class="tabs" id="weekTabs"></div>
+    <div id="shopTotal"></div>
+    <ul class="shop" id="shop" style="margin-top:14px"></ul>
+  </div>
 </section>
 
 <footer data-i="footer"></footer>
@@ -296,7 +329,7 @@ shuffle:["Otra combinación","Another combination","Andere combinatie","Un'altra
 reset:["Borrar selección","Clear selection","Selectie wissen","Cancella selezione"],
 s2:["2. Tu calendario","2. Your calendar","2. Jouw kalender","2. Il tuo calendario"],
 s2hint:["Toca un día para ver recetas, cantidades y pasos.","Tap a day to see recipes, amounts and steps.","Tik op een dag voor recepten, hoeveelheden en stappen.","Tocca un giorno per vedere ricette, quantità e passaggi."],
-s3:["3. Lista de la compra","3. Shopping list","3. Boodschappenlijst","3. Lista della spesa"],
+s3:["4. Lista de la compra","4. Shopping list","4. Boodschappenlijst","4. Lista della spesa"],
 s3hint:["Por semana, con las veces que aparece cada ingrediente.","Per week, with how many times each ingredient appears.","Per week, met hoe vaak elk ingrediënt voorkomt.","Per settimana, con quante volte compare ogni ingrediente."],
 footer:["Orientativo: las calorías son aproximadas. Si tienes alergias o alguna condición médica, consúltalo con un profesional.","For guidance only: calories are approximate. If you have allergies or a medical condition, check with a professional.","Ter indicatie: calorieën zijn bij benadering. Heb je allergieën of een medische aandoening, overleg dan met een professional.","Indicativo: le calorie sono approssimative. In caso di allergie o condizioni mediche, consulta un professionista."],
 summary:["Resumen de tu plan","Your plan summary","Samenvatting van je plan","Riepilogo del tuo piano"],
@@ -321,6 +354,36 @@ close:["Cerrar","Close","Sluiten","Chiudi"],
 protLvl:["Proteína","Protein","Eiwit","Proteine"],
 protMenos:["Menos proteína: más recetas ligeras en proteína y raciones de carne/pescado un 25 % más pequeñas.","Less protein: more lighter-protein recipes and meat/fish portions 25% smaller.","Minder eiwit: meer eiwitarme recepten en vlees/vis-porties 25% kleiner.","Meno proteine: più ricette leggere e porzioni di carne/pesce più piccole del 25%."],
 protMas:["Más proteína: más recetas ricas en proteína y raciones de carne, pescado, huevo, tofu y lácteos un 30 % más grandes.","More protein: more high-protein recipes and meat, fish, egg, tofu and dairy portions 30% larger.","Meer eiwit: meer eiwitrijke recepten en porties vlees, vis, ei, tofu en zuivel 30% groter.","Più proteine: più ricette proteiche e porzioni di carne, pesce, uova, tofu e latticini più grandi del 30%."],
+openAll:["Abrir todo","Open all","Alles openen","Apri tutto"],
+closeAll:["Cerrar todo","Close all","Alles sluiten","Chiudi tutto"],
+open:["Abrir","Open","Openen","Apri"],
+closeSec:["Cerrar","Close","Sluiten","Chiudi"],
+doneLbl:["Cumplido","Done","Gehaald","Rispettato"],
+missedLbl:["No cumplido","Missed","Niet gehaald","Non rispettato"],
+markDay:["¿Cumpliste este día?","Did you stick to this day?","Heb je deze dag gehaald?","Hai rispettato questo giorno?"],
+daysDone:["días cumplidos","days done","dagen gehaald","giorni rispettati"],
+daysMissed:["no cumplidos","missed","niet gehaald","non rispettati"],
+daysOpen:["sin marcar","not marked","niet gemarkeerd","non segnati"],
+s4:["3. Lo que más consumí","3. What I ate the most","3. Wat ik het meest at","3. Cosa ho mangiato di più"],
+s4hint:["Raciones por grupo de alimentos de los días que marcaste como cumplidos.","Servings per food group from the days you marked as done.","Porties per voedingsgroep van de dagen die je als gehaald markeerde.","Porzioni per gruppo alimentare dei giorni segnati come rispettati."],
+month:["Mes","Month","Maand","Mese"],
+servings:["raciones","servings","porties","porzioni"],
+ofTotal:["del total","of total","van totaal","del totale"],
+planNote:["Aún no has marcado días cumplidos en este periodo, así que se muestra lo planificado.","You haven't marked any days as done in this period yet, so the plan is shown.","Je hebt in deze periode nog geen dagen als gehaald gemarkeerd, dus het plan wordt getoond.","Non hai ancora segnato giorni rispettati in questo periodo, quindi viene mostrato il piano."],
+doneNote:["Basado en {n} día(s) cumplido(s).","Based on {n} day(s) marked as done.","Gebaseerd op {n} gehaalde dag(en).","Basato su {n} giorno/i rispettato/i."],
+chartAria:["Gráfico de barras de raciones por grupo de alimentos","Bar chart of servings per food group","Staafdiagram van porties per voedingsgroep","Grafico a barre delle porzioni per gruppo alimentare"],
+budget:["Presupuesto semanal en comida","Weekly food budget","Weekbudget voor eten","Budget settimanale per il cibo"],
+weekLow:["semana","week","week","settimana"],
+country:["Precios de (país)","Prices from (country)","Prijzen uit (land)","Prezzi di (paese)"],
+perWeek:["por semana aprox.","per week approx.","per week ca.","a settimana circa"],
+estTotal:["Total estimado de la semana:","Estimated total for the week:","Geschat totaal voor de week:","Totale stimato della settimana:"],
+ofBudget:["de tu presupuesto","of your budget","van je budget","del tuo budget"],
+within:["✓ Dentro del presupuesto","✓ Within budget","✓ Binnen budget","✓ Entro il budget"],
+over:["⚠ Te pasas","⚠ Over budget by","⚠ Over budget met","⚠ Superi di"],
+overHint:["No hay recetas más baratas que encajen con tus restricciones; prueba a quitar alguna o subir el presupuesto.","No cheaper recipes fit your restrictions; try removing one or raising the budget.","Er zijn geen goedkopere recepten die bij je beperkingen passen; verwijder er een of verhoog het budget.","Non ci sono ricette più economiche compatibili; prova a togliere una restrizione o ad aumentare il budget."],
+budgetAdj:["Con presupuesto, el plan cambia las comidas más caras por otras más baratas hasta que la semana encaja.","With a budget set, the plan swaps the priciest meals for cheaper ones until each week fits.","Met een budget vervangt het plan de duurste maaltijden door goedkopere tot elke week past.","Con un budget, il piano sostituisce i pasti più cari con altri più economici finché ogni settimana rientra."],
+priceNote:["Precios orientativos de supermercado (oct. 2026); varían según tienda y marca. Se calcula lo que gastas en las cantidades de las recetas.","Approximate supermarket prices (Oct 2026); they vary by shop and brand. Cost is based on the recipe quantities.","Indicatieve supermarktprijzen (okt. 2026); ze verschillen per winkel en merk. Kosten zijn gebaseerd op de hoeveelheden in de recepten.","Prezzi indicativi da supermercato (ott. 2026); variano per negozio e marca. Il costo si basa sulle quantità delle ricette."],
+dayCost:["Coste aprox. del día:","Approx. cost of the day:","Geschatte kosten van de dag:","Costo circa della giornata:"],
 dow:[["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],["Ma","Di","Wo","Do","Vr","Za","Zo"],["Lun","Mar","Mer","Gio","Ven","Sab","Dom"]]
 };
 const TYPES = {d:["Desayuno","Breakfast","Ontbijt","Colazione"],l:["Comida","Lunch","Lunch","Pranzo"],s:["Snack","Snack","Snack","Spuntino"],c:["Cena","Dinner","Avondeten","Cena"]};
@@ -340,6 +403,67 @@ const GOALS = [
   ["ganar",1.2,["Ganar músculo","Build muscle","Spieren opbouwen","Aumentare muscoli"]]
 ];
 const MEALS = ["d","l","s","c"];
+/* Precios: base España (€), con factor por país calculado con la cesta de preciosmundi.com (oct. 2026) */
+const COUNTRIES = [["es",1,["España","Spain","Spanje","Spagna"]],["de",1.24,["Alemania","Germany","Duitsland","Germania"]],["nl",1.22,["Países Bajos","Netherlands","Nederland","Paesi Bassi"]],["it",1.28,["Italia","Italy","Italië","Italia"]]];
+/* [palabra clave en español, €/kg (o €/l), gramos por unidad, precio fijo si no hay cantidad] — el orden importa */
+const PRICES = [
+ ["gazpacho",3,0,0.8],["caldo",1.5,0,0.3],["ensalada",0,0,0.6],["salmon ahumado",30,0],["salmon",15,0],["solomillo",25,0],
+ ["ternera picada",9,0],["ternera",14.5,0],["lomo de cerdo",7,0],["lonchas",12,0],["pavo",9,0],["pollo",7.5,0],["merluza",10,0],
+ ["lata",12,80],["atun",18,0],["bacalao",14,0],["dorada",9,300],["gamba",12,0],["sepia",10,0],["clara",8,30],["huevo",4.2,60],
+ ["tofu",8,0],["tempeh",14,0],["yogur",3.5,0],["requeson",6,0],["queso fresco batido",3,0],["queso fresco",12.6,0],["kefir",3,0],
+ ["mozzarella",9,0],["parmesano",18,0],["feta",11,0],["queso",10,0],["whey",25,30],["leche de coco",4,0],["bebida",1.5,0],
+ ["tortitas de arroz",7,8],["fideos de arroz",5,0],["arroz integral",2.2,0],["basmati",3,0],["arroz",1.45,0],["avena",1.6,0],
+ ["pan de centeno",4,40],["pan",3,40],["pasta",2.2,0],["quinoa",7,0],["tortilla",4,40],["lentejas rojas",3,0],["lenteja",2.2,0],
+ ["hummus",8,0],["garbanzo",2.5,0],["alubia",2.5,0],["edamame",7,0],["boniato",2.2,250],["patata",1.6,200],
+ ["semillas de calabaza",15,0],["semillas",12,0],["chia",10,0],["crema de cacahuete",9,0],["nueces",12,0],["almendra",12,0],
+ ["copos de coco",10,0],["sesamo",8,0],["chocolate",15,10],["tomate triturado",1.5,0],["tomate",2.2,150],["brocoli",3,0],
+ ["espinaca",5,30],["kale",6,30],["calabacin",2,250],["zanahoria",1.2,80],["cebolla",1.75,150],["puerro",2.5,150],["pimiento",3,200],
+ ["esparrago",8,250],["judias verdes",4,0],["setas",7,0],["champinon",4,0],["lechuga",3,400],["canonigos",8,0,0.4],["rucula",12,0,0.5],
+ ["pepino",1.8,300],["calabaza",1.5,0],["berenjena",2.5,300],["apio",2,40],["aguacate",6,200],["platano",1.8,120],["manzana",2.2,180],
+ ["mango",4,350],["pina",2,0],["naranja",1.9,200],["mandarina",2.5,80],["kiwi",4,80],["frutos rojos",10,0],["limon",2.5,100],
+ ["lima",4,70],["miel",8,0],["aceite",9,0],["tahini",12,0],["tamari",15,0],["curry",25,0],["azafran",0,0,0.5]
+];
+const UNITG = {cda:13,cdas:13,cdta:5,cacito:30,rebanada:40,rebanadas:40,"puñado":30,"puñados":30,diente:5,dientes:5,manojo:250,lata:80,onzas:10,rama:40};
+function priceLine(line){
+  const n = norm(line), p = PRICES.find(x => wordRe(x[0]).test(n));
+  if(!p) return 0.05;
+  const q = line.match(/^(\d+\/\d+|\d+(?:[.,]\d+)?)\s*(g|ml|cdas?|cdta|cacito|rebanadas?|puñados?|dientes?|manojo|lata|onzas|rama)?\b/i);
+  if(!q) return p[3] != null ? p[3] : 0.08;
+  const num = q[1].includes("/") ? (([a,b]) => a/b)(q[1].split("/").map(Number)) : parseFloat(q[1].replace(",","."));
+  let grams;
+  if(q[2] && /^(g|ml)$/i.test(q[2])) grams = num;
+  else if(q[2]) grams = num * (UNITG[q[2].toLowerCase()] || 30);
+  else grams = num * (p[2] || 100);
+  return p[3] != null && !p[1] ? p[3] : grams/1000 * p[1];
+}
+const cFactor = () => (COUNTRIES.find(c=>c[0]===state.country)||COUNTRIES[0])[1];
+/* coste de una receta con raciones del objetivo y nivel de proteína */
+let costCache = {}, favCache = {};
+function cost(type, idx){
+  const key = `${type}${idx}|${state.goal}|${state.protein}|${state.country}`;
+  if(key in costCache) return costCache[key];
+  return costCache[key] = rawCost(type, idx);
+}
+function rawCost(type, idx){
+  const m = mult(), f = pFactor();
+  return R[type][idx][4].reduce((a,l) => a + priceLine(l) * m * (isProtIng(l) ? f : 1), 0) * cFactor();
+}
+const money = v => v.toLocaleString(LOCALE[state.lang], {style:"currency", currency:"EUR"});
+/* grupos de alimentos para el gráfico: [id, palabras clave (español), etiquetas]; el orden importa (primera coincidencia) */
+const GROUPS = [
+  ["ave",["pollo","pavo"],["Pollo / pavo","Chicken / turkey","Kip / kalkoen","Pollo / tacchino"]],
+  ["carne",["ternera","cerdo"],["Carne roja / cerdo","Red meat / pork","Rood vlees / varken","Carne rossa / maiale"]],
+  ["pescado",["salmon","merluza","atun","bacalao","dorada"],["Pescado","Fish","Vis","Pesce"]],
+  ["marisco",["gamba","sepia"],["Marisco","Seafood","Zeevruchten","Frutti di mare"]],
+  ["huevo",["huevo","clara"],["Huevo","Eggs","Eieren","Uova"]],
+  ["legumbres",["lenteja","garbanzo","alubia","hummus","edamame","tofu","tempeh"],["Legumbres y soja","Legumes & soy","Peulvruchten & soja","Legumi e soia"]],
+  ["lacteos",["yogur","queso","requeson","kefir","mozzarella","parmesano","whey","bebida de"],["Lácteos y bebidas veg.","Dairy & plant milks","Zuivel & plantaardige drinks","Latticini e bevande veg."]],
+  ["fsecos",["nueces","almendra","cacahuete","semillas","chia","sesamo"],["Frutos secos y semillas","Nuts & seeds","Noten & zaden","Frutta secca e semi"]],
+  ["cereales",["arroz","avena","pan","pasta","quinoa","tortilla","fideos","tortitas"],["Cereales","Grains","Granen","Cereali"]],
+  ["patata",["patata","boniato"],["Patata / boniato","Potato / sweet potato","Aardappel / zoete aardappel","Patata / patata dolce"]],
+  ["verduras",["brocoli","espinaca","calabacin","zanahoria","cebolla","pimiento","tomate","esparrago","judias","setas","champinon","kale","lechuga","rucula","pepino","puerro","calabaza","berenjena","apio","ensalada","aguacate","gazpacho"],["Verduras","Vegetables","Groenten","Verdure"]],
+  ["fruta",["platano","manzana","mango","pina","naranja","mandarina","kiwi","frutos rojos"],["Fruta","Fruit","Fruit","Frutta"]]
+];
 /* [id, factor sobre la ración de proteína, etiquetas] */
 const PROT = [
   ["menos",0.75,["Menos","Less","Minder","Meno"]],
@@ -408,8 +532,9 @@ const $ = id => document.getElementById(id);
 const esc = w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
 const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
 
-let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1};
+let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:""};
 try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
+if(!state.country) state.country = ({es:"es",en:"es",nl:"nl",it:"it"})[(navigator.language||"es").slice(0,2)] || "es";
 if(!state.start) state.start = new Date().toISOString().slice(0,10);
 if(!LANGS.includes(state.lang)){ const nav = (navigator.language||"es").slice(0,2); state.lang = LANGS.includes(nav) ? nav : "es"; }
 
@@ -446,7 +571,8 @@ function buildForm(){
   ["diet","goal","meals","dislikes","favs"].forEach(id => $(id).innerHTML = "");
   DIETS.forEach(([v,,l]) => chip("diet","checkbox","diet",v,l[i],state.diet.includes(v)));
   GOALS.forEach(([v,,l]) => chip("goal","radio","goal",v,l[i],state.goal===v));
-  $("prot").innerHTML = "";
+  $("prot").innerHTML = ""; $("country").innerHTML = "";
+  COUNTRIES.forEach(([v,,l]) => chip("country","radio","country",v,l[i],state.country===v));
   PROT.forEach(([v,,l]) => chip("prot","radio","prot",v,l[i],state.protein===v));
   MEALS.forEach(v => chip("meals","checkbox","meals",v,TYPES[v][i],state.meals.includes(v)));
   DISLIKES.forEach(([v,,,l]) => chip("dislikes","checkbox","dis",v,l[i],state.dislikes.includes(v),"no"));
@@ -466,6 +592,8 @@ function readForm(){
   state.diet = [...document.querySelectorAll('input[name=diet]:checked')].map(i=>i.value);
   state.goal = (document.querySelector('input[name=goal]:checked')||{}).value || "mantener";
   state.protein = (document.querySelector('input[name=prot]:checked')||{}).value || "normal";
+  state.country = (document.querySelector('input[name=country]:checked')||{}).value || "es";
+  state.budget = $("budget").value;
   state.meals = MEALS.filter(m => document.querySelector(`input[name=meals][value=${m}]`).checked);
   state.dislikes = [...document.querySelectorAll('input[name=dis]:checked')].map(i=>i.value);
   state.favs = [...document.querySelectorAll('input[name=fav]:checked')].map(i=>i.value);
@@ -490,6 +618,11 @@ function allowed(type, idx){
 }
 
 function isFav(type, idx){
+  const key = type+idx+"|"+state.favs.join()+"|"+state.customFav+"|"+state.lang;
+  if(key in favCache) return favCache[key];
+  return favCache[key] = rawFav(type, idx);
+}
+function rawFav(type, idx){
   const words = [];
   state.favs.forEach(id => { const f = FAVS.find(x=>x[0]===id); if(f) words.push(...f[1]); });
   words.push(...userWords(state.customFav));
@@ -534,6 +667,40 @@ function generate(){
     });
     plan.push(day);
   }
+  fitBudget();
+}
+
+const weekDays = w => plan.map((_,k)=>k).slice(w*7, w*7+7);
+const dayCost = day => state.meals.reduce((a,x)=>a+(day[x]!=null?cost(x,day[x]):0),0);
+const weekCost = w => weekDays(w).reduce((a,k)=>a+dayCost(plan[k]),0);
+const budgetFor = w => parseFloat(state.budget) * weekDays(w).length / 7;
+let overWeeks = [];
+/* cambia las comidas más caras por alternativas más baratas hasta que cada semana entra en el presupuesto */
+function fitBudget(){
+  overWeeks = [];
+  const b = parseFloat(state.budget);
+  if(!(b > 0)) return;
+  for(let w=0; w<Math.ceil(30/7); w++){
+    let guard = 0;
+    while(weekCost(w) > budgetFor(w) && guard++ < 200){
+      let best = null;
+      weekDays(w).forEach(k => state.meals.forEach(x => {
+        const cur = plan[k][x]; if(cur==null) return;
+        const cc = cost(x,cur);
+        const prev = plan[k-1] && plan[k-1][x], next = plan[k+1] && plan[k+1][x];
+        const used = new Set(weekDays(w).map(j => plan[j][x]));
+        const cands = pools[x].filter(r => r!==prev && r!==next && cost(x,r) < cc - 0.05);
+        if(!cands.length) return;
+        // preferir alternativas no repetidas en la semana y favoritas
+        cands.sort((a,c) => (used.has(a)-used.has(c)) || (isFav(x,c)-isFav(x,a)) || (cost(x,c)-cost(x,a)));
+        const alt = cands[0], saving = cc - cost(x,alt);
+        if(!best || saving > best.saving) best = {k, x, alt, saving};
+      }));
+      if(!best) break;
+      plan[best.k][best.x] = best.alt;
+    }
+    if(weekCost(w) > budgetFor(w) + 0.01) overWeeks.push(w);
+  }
 }
 
 const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1];
@@ -547,13 +714,17 @@ function renderSummary(){
   const prot = plan.reduce((a,d)=>a+sumDay(d,3),0)/30*m;
   const missing = state.meals.filter(t => !pools[t].length).map(t=>TYPES[t][i]);
   const n = state.meals.reduce((a,t)=>a+pools[t].length,0);
-  $("summary").innerHTML = `<h2>${t("summary")}</h2><p class="hint">${t(state.goal)} ${state.protein==="mas"?t("protMas"):state.protein==="menos"?t("protMenos"):""} ${t("adjusted")}</p>
+  $("summary").innerHTML = `<p class="hint" style="margin-top:0">${t(state.goal)} ${state.protein==="mas"?t("protMas"):state.protein==="menos"?t("protMenos"):""} ${t("adjusted")}</p>
   <div class="stats">
     <div class="stat"><b>${Math.round(kcal)}</b><small>${t("kcalDay")}</small></div>
     <div class="stat"><b>${Math.round(prot)} g</b><small>${t("protDay")}</small></div>
+    <div class="stat"><b>${plan.filter((_,k)=>state.done[dkey(k)]==="y").length}/30</b><small>${t("daysDone")}</small></div>
+    <div class="stat"><b>${money(plan.reduce((a,d)=>a+dayCost(d),0)/30*7)}</b><small>${t("perWeek")}</small></div>
     <div class="stat"><b>${n}</b><small>${t("compat")}</small></div>
     <div class="stat"><b>${fmt(dayDate(0),{day:"numeric",month:"short"})} – ${fmt(dayDate(29),{day:"numeric",month:"short"})}</b><small>${t("days30")}</small></div>
   </div>
+  ${parseFloat(state.budget)>0 ? `<p class="hint" style="margin:12px 0 0">${t("budgetAdj")}</p>` : ""}
+  ${overWeeks.length ? `<div class="alert">${t("over")} (${overWeeks.map(w=>t("week")+" "+(w+1)).join(", ")}). ${t("overHint")}</div>` : ""}
   ${missing.length ? `<div class="alert">${t("noRecipes")} <b>${missing.join(", ")}</b>. ${t("tryRemove")}</div>` : ""}
   ${!missing.length && state.meals.some(x=>pools[x].length<5) ? `<div class="alert">${t("few")}</div>` : ""}`;
 }
@@ -568,13 +739,30 @@ function renderCalendar(){
   const todayStr = new Date().toDateString();
   plan.forEach((day,i) => {
     const d = dayDate(i);
-    const b = document.createElement("button");
-    b.className = "day" + (d.toDateString()===todayStr ? " today":"");
+    const st = state.done[dkey(i)];
+    const b = document.createElement("div");
+    b.className = "day" + (d.toDateString()===todayStr ? " today":"") + (st==="y"?" ok":st==="n"?" ko":"");
+    b.tabIndex = 0; b.setAttribute("role","button");
     b.innerHTML = `<div class="num">${fmt(d,{weekday:"short",day:"numeric",month:"short"})}<em>${t("day")} ${i+1}</em></div>` +
-      state.meals.map(x => day[x]!=null ? `<div class="meal" style="border-color:${COLORS[x]}">${star(x,day[x])}${tr(x,day[x])[0]}</div>` : "").join("");
-    b.onclick = () => openDay(i);
+      state.meals.map(x => day[x]!=null ? `<div class="meal" style="border-color:${COLORS[x]}">${star(x,day[x])}${tr(x,day[x])[0]}</div>` : "").join("") +
+      marksHTML(i);
+    b.onclick = e => { const m = e.target.closest(".mk"); if(m){ e.stopPropagation(); mark(i, m.dataset.v); } else openDay(i); };
+    b.onkeydown = e => { if((e.key==="Enter"||e.key===" ") && e.target===b){ e.preventDefault(); openDay(i); } };
     cal.appendChild(b);
   });
+}
+
+const pad = n => String(n).padStart(2,"0");
+const dkey = i => { const d = dayDate(i); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+function marksHTML(i){
+  const st = state.done[dkey(i)];
+  return `<div class="marks"><button class="mk y ${st==="y"?"on":""}" data-v="y" title="${t("doneLbl")}" aria-pressed="${st==="y"}">✓</button><button class="mk n ${st==="n"?"on":""}" data-v="n" title="${t("missedLbl")}" aria-pressed="${st==="n"}">✗</button></div>`;
+}
+function mark(i, v){
+  const k = dkey(i);
+  if(state.done[k] === v) delete state.done[k]; else state.done[k] = v;
+  save(); renderCalendar(); renderSummary(); renderChart();
+  if($("dlg").open && openIdx===i) openDay(i);
 }
 
 function scaleQty(line, m, isP){
@@ -591,11 +779,12 @@ function openDay(i){
   openIdx = i;
   const m = mult(), day = plan[i], li = L();
   $("dlgTitle").textContent = `${t("day")} ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
-  $("dlgBody").innerHTML = `<p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b></p>` + state.meals.map(x => {
+  const st = state.done[dkey(i)];
+  $("dlgBody").innerHTML = `<p class="macro" style="margin-bottom:0">${t("markDay")}</p><div class="dlg-marks"><button class="mk y ${st==="y"?"on":""}" data-v="y" aria-pressed="${st==="y"}">✓ ${t("doneLbl")}</button><button class="mk n ${st==="n"?"on":""}" data-v="n" aria-pressed="${st==="n"}">✗ ${t("missedLbl")}</button></div><p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b> · ${t("dayCost")} <b>${money(dayCost(day))}</b></p>` + state.meals.map(x => {
     if(day[x]==null) return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><p>${t("none")}</p></div>`;
     const r = tr(x, day[x]), mc = macros(x, day[x]), es = R[x][day[x]][4];
     return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><h4>${star(x,day[x])}${r[0]}</h4>
-      <div class="macro">${Math.round(mc[0]*m)} kcal · ${Math.round(mc[1]*m)} g ${t("protein")}</div>
+      <div class="macro">${Math.round(mc[0]*m)} kcal · ${Math.round(mc[1]*m)} g ${t("protein")} · ≈ ${money(cost(x,day[x]))}</div>
       <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]))}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
   }).join("");
   if(!$("dlg").open) $("dlg").showModal();
@@ -607,24 +796,96 @@ function renderShop(){
   const weeks = Math.ceil(30/7);
   $("weekTabs").innerHTML = Array.from({length:weeks},(_,w)=>`<button class="ghost ${w===week?"on":""}" data-w="${w}">${t("week")} ${w+1}</button>`).join("");
   $("weekTabs").querySelectorAll("button").forEach(b => b.onclick = () => { week = +b.dataset.w; renderShop(); });
-  const count = {};
-  plan.slice(week*7, week*7+7).forEach(day => state.meals.forEach(x => day[x]!=null && tr(x,day[x])[4].forEach(y => {
+  const count = {}, costs = {}, m = mult(), f = pFactor(), cf = cFactor();
+  plan.slice(week*7, week*7+7).forEach(day => state.meals.forEach(x => { if(day[x]==null) return; const es = R[x][day[x]][4]; tr(x,day[x])[4].forEach((y,k) => {
     const name = y.replace(UNIT,"").trim();
     const key = name.charAt(0).toUpperCase()+name.slice(1);
     count[key] = (count[key]||0)+1;
-  })));
+    costs[key] = (costs[key]||0) + priceLine(es[k]) * m * (isProtIng(es[k]) ? f : 1) * cf;
+  }); }));
   $("shop").innerHTML = Object.entries(count).sort((a,b)=>a[0].localeCompare(b[0],state.lang))
-    .map(([k,v])=>`<li>${k} <span>×${v}</span></li>`).join("") || `<li>${t("noIngr")}</li>`;
+    .map(([k,v])=>`<li>${k} <span>×${v} · ${money(costs[k])}</span></li>`).join("") || `<li>${t("noIngr")}</li>`;
+  const total = weekCost(week), b = parseFloat(state.budget);
+  let html = `<div class="shop-total"><span>${t("estTotal")} <b>${money(total)}</b></span>`;
+  if(b > 0){
+    const bw = budgetFor(week), pct = Math.min(100, total/bw*100), over = total > bw + 0.01;
+    html += `<span class="${over?"overmsg":"okmsg"}">${over ? `${t("over")} ${money(total-bw)}` : t("within")} · ${money(bw)}</span></div>
+      <div class="budget-bar ${over?"over":""}"><i style="width:${pct}%"></i></div><p class="hint" style="margin:0">${Math.round(total/bw*100)} % ${t("ofBudget")}</p>`;
+  } else html += `</div>`;
+  $("shopTotal").innerHTML = html + `<p class="hint" style="margin:8px 0 0">${t("priceNote")}</p>`;
 }
 
+let chartRange = "m";
+function groupOf(line){
+  const n = norm(line);
+  const g = GROUPS.find(g => g[1].some(w => wordRe(w).test(n)));
+  return g ? g[0] : null;
+}
+function renderChart(){
+  const li = L(), weeks = Math.ceil(30/7);
+  const ranges = [...Array.from({length:weeks},(_,w)=>[String(w),`${t("week")} ${w+1}`]), ["m",t("month")]];
+  $("chartTabs").innerHTML = ranges.map(([v,l])=>`<button class="ghost ${v===chartRange?"on":""}" data-r="${v}">${l}</button>`).join("");
+  $("chartTabs").querySelectorAll("button").forEach(b => b.onclick = () => { chartRange = b.dataset.r; renderChart(); });
+  const idx = chartRange==="m" ? plan.map((_,k)=>k) : plan.map((_,k)=>k).slice(+chartRange*7, +chartRange*7+7);
+  const done = idx.filter(k => state.done[dkey(k)]==="y"), missed = idx.filter(k => state.done[dkey(k)]==="n");
+  const use = done.length ? done : idx;
+  $("chartStats").innerHTML = `<div class="stat"><b>✓ ${done.length}</b><small>${t("daysDone")}</small></div>
+    <div class="stat"><b>✗ ${missed.length}</b><small>${t("daysMissed")}</small></div>
+    <div class="stat"><b>${idx.length-done.length-missed.length}</b><small>${t("daysOpen")}</small></div>`;
+  $("chartNote").textContent = done.length ? t("doneNote").replace("{n}", done.length) : t("planNote");
+  const count = {};
+  use.forEach(k => state.meals.forEach(x => { const r = plan[k][x]; if(r!=null) R[x][r][4].forEach(line => { const g = groupOf(line); if(g) count[g]=(count[g]||0)+1; }); }));
+  const total = Object.values(count).reduce((a,b)=>a+b,0) || 1;
+  const rows = GROUPS.map(g => [g, count[g[0]]||0]).filter(r=>r[1]>0).sort((a,b)=>b[1]-a[1]);
+  const max = rows.length ? rows[0][1] : 1;
+  $("chart").setAttribute("aria-label", t("chartAria"));
+  $("chart").innerHTML = rows.map(([g,v]) => `<div class="lbl">${g[2][li]}</div>
+    <div class="track" data-tip="${g[2][li]}: ${v} ${t("servings")} · ${Math.round(v/total*100)} % ${t("ofTotal")}">
+      <div class="bar" style="width:calc((100% - 48px) * ${v/max})"></div>
+      <span class="val" style="left:calc((100% - 48px) * ${v/max})">${v}</span></div>`).join("");
+}
+(function tooltip(){
+  const tip = $("tip");
+  $("chart").addEventListener("mousemove", e => {
+    const tr_ = e.target.closest(".track");
+    if(!tr_){ tip.hidden = true; return; }
+    tip.textContent = tr_.dataset.tip; tip.hidden = false;
+    tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px";
+    tip.style.top = (e.clientY + 14) + "px";
+  });
+  $("chart").addEventListener("mouseleave", () => tip.hidden = true);
+})();
+
+function applySections(){
+  document.querySelectorAll("[data-sec]").forEach(sec => {
+    const closed = state.closed.includes(sec.dataset.sec);
+    sec.classList.toggle("closed", closed);
+    const b = sec.querySelector(".toggle");
+    b.setAttribute("aria-expanded", String(!closed));
+    b.title = closed ? t("open") : t("closeSec");
+    b.setAttribute("aria-label", b.title);
+  });
+}
+document.querySelectorAll("[data-sec]").forEach(sec => {
+  const id = sec.dataset.sec;
+  const toggle = () => { state.closed = state.closed.includes(id) ? state.closed.filter(x=>x!==id) : [...state.closed, id]; save(); applySections(); };
+  sec.querySelector(".toggle").onclick = toggle;
+  sec.querySelector(".sec-head h2").style.cursor = "pointer";
+  sec.querySelector(".sec-head h2").onclick = toggle;
+});
+$("openAll").onclick = () => { state.closed = []; save(); applySections(); };
+$("closeAll").onclick = () => { state.closed = [...document.querySelectorAll("[data-sec]")].map(s=>s.dataset.sec); save(); applySections(); };
+
 function run(){
-  readForm(); generate(); renderSummary(); renderCalendar(); renderShop();
+  readForm(); generate(); renderSummary(); renderCalendar(); renderChart(); renderShop(); applySections();
   if($("dlg").open && openIdx!=null) openDay(openIdx);
 }
 
 $("custom").value = state.custom;
 $("customFav").value = state.customFav;
 $("start").value = state.start;
+$("budget").value = state.budget;
+$("budget").placeholder = "—";
 buildForm();
 $("gen").onclick = () => { run(); $("summary").scrollIntoView({behavior:"smooth"}); };
 $("shuffle").onclick = () => { state.seed++; run(); };
@@ -635,6 +896,7 @@ $("reset").onclick = () => {
   buildForm(); run();
 };
 $("close").onclick = () => $("dlg").close();
+$("dlgBody").addEventListener("click", e => { const m = e.target.closest(".mk"); if(m && openIdx!=null) mark(openIdx, m.dataset.v); });
 $("dlg").addEventListener("click", e => { if(e.target === $("dlg")) $("dlg").close(); });
 run();
 </script>
