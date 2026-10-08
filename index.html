@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan Fit 30 días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f2; --surface:#ffffff; --surface2:#eef1e8; --text:#1d2418; --muted:#5d6655;
+  --line:#dde2d4; --accent:#3f7d3a; --accent-soft:#e1efdc; --warn:#b5541f; --warn-soft:#fbe9dd;
+  --d:#c98a1a; --l:#3f7d3a; --c:#3a5f8f; --s:#8a4f9c;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#141811; --surface:#1d2219; --surface2:#262c21; --text:#e8ecdf; --muted:#a1aa95;
+    --line:#333b2d; --accent:#8cc97f; --accent-soft:#283a24; --warn:#f0a070; --warn-soft:#3a2619;
+    --d:#e3b14e; --l:#8cc97f; --c:#86aee0; --s:#c79ad6; --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-family:Fraunces,Georgia,serif;font-size:clamp(28px,5vw,44px);margin:0 0 4px;letter-spacing:-.5px}
+header p{margin:0;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-top:20px}
+h2{font-size:18px;margin:0 0 4px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+fieldset{border:none;margin:0;padding:0}
+legend{font-weight:600;font-size:14px;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;font-size:13.5px;background:var(--surface2);user-select:none;transition:.15s}
+.chip input:checked + span{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chip.no input:checked + span{background:var(--warn);border-color:var(--warn)}
+.chip.fav input:checked + span{background:var(--d);border-color:var(--d)}
+.star{color:var(--d)}
+.chip input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+input[type=text],input[type=date]{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font:inherit}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}
+button{font:inherit;font-weight:600;border:none;border-radius:10px;padding:10px 18px;cursor:pointer}
+.primary{background:var(--accent);color:var(--surface)}
+.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--line)}
+button:hover{filter:brightness(1.07)}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.stat{background:var(--surface2);border-radius:10px;padding:10px 14px;min-width:120px}
+.stat b{display:block;font-size:20px}
+.stat small{color:var(--muted)}
+.alert{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:14px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+.dow{font-size:12px;font-weight:600;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.5px}
+.day{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:8px;min-height:130px;cursor:pointer;text-align:left;color:var(--text);font:inherit;font-weight:400;display:flex;flex-direction:column;gap:3px;transition:.15s}
+.day:hover{border-color:var(--accent);transform:translateY(-1px)}
+.day.empty{background:transparent;border:none;cursor:default;transform:none}
+.day .num{font-weight:700;font-size:13px;display:flex;justify-content:space-between}
+.day .num em{font-style:normal;font-weight:500;color:var(--muted);font-size:11px}
+.meal{font-size:11.5px;line-height:1.3;padding-left:7px;border-left:3px solid;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.today{outline:2px solid var(--accent)}
+dialog{border:none;border-radius:16px;padding:0;max-width:680px;width:calc(100% - 32px);background:var(--surface);color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dlg-head{position:sticky;top:0;background:var(--surface);padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dlg-head h3{margin:0;font-family:Fraunces,Georgia,serif;font-size:22px}
+.dlg-body{padding:6px 20px 20px}
+.recipe{padding:14px 0;border-bottom:1px solid var(--line)}
+.recipe:last-child{border:none}
+.tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.recipe h4{margin:2px 0 6px;font-size:17px}
+.macro{font-size:13px;color:var(--muted)}
+.recipe ul{margin:8px 0;padding-left:18px}
+.recipe p{margin:6px 0 0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.tabs button{padding:6px 12px;font-size:13px}
+.tabs button.on{background:var(--accent);color:var(--surface)}
+.shop{columns:2 240px;gap:24px;padding-left:18px;margin:6px 0 0}
+.shop li{break-inside:avoid;margin-bottom:4px}
+.shop li span{color:var(--muted);font-size:12.5px}
+footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
+@media (max-width:760px){
+  .cal{grid-template-columns:1fr}
+  .dow,.day.empty{display:none}
+  .day{min-height:auto}
+  .meal{-webkit-line-clamp:1}
+}
+@media print{
+  #prefs,.row,.tabs,footer{display:none}
+  body{background:#fff}
+  .card{box-shadow:none;border:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Plan Fit · 30 días</h1>
+  <p>Dime qué no puedes o no quieres comer y te monto un mes de comidas sanas con calendario y lista de la compra.</p>
+</header>
+
+<section class="card" id="prefs">
+  <h2>1. Tus restricciones</h2>
+  <p class="hint">Marca todo lo que aplique. Se guarda en este navegador.</p>
+  <div class="grid2">
+    <fieldset>
+      <legend>Tipo de dieta</legend>
+      <div class="chips" id="diet"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Objetivo</legend>
+      <div class="chips" id="goal"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Comidas al día</legend>
+      <div class="chips" id="meals"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Fecha de inicio</legend>
+      <input type="date" id="start">
+    </fieldset>
+  </div>
+  <fieldset style="margin-top:20px">
+    <legend>No me gusta / no puedo comer</legend>
+    <div class="chips" id="dislikes"></div>
+  </fieldset>
+  <fieldset style="margin-top:20px">
+    <legend>Mis favoritos (saldrán más a menudo)</legend>
+    <div class="chips" id="favs"></div>
+  </fieldset>
+  <fieldset style="margin-top:16px">
+    <legend>Otros favoritos</legend>
+    <input type="text" id="customFav" placeholder="Ej.: quinoa, kiwi, gambas (separados por comas)">
+  </fieldset>
+  <fieldset style="margin-top:16px">
+    <legend>Otros alimentos a evitar</legend>
+    <input type="text" id="custom" placeholder="Ej.: berenjena, pepino, mango (separados por comas)">
+  </fieldset>
+  <div class="row">
+    <button class="primary" id="gen">Generar mi plan</button>
+    <button class="ghost" id="shuffle">Otra combinación</button>
+    <button class="ghost" id="reset">Borrar restricciones</button>
+  </div>
+</section>
+
+<section class="card" id="summary"></section>
+
+<section class="card">
+  <div class="cal-head">
+    <div>
+      <h2>2. Tu calendario</h2>
+      <p class="hint" style="margin:0">Toca un día para ver recetas, cantidades y pasos.</p>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--d)"></i>Desayuno</span>
+      <span><i class="dot" style="background:var(--l)"></i>Comida</span>
+      <span><i class="dot" style="background:var(--s)"></i>Snack</span>
+      <span><i class="dot" style="background:var(--c)"></i>Cena</span>
+    </div>
+  </div>
+  <div class="cal" id="cal"></div>
+</section>
+
+<section class="card">
+  <h2>3. Lista de la compra</h2>
+  <p class="hint" style="margin:0">Por semana, con las veces que aparece cada ingrediente.</p>
+  <div class="tabs" id="weekTabs"></div>
+  <ul class="shop" id="shop"></ul>
+</section>
+
+<footer>Orientativo: las calorías son aproximadas. Si tienes alergias o alguna condición médica, consúltalo con un profesional.</footer>
+</div>
+
+<dialog id="dlg">
+  <div class="dlg-head"><h3 id="dlgTitle"></h3><button class="ghost" id="close" aria-label="Cerrar">✕</button></div>
+  <div class="dlg-body" id="dlgBody"></div>
+</dialog>
+
+<script>
+/* Flags: g gluten, l lactosa, m carne roja, c cerdo, p pollo/pavo, f pescado, s marisco, e huevo, n frutos secos */
+const R = {
+d:[
+["Avena con plátano y canela","g",380,12,["50 g copos de avena","200 ml bebida de avena","1 plátano","Canela","1 cdta miel"],"Cuece la avena con la bebida 4-5 min removiendo. Sirve con el plátano en rodajas, canela y la miel."],
+["Tortilla de claras con espinacas y tostada","eg",320,24,["4 claras de huevo","1 puñado de espinacas","1 rebanada de pan integral","1 cdta aceite de oliva"],"Saltea las espinacas 1 min, añade las claras batidas y cuaja a fuego medio. Acompaña con la tostada."],
+["Yogur griego con frutos rojos y nueces","ln",300,18,["200 g yogur griego natural","80 g frutos rojos","15 g nueces","Canela"],"Pon el yogur en un bol y añade la fruta, las nueces troceadas y la canela."],
+["Tostada de aguacate y huevo pochado","ge",360,15,["1 rebanada de pan integral","1/2 aguacate","1 huevo","Sal, pimienta y limón"],"Chafa el aguacate con limón y sal. Pocha el huevo 3 min en agua con un chorrito de vinagre y colócalo encima."],
+["Batido verde de proteína","n",340,20,["250 ml bebida de soja","1 plátano","1 puñado de espinacas","1 cda crema de cacahuete","Hielo"],"Tritura todo hasta que quede cremoso."],
+["Pudding de chía con mango","",310,9,["3 cdas semillas de chía","200 ml bebida de coco","1/2 mango","Vainilla"],"Mezcla la chía con la bebida y la vainilla y déjalo en la nevera desde la noche anterior. Cubre con mango."],
+["Revuelto de huevo con tomate y pan de centeno","eg",350,20,["2 huevos","1 tomate","1 rebanada de pan de centeno","1 cdta aceite de oliva"],"Sofríe el tomate en dados 3 min, añade los huevos batidos y remueve hasta cuajar. Sirve con el pan."],
+["Tortitas de avena y plátano","ge",370,16,["40 g copos de avena","1 huevo","1 plátano","2 cdas yogur natural vegetal","Canela"],"Tritura avena, huevo y plátano. Haz tortitas en sartén antiadherente y sírvelas con el yogur y canela."],
+["Requesón con piña y semillas","l",280,20,["200 g requesón","100 g piña","1 cda semillas de calabaza"],"Sirve el requesón con la piña en dados y las semillas por encima."],
+["Tostadas de pavo y tomate","gp",300,22,["2 rebanadas de pan integral","80 g pechuga de pavo en lonchas","1 tomate","Aceite de oliva"],"Unta el pan con tomate rallado y un hilo de aceite. Añade el pavo."],
+["Bowl de quinoa dulce con manzana","",340,10,["60 g quinoa","200 ml bebida de almendra sin azúcar","1 manzana","Canela"],"Cuece la quinoa en la bebida 15 min. Añade la manzana rallada y canela."],
+["Tofu revuelto con pimiento","",330,22,["150 g tofu firme","1/2 pimiento rojo","1 puñado de espinacas","Cúrcuma","1 tortilla de maíz"],"Desmenuza el tofu y saltéalo con el pimiento, las espinacas y la cúrcuma 5 min. Sírvelo en la tortilla."],
+["Tortitas de arroz con hummus y pepino","",280,10,["3 tortitas de arroz","50 g hummus de garbanzos","1/2 pepino","Pimentón dulce"],"Unta el hummus, añade el pepino en láminas y espolvorea pimentón."],
+["Kéfir con avena y frutos rojos","lg",320,14,["250 ml kéfir","30 g copos de avena","80 g frutos rojos"],"Mezcla todo en un bol y deja reposar 5 min."],
+["Huevos cocidos con fruta","e",300,16,["2 huevos","2 tortitas de arroz","1 naranja"],"Cuece los huevos 9 min. Acompaña con las tortitas y la naranja."],
+["Smoothie bowl de frutos rojos","n",290,12,["150 g frutos rojos congelados","150 ml bebida de almendra","1 cda semillas de cáñamo","1 cda copos de coco"],"Tritura los frutos rojos con la bebida hasta textura espesa y decora con semillas y coco."],
+["Tostada de salmón ahumado y queso fresco","fgl",330,24,["1 rebanada de pan de centeno","50 g salmón ahumado","50 g queso fresco batido","Eneldo"],"Unta el queso, coloca el salmón y termina con eneldo."]
+],
+l:[
+["Pollo a la plancha con arroz integral y brócoli","p",520,42,["150 g pechuga de pollo","70 g arroz integral (crudo)","200 g brócoli","1 diente de ajo","1 cda aceite de oliva"],"Cuece el arroz. Haz el brócoli al vapor 6 min. Marca el pollo con ajo y aceite 4 min por lado."],
+["Lentejas estofadas con verduras","",480,24,["80 g lentejas (crudas)","1 zanahoria","1/2 cebolla","1/2 pimiento","1 diente de ajo","Pimentón y laurel"],"Sofríe cebolla, ajo y pimiento. Añade lentejas, zanahoria, especias y agua. Cuece 35 min."],
+["Ensalada de quinoa, garbanzos y feta","l",490,20,["60 g quinoa","100 g garbanzos cocidos","1/2 pepino","1 tomate","40 g queso feta","Limón y aceite de oliva"],"Cuece la quinoa y enfría. Mezcla con el resto troceado y aliña."],
+["Salmón al horno con patata y espárragos","f",560,36,["150 g lomo de salmón","200 g patata","1 manojo de espárragos verdes","Limón y eneldo"],"Hornea la patata en gajos 20 min a 200 °C. Añade salmón y espárragos y hornea 12 min más."],
+["Ternera salteada con verduras y arroz","m",540,38,["150 g ternera magra en tiras","70 g arroz basmati","1/2 pimiento","1/2 cebolla","1 calabacín pequeño","1 cda salsa tamari (soja)"],"Saltea la ternera a fuego fuerte 2 min y retira. Saltea las verduras, devuelve la carne y añade el tamari. Sirve con el arroz."],
+["Pasta integral boloñesa de pavo","gp",560,36,["80 g pasta integral","120 g carne picada de pavo","200 g tomate triturado","1/2 cebolla","1 diente de ajo","Orégano"],"Sofríe cebolla y ajo, dora el pavo, añade el tomate y cuece 15 min. Mezcla con la pasta."],
+["Buddha bowl de tofu, boniato y kale","",520,24,["150 g tofu firme","1 boniato pequeño","1 puñado de kale","1 cda tahini","Limón"],"Asa el boniato en dados 25 min. Dora el tofu. Monta el bol con el kale masajeado y aliña con tahini y limón."],
+["Merluza en papillote con quinoa","f",450,34,["170 g merluza","1 calabacín","1 zanahoria","1/4 cebolla","60 g quinoa"],"Pon la merluza sobre las verduras en juliana en papel de horno, cierra y hornea 15 min a 200 °C. Sirve con quinoa."],
+["Chili de alubias rojas con arroz","",500,22,["150 g alubias rojas cocidas","200 g tomate triturado","1/2 cebolla","1/2 pimiento","1 diente de ajo","Comino y guindilla","50 g arroz"],"Sofríe cebolla, ajo y pimiento, añade tomate, alubias y especias y cuece 20 min. Sirve con arroz."],
+["Pavo al curry con arroz y espinacas","p",530,40,["150 g pechuga de pavo","100 ml leche de coco light","1/2 cebolla","1 cda curry","1 puñado de espinacas","60 g arroz basmati"],"Sofríe cebolla, dora el pavo, añade curry y leche de coco y cuece 10 min. Añade espinacas al final."],
+["Wrap de pollo, aguacate y yogur","gpl",500,36,["1 tortilla de trigo integral","130 g pollo a la plancha","Lechuga","1/4 aguacate","2 cdas yogur natural"],"Rellena la tortilla con todo, enrolla y marca 1 min en sartén."],
+["Garbanzos salteados con espinacas y huevo","e",470,24,["150 g garbanzos cocidos","2 puñados de espinacas","1 huevo","1 diente de ajo","Pimentón y comino"],"Saltea ajo y garbanzos 5 min con especias, añade espinacas y corona con un huevo a la plancha."],
+["Atún a la plancha con patata y judías verdes","f",500,40,["150 g atún fresco","200 g patata","150 g judías verdes","Aceite de oliva y vinagre"],"Cuece patata y judías 15 min y aliña. Marca el atún 1-2 min por lado."],
+["Risotto de setas integral","l",520,18,["70 g arroz integral","150 g setas variadas","1/2 cebolla","1 diente de ajo","20 g parmesano","Caldo de verduras"],"Sofríe cebolla y ajo, añade setas y arroz, ve agregando caldo caliente 30 min. Termina con parmesano."],
+["Lomo de cerdo con puré de boniato","c",530,38,["150 g lomo de cerdo","1 boniato","Ensalada verde","Romero"],"Cuece o asa el boniato y haz puré. Marca el lomo con romero 3 min por lado."],
+["Paella de verduras y gambas","s",520,30,["70 g arroz","150 g gambas peladas","1/2 pimiento","1 tomate","50 g judías verdes","1 diente de ajo","Azafrán y caldo"],"Sofríe verduras y ajo, añade tomate, arroz y caldo con azafrán. A los 10 min añade las gambas y cuece 8 min más."],
+["Hamburguesa de ternera con boniato","me",540,38,["150 g ternera picada magra","1 clara de huevo","1/4 cebolla","1 boniato pequeño","Ensalada verde"],"Mezcla la carne con clara y cebolla picada, forma la hamburguesa y hazla a la plancha. Boniato al horno 25 min."],
+["Bacalao con pisto y arroz","f",480,34,["170 g bacalao desalado","1 calabacín","1/2 pimiento","1 tomate","1/4 cebolla","50 g arroz"],"Haz el pisto pochando las verduras 20 min. Cocina el bacalao a la plancha y sírvelo encima."],
+["Ensalada de pollo, mango y quinoa","p",520,36,["130 g pollo a la plancha","60 g quinoa","1/2 mango","1/4 aguacate","Rúcula","Lima"],"Cuece la quinoa, mezcla con todo troceado y aliña con lima y aceite."],
+["Tempeh salteado con fideos de arroz","",510,28,["120 g tempeh","60 g fideos de arroz","1 zanahoria","1/2 pimiento","1 cda salsa tamari (soja)","Jengibre"],"Hidrata los fideos. Saltea el tempeh en dados y las verduras con jengibre y tamari. Mezcla."],
+["Dhal de lentejas rojas con arroz","",500,22,["80 g lentejas rojas","100 ml leche de coco light","1/2 cebolla","1 diente de ajo","1 cdta curry","50 g arroz basmati"],"Sofríe cebolla y ajo con curry, añade lentejas, leche de coco y agua y cuece 20 min. Sirve con arroz."],
+["Pollo al horno con limón y patatas","p",540,40,["1 muslo de pollo sin piel + 100 g pechuga","200 g patata","1 zanahoria","1 limón","2 dientes de ajo"],"Hornea todo con limón, ajo y hierbas 40 min a 200 °C."]
+],
+c:[
+["Tortilla francesa con ensalada","e",330,20,["2 huevos","Lechuga y canónigos","1/2 pepino","Aceite de oliva"],"Bate los huevos y cuaja en sartén. Acompaña con la ensalada aliñada."],
+["Crema de calabacín y pollo a la plancha","p",380,35,["2 calabacines","1/2 puerro","130 g pechuga de pollo"],"Cuece calabacín y puerro 15 min y tritura. Pollo a la plancha aparte."],
+["Salmón a la plancha con espárragos","f",420,32,["140 g salmón","1 manojo de espárragos verdes","Limón"],"Marca el salmón 3 min por lado y los espárragos a la plancha."],
+["Ensalada templada de lentejas","",380,18,["150 g lentejas cocidas","1 zanahoria rallada","Rúcula","1 cda vinagre de manzana","1 cda aceite de oliva"],"Templa las lentejas en sartén y mezcla con la rúcula y la zanahoria. Aliña."],
+["Merluza al vapor con verduras salteadas","f",330,30,["170 g merluza","1 calabacín","1 zanahoria","50 g judías verdes"],"Cuece la merluza al vapor 8 min. Saltea las verduras en tiras."],
+["Tofu a la plancha con brócoli y sésamo","",350,24,["150 g tofu firme","200 g brócoli","1 cda salsa tamari (soja)","1 cdta sésamo"],"Dora el tofu en tacos con tamari. Brócoli al vapor y sésamo por encima."],
+["Pavo con champiñones y espinacas","p",360,36,["150 g pechuga de pavo","150 g champiñones","2 puñados de espinacas","1 diente de ajo"],"Saltea ajo y champiñones, añade espinacas. Pavo a la plancha."],
+["Revuelto de setas y gambas","se",340,28,["2 huevos","100 g gambas","150 g setas","1 diente de ajo"],"Saltea ajo, setas y gambas, añade los huevos y remueve hasta cuajar."],
+["Sopa de verduras con garbanzos","",330,15,["1 zanahoria","1/2 puerro","1 rama de apio","1/4 cebolla","120 g garbanzos cocidos","Caldo de verduras"],"Pocha las verduras, añade caldo y garbanzos y cuece 15 min."],
+["Ensalada de atún, huevo y judías verdes","fe",380,34,["1 lata de atún al natural","1 huevo cocido","150 g judías verdes","Lechuga","Aceite de oliva"],"Cuece las judías, enfríalas y mezcla con el resto."],
+["Calabacín relleno de pavo gratinado","pl",400,34,["1 calabacín grande","120 g carne picada de pavo","100 g tomate triturado","1/4 cebolla","30 g queso rallado light"],"Vacía el calabacín, sofríe la pulpa con cebolla, pavo y tomate. Rellena, cubre con queso y gratina 15 min."],
+["Dorada al horno con patata","f",430,34,["1 dorada (200 g limpia)","150 g patata en láminas","1/4 cebolla","Limón"],"Hornea patata y cebolla 15 min, añade la dorada y hornea 15 min más a 200 °C."],
+["Wok de pollo y verduras","p",400,36,["140 g pechuga de pollo","1/2 pimiento","1/4 cebolla","1 zanahoria","1 cda salsa tamari (soja)"],"Saltea el pollo en tiras a fuego fuerte, añade verduras y tamari 4 min."],
+["Hummus con crudités y huevo cocido","e",360,18,["80 g hummus de garbanzos","1 zanahoria","1/2 pepino","1 huevo cocido"],"Corta las verduras en bastones y sirve con el hummus y el huevo."],
+["Tortilla de patata al horno con ensalada","e",400,20,["2 huevos","150 g patata","1/4 cebolla","Ensalada verde"],"Hornea la patata y cebolla en láminas 20 min, mezcla con el huevo y cuaja en sartén o al horno."],
+["Gazpacho y pechuga de pollo","p",380,34,["250 ml gazpacho casero (tomate, pepino, pimiento, ajo, cebolla)","130 g pechuga de pollo"],"Tritura las verduras del gazpacho con aceite y vinagre y enfría. Pollo a la plancha."],
+["Caprese con mozzarella light y tostada","lg",380,22,["125 g mozzarella light","1 tomate grande","Rúcula y albahaca","1 rebanada de pan integral"],"Alterna rodajas de tomate y mozzarella, añade rúcula y aliña. Acompaña con el pan."],
+["Sepia a la plancha con ensalada","s",320,32,["200 g sepia limpia","1 diente de ajo","Perejil","Ensalada verde"],"Marca la sepia a fuego fuerte y termina con ajo y perejil picados."],
+["Hamburguesa de garbanzos y quinoa","",400,18,["120 g garbanzos cocidos","40 g quinoa cocida","1 cda semillas de lino molidas","1/4 cebolla","1 diente de ajo","Ensalada verde"],"Tritura garbanzos con lino, cebolla y ajo, mezcla con quinoa, forma y dora 4 min por lado."],
+["Solomillo de ternera con verduras asadas","m",430,36,["140 g solomillo de ternera","1 calabacín","1/2 berenjena","1/2 pimiento"],"Asa las verduras 25 min a 200 °C. Marca el solomillo al gusto."],
+["Crema de calabaza con tofu","",340,16,["300 g calabaza","1/4 cebolla","100 g tofu firme","1 cda semillas de calabaza"],"Cuece calabaza y cebolla y tritura. Dora el tofu en dados y sirve encima con semillas."],
+["Pollo con boniato y judías verdes","p",420,38,["140 g pechuga de pollo","1 boniato pequeño","150 g judías verdes"],"Boniato al horno 25 min, judías al vapor y pollo a la plancha."]
+],
+s:[
+["Manzana con crema de cacahuete","n",200,6,["1 manzana","1 cda crema de cacahuete"],"Corta la manzana en gajos y moja en la crema."],
+["Yogur griego con canela","l",150,12,["150 g yogur griego natural","Canela"],"Sirve con canela."],
+["Puñado de almendras","n",170,6,["25 g almendras naturales"],"Listo para comer."],
+["Zanahoria con hummus","",160,6,["1 zanahoria","50 g hummus de garbanzos"],"Corta en bastones y moja."],
+["Batido de proteína","l",180,24,["1 cacito proteína whey","250 ml bebida de avena"],"Agita y listo."],
+["Tortitas de arroz con pavo","p",140,12,["2 tortitas de arroz","50 g pechuga de pavo en lonchas"],"Monta y listo."],
+["Edamame","",170,14,["120 g edamame (soja)","Sal en escamas"],"Cuece 4 min y sala."],
+["Naranja y kiwi","",120,2,["1 naranja","1 kiwi"],"Pela y disfruta."],
+["Huevo cocido y mandarina","e",120,7,["1 huevo","1 mandarina"],"Cuece el huevo 9 min."],
+["Queso fresco batido con frutos rojos","l",130,14,["150 g queso fresco batido 0%","60 g frutos rojos"],"Mezcla y listo."],
+["Garbanzos tostados","",160,8,["100 g garbanzos cocidos","Pimentón y comino"],"Seca los garbanzos, aliña y hornea 25 min a 200 °C."],
+["Plátano y chocolate negro","",190,3,["1 plátano","2 onzas chocolate negro 85%"],"Listo para comer."]
+]};
+
+const TYPES = {d:"Desayuno",l:"Comida",s:"Snack",c:"Cena"};
+const COLORS = {d:"var(--d)",l:"var(--l)",s:"var(--s)",c:"var(--c)"};
+const DIETS = [
+  ["omni","Como de todo",""],["veget","Vegetariana","mcpfs"],["vegan","Vegana","mcpfsle"],
+  ["pesce","Pescetariana","mcp"],["singluten","Sin gluten","g"],["sinlactosa","Sin lactosa","l"]
+];
+const GOALS = [["perder","Perder grasa",0.85],["mantener","Comer sano",1],["ganar","Ganar músculo",1.2]];
+const MEALS = [["d","Desayuno"],["l","Comida"],["s","Snack"],["c","Cena"]];
+/* [id, etiqueta, flags, palabras clave] */
+const DISLIKES = [
+  ["cebolla","Cebolla","",["cebolla","puerro"]],["ajo","Ajo","",["ajo"]],["tomate","Tomate","",["tomate","gazpacho"]],
+  ["setas","Setas / champiñones","",["setas","champinon"]],["pimiento","Pimiento","",["pimiento"]],
+  ["brocoli","Brócoli","",["brocoli"]],["espinaca","Espinacas / kale","",["espinaca","kale"]],
+  ["calabacin","Calabacín","",["calabacin"]],["aguacate","Aguacate","",["aguacate"]],
+  ["legumbres","Legumbres","",["lenteja","garbanzo","alubia","hummus","edamame"]],
+  ["soja","Soja / tofu","",["tofu","tempeh","soja","edamame","tamari"]],["coco","Coco","",["coco"]],
+  ["platano","Plátano","",["platano"]],["picante","Picante / curry","",["guindilla","curry","chile"]],
+  ["carne","Carne roja","m",[]],["cerdo","Cerdo","c",[]],["ave","Pollo / pavo","p",[]],
+  ["pescado","Pescado","f",[]],["marisco","Marisco","s",[]],["huevo","Huevo","e",[]],
+  ["fsecos","Frutos secos","n",[]],["lacteos","Lácteos","l",[]],["gluten","Gluten","g",[]]
+];
+
+/* Favoritos: [id, etiqueta, grupo, palabras clave] */
+const FAVS = [
+  ["pollo","Pollo","Carnes",["pollo"]],["pavo","Pavo","Carnes",["pavo"]],["ternera","Ternera","Carnes",["ternera"]],["cerdo","Cerdo","Carnes",["cerdo"]],
+  ["salmon","Salmón","Pescado",["salmon"]],["merluza","Merluza / bacalao","Pescado",["merluza","bacalao"]],["atun","Atún","Pescado",["atun"]],
+  ["dorada","Dorada","Pescado",["dorada"]],["marisco","Gambas / sepia","Pescado",["gamba","sepia"]],["huevo","Huevo","Proteína",["huevo","claras"]],
+  ["tofu","Tofu / tempeh","Proteína",["tofu","tempeh"]],["legumbres","Legumbres","Proteína",["lenteja","garbanzo","alubia"]],
+  ["brocoli","Brócoli","Vegetales",["brocoli"]],["espinaca","Espinacas","Vegetales",["espinaca"]],["calabacin","Calabacín","Vegetales",["calabacin"]],
+  ["esparrago","Espárragos","Vegetales",["esparrago"]],["boniato","Boniato / patata","Vegetales",["boniato","patata"]],["zanahoria","Zanahoria","Vegetales",["zanahoria"]],
+  ["setas","Setas","Vegetales",["setas","champinon"]],["aguacate","Aguacate","Vegetales",["aguacate"]],["calabaza","Calabaza","Vegetales",["calabaza"]],
+  ["platano","Plátano","Fruta",["platano"]],["frutosrojos","Frutos rojos","Fruta",["frutos rojos"]],["mango","Mango","Fruta",["mango"]],
+  ["manzana","Manzana","Fruta",["manzana"]],["citricos","Naranja / mandarina","Fruta",["naranja","mandarina"]],["pina","Piña","Fruta",["pina"]],["kiwi","Kiwi","Fruta",["kiwi"]]
+];
+
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+const $ = id => document.getElementById(id);
+
+function chip(container, type, name, value, label, checked, cls=""){
+  const l = document.createElement("label");
+  l.className = "chip " + cls;
+  l.innerHTML = `<input type="${type}" name="${name}" value="${value}" ${checked?"checked":""}><span>${label}</span>`;
+  $(container).appendChild(l);
+}
+
+let state = {diet:["omni"], goal:"mantener", meals:["d","l","s","c"], dislikes:[], custom:"", start:"", seed:1};
+try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
+if(!state.start){ state.start = new Date().toISOString().slice(0,10); }
+
+DIETS.forEach(([v,l]) => chip("diet","checkbox","diet",v,l,state.diet.includes(v)));
+GOALS.forEach(([v,l]) => chip("goal","radio","goal",v,l,state.goal===v));
+MEALS.forEach(([v,l]) => chip("meals","checkbox","meals",v,l,state.meals.includes(v)));
+DISLIKES.forEach(([v,l]) => chip("dislikes","checkbox","dis",v,l,state.dislikes.includes(v),"no"));
+FAVS.forEach(([v,l]) => chip("favs","checkbox","fav",v,"★ "+l,(state.favs||[]).includes(v),"fav"));
+$("customFav").value = state.customFav || "";
+$("custom").value = state.custom;
+$("start").value = state.start;
+
+document.querySelectorAll('input[name=diet]').forEach(i => i.addEventListener("change", e => {
+  const boxes = [...document.querySelectorAll('input[name=diet]')];
+  if(e.target.value==="omni" && e.target.checked) boxes.forEach(b => { if(b.value!=="omni") b.checked=false; });
+  else if(e.target.checked) boxes.find(b=>b.value==="omni").checked=false;
+}));
+
+function readForm(){
+  state.diet = [...document.querySelectorAll('input[name=diet]:checked')].map(i=>i.value);
+  state.goal = (document.querySelector('input[name=goal]:checked')||{}).value || "mantener";
+  state.meals = [...document.querySelectorAll('input[name=meals]:checked')].map(i=>i.value);
+  state.dislikes = [...document.querySelectorAll('input[name=dis]:checked')].map(i=>i.value);
+  state.custom = $("custom").value;
+  state.favs = [...document.querySelectorAll('input[name=fav]:checked')].map(i=>i.value);
+  state.customFav = $("customFav").value;
+  state.start = $("start").value || new Date().toISOString().slice(0,10);
+  try { localStorage.setItem("planfit", JSON.stringify(state)); } catch(e){}
+}
+
+function allowed(rec){
+  let flags = "", words = [];
+  state.diet.forEach(d => flags += (DIETS.find(x=>x[0]===d)||["","",""])[2]);
+  if(state.diet.includes("vegan")) words.push("miel");
+  state.dislikes.forEach(id => { const d = DISLIKES.find(x=>x[0]===id); if(d){ flags += d[2]; words.push(...d[3]); } });
+  norm(state.custom).split(",").map(w=>w.trim()).filter(Boolean).forEach(w=>words.push(w));
+  if([...rec[1]].some(f => flags.includes(f))) return false;
+  const text = norm(rec[0] + " " + rec[4].join(" "));
+  return !words.some(w => new RegExp("(^|[^a-z])" + w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).test(text));
+}
+
+const wordRe = w => new RegExp("(^|[^a-z])" + w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+function isFav(rec){
+  const words = [];
+  (state.favs||[]).forEach(id => { const f = FAVS.find(x=>x[0]===id); if(f) words.push(...f[3]); });
+  norm(state.customFav||"").split(",").map(w=>w.trim()).filter(Boolean).forEach(w=>words.push(w));
+  const text = norm(rec[0] + " " + rec[4].join(" "));
+  return words.some(w => wordRe(w).test(text));
+}
+
+function rng(seed){ return () => { seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }; }
+function shuffle(arr, rand){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(rand()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+let plan = [], pools = {};
+function generate(){
+  const rand = rng(state.seed * 7919 + 13);
+  pools = {}; plan = [];
+  const queues = {};
+  state.meals.forEach(t => { pools[t] = R[t].filter(allowed); queues[t] = []; });
+  for(let i=0;i<30;i++){
+    const day = {};
+    state.meals.forEach(t => {
+      if(!pools[t].length){ day[t]=null; return; }
+      if(!queues[t].length){
+        // los favoritos entran 3 veces en cada ronda, así salen más a menudo
+        const weighted = pools[t].flatMap(r => isFav(r) ? [r,r,r] : [r]);
+        let q = shuffle(weighted, rand);
+        for(let k=1;k<q.length;k++) if(q[k]===q[k-1]){ const j=q.findIndex((x,idx)=>idx>k && x!==q[k]); if(j>0) [q[k],q[j]]=[q[j],q[k]]; }
+        queues[t] = q;
+      }
+      let pick = queues[t].shift();
+      const prev = plan[i-1] && plan[i-1][t];
+      if(prev === pick && queues[t].length){ queues[t].push(pick); pick = queues[t].shift(); }
+      day[t] = pick;
+    });
+    plan.push(day);
+  }
+}
+
+const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[2];
+const dayDate = i => { const d = new Date(state.start+"T12:00:00"); d.setDate(d.getDate()+i); return d; };
+const fmt = (d,o) => d.toLocaleDateString("es-ES", o);
+
+function renderSummary(){
+  const m = mult();
+  const kcal = plan.reduce((a,d)=>a+Object.values(d).reduce((s,r)=>s+(r?r[2]:0),0),0)/30*m;
+  const prot = plan.reduce((a,d)=>a+Object.values(d).reduce((s,r)=>s+(r?r[3]:0),0),0)/30*m;
+  const missing = state.meals.filter(t => !pools[t].length).map(t=>TYPES[t]);
+  const n = state.meals.reduce((a,t)=>a+pools[t].length,0);
+  const goalTxt = {perder:"Raciones un 15 % más pequeñas para crear un déficit suave.",mantener:"Raciones estándar y equilibradas.",ganar:"Raciones un 20 % más grandes. Prioriza la proteína y añade el snack."}[state.goal];
+  $("summary").innerHTML = `<h2>Resumen de tu plan</h2><p class="hint">${goalTxt} Cantidades de las recetas ajustadas automáticamente.</p>
+  <div class="stats">
+    <div class="stat"><b>${Math.round(kcal)}</b><small>kcal/día aprox.</small></div>
+    <div class="stat"><b>${Math.round(prot)} g</b><small>proteína/día</small></div>
+    <div class="stat"><b>${n}</b><small>recetas compatibles</small></div>
+    <div class="stat"><b>${fmt(dayDate(0),{day:"numeric",month:"short"})} – ${fmt(dayDate(29),{day:"numeric",month:"short"})}</b><small>30 días</small></div>
+  </div>
+  ${missing.length ? `<div class="alert">Con tus restricciones no queda ninguna receta para: <b>${missing.join(", ")}</b>. Prueba a quitar alguna restricción.</div>` : ""}
+  ${!missing.length && state.meals.some(t=>pools[t].length<5) ? `<div class="alert">Tienes pocas opciones en alguna comida, así que algunas recetas se repetirán bastante.</div>` : ""}`;
+}
+
+function renderCalendar(){
+  const cal = $("cal"); cal.innerHTML = "";
+  ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"].forEach(d => cal.insertAdjacentHTML("beforeend",`<div class="dow">${d}</div>`));
+  const offset = (dayDate(0).getDay()+6)%7;
+  for(let i=0;i<offset;i++) cal.insertAdjacentHTML("beforeend",`<div class="day empty"></div>`);
+  const todayStr = new Date().toDateString();
+  plan.forEach((day,i) => {
+    const d = dayDate(i);
+    const b = document.createElement("button");
+    b.className = "day" + (d.toDateString()===todayStr ? " today":"");
+    b.innerHTML = `<div class="num">${fmt(d,{weekday:"short",day:"numeric",month:"short"})}<em>Día ${i+1}</em></div>` +
+      state.meals.map(t => day[t] ? `<div class="meal" style="border-color:${COLORS[t]}">${isFav(day[t])?'<span class="star">★</span> ':''}${day[t][0]}</div>` : "").join("");
+    b.onclick = () => openDay(i);
+    cal.appendChild(b);
+  });
+}
+
+function scaleQty(line, m){
+  if(m===1) return line;
+  return line.replace(/^(\d+(?:[.,]\d+)?)(?=\s*(g|ml)\b)/, n => Math.round(parseFloat(n.replace(",","."))*m/5)*5);
+}
+
+function openDay(i){
+  const m = mult(), day = plan[i];
+  $("dlgTitle").textContent = `Día ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
+  const tot = state.meals.reduce((a,t)=>a+(day[t]?day[t][2]:0),0)*m;
+  $("dlgBody").innerHTML = `<p class="macro">Total aprox.: <b>${Math.round(tot)} kcal</b></p>` + state.meals.map(t => {
+    const r = day[t];
+    if(!r) return `<div class="recipe"><span class="tag" style="color:${COLORS[t]}">${TYPES[t]}</span><p>Sin recetas compatibles.</p></div>`;
+    return `<div class="recipe"><span class="tag" style="color:${COLORS[t]}">${TYPES[t]}</span><h4>${isFav(r)?'<span class="star">★</span> ':''}${r[0]}</h4>
+      <div class="macro">${Math.round(r[2]*m)} kcal · ${Math.round(r[3]*m)} g proteína</div>
+      <ul>${r[4].map(x=>`<li>${scaleQty(x,m)}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
+  }).join("");
+  $("dlg").showModal();
+}
+
+let week = 0;
+function renderShop(){
+  const weeks = Math.ceil(30/7);
+  $("weekTabs").innerHTML = Array.from({length:weeks},(_,w)=>`<button class="ghost ${w===week?"on":""}" data-w="${w}">Semana ${w+1}</button>`).join("");
+  $("weekTabs").querySelectorAll("button").forEach(b => b.onclick = () => { week = +b.dataset.w; renderShop(); });
+  const count = {};
+  plan.slice(week*7, week*7+7).forEach(day => Object.values(day).forEach(r => r && r[4].forEach(x => {
+    const name = x.replace(/^[\d\/.,]+\s*(g|ml|cdas?|cdtas?|cacito|rebanadas?|puñados?|dientes? de|manojo de|lata de|onzas|rama de)?\s*/i,"");
+    const key = name.charAt(0).toUpperCase()+name.slice(1);
+    count[key] = (count[key]||0)+1;
+  })));
+  $("shop").innerHTML = Object.entries(count).sort((a,b)=>a[0].localeCompare(b[0],"es"))
+    .map(([k,v])=>`<li>${k} <span>×${v}</span></li>`).join("") || "<li>Sin ingredientes</li>";
+}
+
+function run(){ readForm(); generate(); renderSummary(); renderCalendar(); renderShop(); }
+$("gen").onclick = () => { run(); $("summary").scrollIntoView({behavior:"smooth"}); };
+$("shuffle").onclick = () => { state.seed++; run(); };
+$("reset").onclick = () => {
+  document.querySelectorAll('#prefs input[type=checkbox]').forEach(i => i.checked = ["omni","d","l","s","c"].includes(i.value) && i.name!=="dis");
+  $("custom").value = ""; $("customFav").value = ""; run();
+};
+$("close").onclick = () => $("dlg").close();
+$("dlg").addEventListener("click", e => { if(e.target === $("dlg")) $("dlg").close(); });
+run();
+</script>
+</body>
+</html>
