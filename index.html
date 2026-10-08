@@ -120,9 +120,14 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .shop-total{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:14px;margin-top:6px}
 .cost{color:var(--muted);font-size:12.5px}
 footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
+.wk-nav{display:none;justify-content:space-between;align-items:center;margin-top:12px;font-weight:600}
+.wk-nav button{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:8px;padding:6px 14px;cursor:pointer;font:inherit}
+.wk-nav button:disabled{opacity:.35;cursor:default}
 @media (max-width:760px){
   .cal{grid-template-columns:1fr}
   .dow,.day.empty{display:none}
+  .wk-nav{display:flex}
+  .day.off{display:none}
   .day{min-height:auto}
   .meal{-webkit-line-clamp:1}
 }
@@ -189,6 +194,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
       <span>✓ <b data-i="doneLbl"></b></span>
       <span>✗ <b data-i="missedLbl"></b></span>
     </div>
+    <div class="wk-nav"><button type="button" id="wkPrev" aria-label="◀">◀</button><span id="wkLbl"></span><button type="button" id="wkNext" aria-label="▶">▶</button></div>
     <div class="cal" id="cal"></div>
   </div>
 </section>
@@ -731,17 +737,23 @@ function renderSummary(){
 
 const star = (type, idx) => isFav(type, idx) ? '<span class="star">★</span> ' : '';
 
+let calWeek = null;
 function renderCalendar(){
   const cal = $("cal"); cal.innerHTML = "";
   UI.dow[L()].forEach(d => cal.insertAdjacentHTML("beforeend",`<div class="dow">${d}</div>`));
   const offset = (dayDate(0).getDay()+6)%7;
-  for(let i=0;i<offset;i++) cal.insertAdjacentHTML("beforeend",`<div class="day empty"></div>`);
+  for(let i=0;i<offset;i++) cal.insertAdjacentHTML("beforeend",`<div class="day empty" data-wk="0"></div>`);
   const todayStr = new Date().toDateString();
+  if(calWeek === null){
+    const ti = plan.findIndex((_,i) => dayDate(i).toDateString()===todayStr);
+    calWeek = ti >= 0 ? Math.floor((offset+ti)/7) : 0;
+  }
   plan.forEach((day,i) => {
     const d = dayDate(i);
     const st = state.done[dkey(i)];
     const b = document.createElement("div");
     b.className = "day" + (d.toDateString()===todayStr ? " today":"") + (st==="y"?" ok":st==="n"?" ko":"");
+    b.dataset.wk = Math.floor((offset+i)/7);
     b.tabIndex = 0; b.setAttribute("role","button");
     b.innerHTML = `<div class="num">${fmt(d,{weekday:"short",day:"numeric",month:"short"})}<em>${t("day")} ${i+1}</em></div>` +
       state.meals.map(x => day[x]!=null ? `<div class="meal" style="border-color:${COLORS[x]}">${star(x,day[x])}${tr(x,day[x])[0]}</div>` : "").join("") +
@@ -750,7 +762,19 @@ function renderCalendar(){
     b.onkeydown = e => { if((e.key==="Enter"||e.key===" ") && e.target===b){ e.preventDefault(); openDay(i); } };
     cal.appendChild(b);
   });
+  showWeek();
 }
+function showWeek(){
+  const days = [...$("cal").querySelectorAll(".day")];
+  const total = Math.max(...days.map(d => +d.dataset.wk)) + 1;
+  calWeek = Math.min(Math.max(calWeek,0), total-1);
+  days.forEach(d => d.classList.toggle("off", +d.dataset.wk !== calWeek));
+  $("wkLbl").textContent = `${t("week")} ${calWeek+1} / ${total}`;
+  $("wkPrev").disabled = calWeek === 0;
+  $("wkNext").disabled = calWeek === total-1;
+}
+$("wkPrev").onclick = () => { calWeek--; showWeek(); };
+$("wkNext").onclick = () => { calWeek++; showWeek(); };
 
 const pad = n => String(n).padStart(2,"0");
 const dkey = i => { const d = dayDate(i); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
