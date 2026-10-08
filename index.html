@@ -120,6 +120,10 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
       <div class="chips" id="goal"></div>
     </fieldset>
     <fieldset>
+      <legend data-i="protLvl"></legend>
+      <div class="chips" id="prot"></div>
+    </fieldset>
+    <fieldset>
       <legend data-i="meals"></legend>
       <div class="chips" id="meals"></div>
     </fieldset>
@@ -314,6 +318,9 @@ none:["Sin recetas compatibles.","No compatible recipes.","Geen passende recepte
 week:["Semana","Week","Week","Settimana"],
 noIngr:["Sin ingredientes","No ingredients","Geen ingrediënten","Nessun ingrediente"],
 close:["Cerrar","Close","Sluiten","Chiudi"],
+protLvl:["Proteína","Protein","Eiwit","Proteine"],
+protMenos:["Menos proteína: más recetas ligeras en proteína y raciones de carne/pescado un 25 % más pequeñas.","Less protein: more lighter-protein recipes and meat/fish portions 25% smaller.","Minder eiwit: meer eiwitarme recepten en vlees/vis-porties 25% kleiner.","Meno proteine: più ricette leggere e porzioni di carne/pesce più piccole del 25%."],
+protMas:["Más proteína: más recetas ricas en proteína y raciones de carne, pescado, huevo, tofu y lácteos un 30 % más grandes.","More protein: more high-protein recipes and meat, fish, egg, tofu and dairy portions 30% larger.","Meer eiwit: meer eiwitrijke recepten en porties vlees, vis, ei, tofu en zuivel 30% groter.","Più proteine: più ricette proteiche e porzioni di carne, pesce, uova, tofu e latticini più grandi del 30%."],
 dow:[["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],["Ma","Di","Wo","Do","Vr","Za","Zo"],["Lun","Mar","Mer","Gio","Ven","Sab","Dom"]]
 };
 const TYPES = {d:["Desayuno","Breakfast","Ontbijt","Colazione"],l:["Comida","Lunch","Lunch","Pranzo"],s:["Snack","Snack","Snack","Spuntino"],c:["Cena","Dinner","Avondeten","Cena"]};
@@ -333,6 +340,23 @@ const GOALS = [
   ["ganar",1.2,["Ganar músculo","Build muscle","Spieren opbouwen","Aumentare muscoli"]]
 ];
 const MEALS = ["d","l","s","c"];
+/* [id, factor sobre la ración de proteína, etiquetas] */
+const PROT = [
+  ["menos",0.75,["Menos","Less","Minder","Meno"]],
+  ["normal",1,["Normal","Normal","Normaal","Normale"]],
+  ["mas",1.3,["Más","More","Meer","Di più"]]
+];
+/* ingredientes que son la fuente de proteína (texto en español) */
+const PROT_WORDS = ["pollo","pavo","ternera","cerdo","salmon","merluza","atun","bacalao","dorada","gamba","sepia","tofu","tempeh","clara","huevo","yogur griego","requeson","queso fresco","whey","edamame","lenteja","garbanzos cocidos","alubia"];
+const isProtIng = line => { const n = norm(line); return !n.includes("hummus") && !n.includes("gazpacho") && PROT_WORDS.some(w => wordRe(w).test(n)); };
+const pFactor = () => (PROT.find(p=>p[0]===state.protein)||PROT[1])[1];
+/* proteína y kcal de una receta ajustadas al nivel de proteína (≈70 % de la proteína viene de la fuente principal) */
+function macros(type, idx){
+  const r = R[type][idx], f = pFactor();
+  const hasSrc = r[4].some(isProtIng);
+  const p = hasSrc ? r[3]*(1+(f-1)*0.7) : r[3];
+  return [r[2] + (p - r[3])*5, p];
+}
 /* [id, flags, palabras clave (en el texto en español), etiquetas] */
 const DISLIKES = [
   ["cebolla","",["cebolla","puerro"],["Cebolla","Onion","Ui","Cipolla"]],
@@ -384,7 +408,7 @@ const $ = id => document.getElementById(id);
 const esc = w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
 const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
 
-let state = {lang:"", diet:["omni"], goal:"mantener", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1};
+let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1};
 try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
 if(!state.start) state.start = new Date().toISOString().slice(0,10);
 if(!LANGS.includes(state.lang)){ const nav = (navigator.language||"es").slice(0,2); state.lang = LANGS.includes(nav) ? nav : "es"; }
@@ -422,6 +446,8 @@ function buildForm(){
   ["diet","goal","meals","dislikes","favs"].forEach(id => $(id).innerHTML = "");
   DIETS.forEach(([v,,l]) => chip("diet","checkbox","diet",v,l[i],state.diet.includes(v)));
   GOALS.forEach(([v,,l]) => chip("goal","radio","goal",v,l[i],state.goal===v));
+  $("prot").innerHTML = "";
+  PROT.forEach(([v,,l]) => chip("prot","radio","prot",v,l[i],state.protein===v));
   MEALS.forEach(v => chip("meals","checkbox","meals",v,TYPES[v][i],state.meals.includes(v)));
   DISLIKES.forEach(([v,,,l]) => chip("dislikes","checkbox","dis",v,l[i],state.dislikes.includes(v),"no"));
   FAVS.forEach(([v,,l]) => chip("favs","checkbox","fav",v,"★ "+l[i],state.favs.includes(v),"fav"));
@@ -439,6 +465,7 @@ function save(){ try { localStorage.setItem("planfit", JSON.stringify(state)); }
 function readForm(){
   state.diet = [...document.querySelectorAll('input[name=diet]:checked')].map(i=>i.value);
   state.goal = (document.querySelector('input[name=goal]:checked')||{}).value || "mantener";
+  state.protein = (document.querySelector('input[name=prot]:checked')||{}).value || "normal";
   state.meals = MEALS.filter(m => document.querySelector(`input[name=meals][value=${m}]`).checked);
   state.dislikes = [...document.querySelectorAll('input[name=dis]:checked')].map(i=>i.value);
   state.favs = [...document.querySelectorAll('input[name=fav]:checked')].map(i=>i.value);
@@ -470,6 +497,15 @@ function isFav(type, idx){
   return words.some(w => wordRe(w).test(text));
 }
 
+/* cuántas veces entra una receta en cada ronda: favoritos ×3, y según el nivel de proteína */
+function weight(type, idx){
+  const r = R[type][idx], ratio = r[3]*4 / r[2];
+  let w = isFav(type, idx) ? 3 : 1;
+  if(state.protein === "mas") w *= ratio >= 0.3 ? 3 : ratio >= 0.2 ? 2 : 1;
+  if(state.protein === "menos") w *= ratio < 0.15 ? 3 : ratio < 0.25 ? 2 : 1;
+  return w;
+}
+
 function rng(seed){ return () => { seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }; }
 function shuffle(arr, rand){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(rand()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
@@ -486,7 +522,7 @@ function generate(){
       if(!pools[t].length){ day[t]=null; return; }
       if(!queues[t].length){
         // los favoritos entran 3 veces en cada ronda, así salen más a menudo
-        const weighted = pools[t].flatMap(r => isFav(t,r) ? [r,r,r] : [r]);
+        const weighted = pools[t].flatMap(r => Array(weight(t,r)).fill(r));
         const q = shuffle(weighted, rand);
         for(let k=1;k<q.length;k++) if(q[k]===q[k-1]){ const j=q.findIndex((x,idx)=>idx>k && x!==q[k]); if(j>0) [q[k],q[j]]=[q[j],q[k]]; }
         queues[t] = q;
@@ -503,7 +539,7 @@ function generate(){
 const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1];
 const dayDate = i => { const d = new Date(state.start+"T12:00:00"); d.setDate(d.getDate()+i); return d; };
 const fmt = (d,o) => d.toLocaleDateString(LOCALE[state.lang], o);
-const sumDay = (day, k) => state.meals.reduce((a,t)=>a+(day[t]!=null?R[t][day[t]][k]:0),0);
+const sumDay = (day, k) => state.meals.reduce((a,t)=>a+(day[t]!=null?macros(t,day[t])[k-2]:0),0);
 
 function renderSummary(){
   const m = mult(), i = L();
@@ -511,7 +547,7 @@ function renderSummary(){
   const prot = plan.reduce((a,d)=>a+sumDay(d,3),0)/30*m;
   const missing = state.meals.filter(t => !pools[t].length).map(t=>TYPES[t][i]);
   const n = state.meals.reduce((a,t)=>a+pools[t].length,0);
-  $("summary").innerHTML = `<h2>${t("summary")}</h2><p class="hint">${t(state.goal)} ${t("adjusted")}</p>
+  $("summary").innerHTML = `<h2>${t("summary")}</h2><p class="hint">${t(state.goal)} ${state.protein==="mas"?t("protMas"):state.protein==="menos"?t("protMenos"):""} ${t("adjusted")}</p>
   <div class="stats">
     <div class="stat"><b>${Math.round(kcal)}</b><small>${t("kcalDay")}</small></div>
     <div class="stat"><b>${Math.round(prot)} g</b><small>${t("protDay")}</small></div>
@@ -541,9 +577,13 @@ function renderCalendar(){
   });
 }
 
-function scaleQty(line, m){
+function scaleQty(line, m, isP){
+  if(isP) m *= pFactor();
   if(m===1) return line;
-  return line.replace(/^(\d+(?:[.,]\d+)?)(?=\s*(g|ml)\b)/, n => Math.round(parseFloat(n.replace(",","."))*m/5)*5);
+  if(/^\d+(?:[.,]\d+)?\s*(g|ml)\b/.test(line))
+    return line.replace(/^(\d+(?:[.,]\d+)?)/, n => Math.round(parseFloat(n.replace(",","."))*m/5)*5);
+  if(isP) return line.replace(/^(\d+)(?=\s)/, n => Math.max(1, Math.round(+n*m)));
+  return line;
 }
 
 let openIdx = null;
@@ -553,10 +593,10 @@ function openDay(i){
   $("dlgTitle").textContent = `${t("day")} ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
   $("dlgBody").innerHTML = `<p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b></p>` + state.meals.map(x => {
     if(day[x]==null) return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><p>${t("none")}</p></div>`;
-    const r = tr(x, day[x]);
+    const r = tr(x, day[x]), mc = macros(x, day[x]), es = R[x][day[x]][4];
     return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><h4>${star(x,day[x])}${r[0]}</h4>
-      <div class="macro">${Math.round(r[2]*m)} kcal · ${Math.round(r[3]*m)} g ${t("protein")}</div>
-      <ul>${r[4].map(y=>`<li>${scaleQty(y,m)}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
+      <div class="macro">${Math.round(mc[0]*m)} kcal · ${Math.round(mc[1]*m)} g ${t("protein")}</div>
+      <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]))}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
   }).join("");
   if(!$("dlg").open) $("dlg").showModal();
 }
@@ -590,7 +630,7 @@ $("gen").onclick = () => { run(); $("summary").scrollIntoView({behavior:"smooth"
 $("shuffle").onclick = () => { state.seed++; run(); };
 $("reset").onclick = () => {
   readForm();
-  Object.assign(state, {diet:["omni"], goal:"mantener", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:""});
+  Object.assign(state, {diet:["omni"], goal:"mantener", protein:"normal", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:""});
   $("custom").value = ""; $("customFav").value = "";
   buildForm(); run();
 };
