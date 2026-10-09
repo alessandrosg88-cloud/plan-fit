@@ -158,6 +158,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
     <fieldset><legend data-i="diet"></legend><div class="chips" id="diet"></div></fieldset>
     <fieldset><legend data-i="goal"></legend><div class="chips" id="goal"></div></fieldset>
     <fieldset><legend data-i="protLvl"></legend><div class="chips" id="prot"></div></fieldset>
+    <fieldset><legend data-i="calLvl"></legend><div class="chips" id="kcalLvl"></div></fieldset>
     <fieldset><legend data-i="meals"></legend><div class="chips" id="meals"></div></fieldset>
     <fieldset><legend data-i="start"></legend><input type="date" id="start"></fieldset>
     <fieldset><legend data-i="budget"></legend><div class="money"><input type="number" id="budget" min="0" step="5" inputmode="decimal"><span>€ / <b data-i="weekLow"></b></span></div></fieldset>
@@ -358,6 +359,8 @@ week:["Semana","Week","Week","Settimana"],
 noIngr:["Sin ingredientes","No ingredients","Geen ingrediënten","Nessun ingrediente"],
 close:["Cerrar","Close","Sluiten","Chiudi"],
 protLvl:["Proteína","Protein","Eiwit","Proteine"],
+calLvl:["Calorías","Calories","Calorieën","Calorie"],
+calAdj:["Calorías ajustadas","Calories adjusted","Calorieën aangepast","Calorie regolate"],
 protMenos:["Menos proteína: más recetas ligeras en proteína y raciones de carne/pescado un 25 % más pequeñas.","Less protein: more lighter-protein recipes and meat/fish portions 25% smaller.","Minder eiwit: meer eiwitarme recepten en vlees/vis-porties 25% kleiner.","Meno proteine: più ricette leggere e porzioni di carne/pesce più piccole del 25%."],
 protMas:["Más proteína: más recetas ricas en proteína y raciones de carne, pescado, huevo, tofu y lácteos un 30 % más grandes.","More protein: more high-protein recipes and meat, fish, egg, tofu and dairy portions 30% larger.","Meer eiwit: meer eiwitrijke recepten en porties vlees, vis, ei, tofu en zuivel 30% groter.","Più proteine: più ricette proteiche e porzioni di carne, pesce, uova, tofu e latticini più grandi del 30%."],
 openAll:["Abrir todo","Open all","Alles openen","Apri tutto"],
@@ -446,7 +449,7 @@ const cFactor = () => (COUNTRIES.find(c=>c[0]===state.country)||COUNTRIES[0])[1]
 /* coste de una receta con raciones del objetivo y nivel de proteína */
 let costCache = {}, favCache = {};
 function cost(type, idx){
-  const key = `${type}${idx}|${state.goal}|${state.protein}|${state.country}`;
+  const key = `${type}${idx}|${state.goal}|${state.cal}|${state.protein}|${state.country}`;
   if(key in costCache) return costCache[key];
   return costCache[key] = rawCost(type, idx);
 }
@@ -479,6 +482,9 @@ const PROT = [
 /* ingredientes que son la fuente de proteína (texto en español) */
 const PROT_WORDS = ["pollo","pavo","ternera","cerdo","salmon","merluza","atun","bacalao","dorada","gamba","sepia","tofu","tempeh","clara","huevo","yogur griego","requeson","queso fresco","whey","edamame","lenteja","garbanzos cocidos","alubia"];
 const isProtIng = line => { const n = norm(line); return !n.includes("hummus") && !n.includes("gazpacho") && PROT_WORDS.some(w => wordRe(w).test(n)); };
+/* ajuste de calorías: escala todas las raciones */
+const CAL = [["m20",0.8,"−20 %"],["m10",0.9,"−10 %"],["n",1,null],["p10",1.1,"+10 %"],["p20",1.2,"+20 %"]];
+const calFactor = () => (CAL.find(c=>c[0]===state.cal)||CAL[2])[1];
 const pFactor = () => (PROT.find(p=>p[0]===state.protein)||PROT[1])[1];
 /* proteína y kcal de una receta ajustadas al nivel de proteína (≈70 % de la proteína viene de la fuente principal) */
 function macros(type, idx){
@@ -538,7 +544,7 @@ const $ = id => document.getElementById(id);
 const esc = w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
 const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
 
-let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:""};
+let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", cal:"n", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:""};
 try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
 if(!state.country) state.country = ({es:"es",en:"es",nl:"nl",it:"it"})[(navigator.language||"es").slice(0,2)] || "es";
 if(!state.start) state.start = new Date().toISOString().slice(0,10);
@@ -577,7 +583,9 @@ function buildForm(){
   ["diet","goal","meals","dislikes","favs"].forEach(id => $(id).innerHTML = "");
   DIETS.forEach(([v,,l]) => chip("diet","checkbox","diet",v,l[i],state.diet.includes(v)));
   GOALS.forEach(([v,,l]) => chip("goal","radio","goal",v,l[i],state.goal===v));
-  $("prot").innerHTML = ""; $("country").innerHTML = "";
+  $("prot").innerHTML = ""; $("country").innerHTML = ""; $("kcalLvl").innerHTML = "";
+  CAL.forEach(([v,,l]) => chip("kcalLvl","radio","cal",v,l||PROT[1][2][i],state.cal===v));
+  document.querySelectorAll('input[name=cal]').forEach(inp => inp.addEventListener("change", () => { readForm(); run(); }));
   COUNTRIES.forEach(([v,,l]) => chip("country","radio","country",v,l[i],state.country===v));
   PROT.forEach(([v,,l]) => chip("prot","radio","prot",v,l[i],state.protein===v));
   MEALS.forEach(v => chip("meals","checkbox","meals",v,TYPES[v][i],state.meals.includes(v)));
@@ -598,6 +606,7 @@ function readForm(){
   state.diet = [...document.querySelectorAll('input[name=diet]:checked')].map(i=>i.value);
   state.goal = (document.querySelector('input[name=goal]:checked')||{}).value || "mantener";
   state.protein = (document.querySelector('input[name=prot]:checked')||{}).value || "normal";
+  state.cal = (document.querySelector('input[name=cal]:checked')||{}).value || "n";
   state.country = (document.querySelector('input[name=country]:checked')||{}).value || "es";
   state.budget = $("budget").value;
   state.meals = MEALS.filter(m => document.querySelector(`input[name=meals][value=${m}]`).checked);
@@ -709,7 +718,7 @@ function fitBudget(){
   }
 }
 
-const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1];
+const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1] * calFactor();
 const dayDate = i => { const d = new Date(state.start+"T12:00:00"); d.setDate(d.getDate()+i); return d; };
 const fmt = (d,o) => d.toLocaleDateString(LOCALE[state.lang], o);
 const sumDay = (day, k) => state.meals.reduce((a,t)=>a+(day[t]!=null?macros(t,day[t])[k-2]:0),0);
@@ -720,7 +729,7 @@ function renderSummary(){
   const prot = plan.reduce((a,d)=>a+sumDay(d,3),0)/30*m;
   const missing = state.meals.filter(t => !pools[t].length).map(t=>TYPES[t][i]);
   const n = state.meals.reduce((a,t)=>a+pools[t].length,0);
-  $("summary").innerHTML = `<p class="hint" style="margin-top:0">${t(state.goal)} ${state.protein==="mas"?t("protMas"):state.protein==="menos"?t("protMenos"):""} ${t("adjusted")}</p>
+  $("summary").innerHTML = `<p class="hint" style="margin-top:0">${t(state.goal)} ${state.protein==="mas"?t("protMas"):state.protein==="menos"?t("protMenos"):""} ${state.cal&&state.cal!=="n"?t("calAdj")+": "+CAL.find(c=>c[0]===state.cal)[2]+".":""} ${t("adjusted")}</p>
   <div class="stats">
     <div class="stat"><b>${Math.round(kcal)}</b><small>${t("kcalDay")}</small></div>
     <div class="stat"><b>${Math.round(prot)} g</b><small>${t("protDay")}</small></div>
@@ -915,7 +924,7 @@ $("gen").onclick = () => { run(); $("summary").scrollIntoView({behavior:"smooth"
 $("shuffle").onclick = () => { state.seed++; run(); };
 $("reset").onclick = () => {
   readForm();
-  Object.assign(state, {diet:["omni"], goal:"mantener", protein:"normal", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:""});
+  Object.assign(state, {diet:["omni"], goal:"mantener", protein:"normal", cal:"n", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:""});
   $("custom").value = ""; $("customFav").value = "";
   buildForm(); run();
 };
