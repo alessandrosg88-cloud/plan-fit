@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iniciar sesión · Plan Fit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7f2;--surface:#fff;--surface2:#eef1e8;--text:#1d2418;--muted:#5d6655;--line:#dde2d4;--accent:#3f7d3a;--warn:#b5541f}
+@media (prefers-color-scheme: dark){:root{--bg:#141811;--surface:#1d2219;--surface2:#262c21;--text:#e8ecdf;--muted:#a1aa95;--line:#333b2d;--accent:#8cc97f;--warn:#f0a070}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;padding:24px 16px}
+.top{width:100%;max-width:440px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px;flex-wrap:wrap}
+a{color:var(--accent)}
+.langs{display:flex;gap:6px}.langs button{font:inherit;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface2);color:var(--text);cursor:pointer;font-weight:600}
+.langs button.on{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.card{width:100%;max-width:440px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 22px}
+h1{font-family:Fraunces,Georgia,serif;font-size:28px;margin:0 0 4px}
+.hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+form,.stack{display:grid;gap:10px}
+input[type=email],input[type=password]{width:100%;font:inherit;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text)}
+input:focus{outline:2px solid var(--accent);outline-offset:1px}
+button.b{font:inherit;font-weight:600;border:none;border-radius:10px;padding:11px 16px;cursor:pointer}
+.primary{background:var(--accent);color:var(--surface)}.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--line)!important}
+.b:disabled{opacity:.5;cursor:not-allowed}
+.two{display:flex;gap:8px;flex-wrap:wrap}.two .b{flex:1}
+.sep{text-align:center;color:var(--muted);font-size:13px;margin:4px 0}
+.age{display:flex;gap:10px;align-items:flex-start;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13.5px;margin-bottom:14px}
+.age input{margin-top:3px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.link{background:none;border:none;padding:0;color:var(--accent);font:inherit;font-size:13.5px;text-decoration:underline;cursor:pointer;justify-self:start}
+.msg{font-size:13.5px;min-height:1.2em;margin:4px 0 0;color:var(--warn)}
+.small{font-size:12.5px;color:var(--muted);margin:14px 0 0}
+.foot{margin-top:18px;font-size:12.5px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="top"><a href="./" id="back"></a><div class="langs" id="langs"></div></div>
+
+<main class="card">
+  <section id="vLoading"><p class="hint" id="tLoading"></p></section>
+
+  <section id="vLogin" hidden>
+    <h1 id="tTitle"></h1>
+    <p class="hint" id="tWhy"></p>
+    <label class="age"><input type="checkbox" id="age"><span id="tAge"></span></label>
+    <div class="stack">
+      <button class="b primary" id="bGoogle" type="button"></button>
+      <div class="sep" id="tOr"></div>
+    </div>
+    <form id="fEmail" class="stack" novalidate>
+      <input type="email" id="email" autocomplete="email" required>
+      <input type="password" id="pass" autocomplete="current-password" minlength="6" required>
+      <div class="two"><button class="b primary" id="bIn" type="submit"></button><button class="b ghost" id="bNew" type="button"></button></div>
+      <button class="link" id="bForgot" type="button"></button>
+    </form>
+    <p class="msg" id="msg" role="status"></p>
+    <p class="small" id="tAgree"></p>
+  </section>
+
+  <section id="vAccount" hidden>
+    <h1 id="tAccount"></h1>
+    <p class="hint"><span id="tSignedAs"></span> <b id="who"></b></p>
+    <div class="stack">
+      <a class="b primary" href="./" id="bGo" style="text-align:center;text-decoration:none"></a>
+      <button class="b ghost" id="bOut" type="button"></button>
+      <button class="b ghost" id="bDel" type="button" style="color:var(--warn)"></button>
+    </div>
+    <p class="msg" id="msg2" role="status"></p>
+  </section>
+</main>
+
+<div class="foot"><a href="privacidad.html" id="lPriv"></a><a href="privacidad.html#cookies" id="lCook"></a><a href="terminos.html" id="lTerms"></a></div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCZq1R4mB1VqxcbktBjWWPDDR_13fmcu9E",
+  authDomain: "plan-fit-561f5.firebaseapp.com",
+  projectId: "plan-fit-561f5",
+  storageBucket: "plan-fit-561f5.firebasestorage.app",
+  messagingSenderId: "41807598210",
+  appId: "1:41807598210:web:c0dd19ef4163629eb5da9b"
+};
+const LANGS = ["es","en","nl","it"];
+const TX = {
+  back:["← Volver a Plan Fit","← Back to Plan Fit","← Terug naar Plan Fit","← Torna a Plan Fit"],
+  loading:["Cargando…","Loading…","Laden…","Caricamento…"],
+  title:["Iniciar sesión","Sign in","Inloggen","Accedi"],
+  why:["Guarda tus preferencias, calorías y días cumplidos en la nube y míralos en todos tus dispositivos.","Save your preferences, calories and completed days in the cloud and see them on all your devices.","Bewaar je voorkeuren, calorieën en voltooide dagen in de cloud en bekijk ze op al je apparaten.","Salva preferenze, calorie e giorni completati nel cloud e vedili su tutti i tuoi dispositivi."],
+  age:["Confirmo que tengo la edad mínima para usar Plan Fit: <b>13 años en Estados Unidos</b> y <b>16 años en la Unión Europea</b> (o la edad que fije mi país, entre 13 y 16).","I confirm I meet the minimum age to use Plan Fit: <b>13 in the United States</b> and <b>16 in the European Union</b> (or the age set by my country, between 13 and 16).","Ik bevestig dat ik de minimumleeftijd heb om Plan Fit te gebruiken: <b>13 jaar in de Verenigde Staten</b> en <b>16 jaar in de Europese Unie</b> (of de leeftijd die mijn land bepaalt, tussen 13 en 16).","Confermo di avere l'età minima per usare Plan Fit: <b>13 anni negli Stati Uniti</b> e <b>16 anni nell'Unione Europea</b> (o l'età fissata dal mio paese, tra 13 e 16)."],
+  ageNeeded:["Marca la casilla de edad para continuar.","Tick the age box to continue.","Vink het leeftijdsvakje aan om door te gaan.","Spunta la casella dell'età per continuare."],
+  google:["Continuar con Google","Continue with Google","Doorgaan met Google","Continua con Google"],
+  or:["o con tu email","or with your email","of met je e-mail","o con la tua email"],
+  email:["Email","Email","E-mail","Email"],
+  pass:["Contraseña (mín. 6 caracteres)","Password (min. 6 characters)","Wachtwoord (min. 6 tekens)","Password (min. 6 caratteri)"],
+  enter:["Entrar","Sign in","Inloggen","Entra"],
+  create:["Crear cuenta","Create account","Account aanmaken","Crea account"],
+  forgot:["¿Olvidaste la contraseña?","Forgot password?","Wachtwoord vergeten?","Password dimenticata?"],
+  needEmail:["Escribe tu email primero.","Enter your email first.","Vul eerst je e-mail in.","Inserisci prima la tua email."],
+  resetSent:["Te hemos enviado un email para cambiar la contraseña.","We sent you an email to reset your password.","We hebben je een e-mail gestuurd om je wachtwoord te wijzigen.","Ti abbiamo inviato un'email per reimpostare la password."],
+  agree:["Al continuar aceptas los <a href='terminos.html'>Términos de uso</a> y la <a href='privacidad.html'>Política de privacidad</a>.","By continuing you accept the <a href='terminos.html'>Terms of use</a> and the <a href='privacidad.html'>Privacy policy</a>.","Door verder te gaan accepteer je de <a href='terminos.html'>Gebruiksvoorwaarden</a> en het <a href='privacidad.html'>Privacybeleid</a>.","Continuando accetti i <a href='terminos.html'>Termini d'uso</a> e l'<a href='privacidad.html'>Informativa privacy</a>."],
+  account:["Tu cuenta","Your account","Je account","Il tuo account"],
+  signedAs:["Has iniciado sesión como","Signed in as","Ingelogd als","Accesso effettuato come"],
+  go:["Ir a mi plan","Go to my plan","Naar mijn plan","Vai al mio piano"],
+  logout:["Cerrar sesión","Sign out","Uitloggen","Esci"],
+  del:["Eliminar mi cuenta y mis datos","Delete my account and data","Mijn account en gegevens verwijderen","Elimina account e dati"],
+  delConfirm:["¿Seguro? Se borrarán tu cuenta y los datos guardados en la nube. Los datos de este navegador se mantienen.","Are you sure? Your account and cloud data will be deleted. Data in this browser is kept.","Weet je het zeker? Je account en cloudgegevens worden verwijderd. Gegevens in deze browser blijven.","Sei sicuro? Account e dati nel cloud verranno eliminati. I dati in questo browser restano."],
+  deleted:["Cuenta eliminada.","Account deleted.","Account verwijderd.","Account eliminato."],
+  relogin:["Por seguridad, vuelve a iniciar sesión y repite la acción.","For security, sign in again and repeat the action.","Log om veiligheidsredenen opnieuw in en herhaal de actie.","Per sicurezza, accedi di nuovo e ripeti l'azione."],
+  error:["No se ha podido completar:","Could not complete:","Kon niet voltooien:","Impossibile completare:"],
+  noSdk:["No se ha podido cargar el inicio de sesión. Revisa tu conexión y recarga.","Sign-in could not load. Check your connection and reload.","Inloggen kon niet laden. Controleer je verbinding en herlaad.","Impossibile caricare l'accesso. Controlla la connessione e ricarica."],
+  privacy:["Privacidad","Privacy","Privacy","Privacy"],
+  cookies:["Cookies","Cookies","Cookies","Cookie"],
+  terms:["Términos","Terms","Voorwaarden","Termini"]
+};
+const ERR = {
+  "auth/invalid-email":["Email no válido.","Invalid email.","Ongeldig e-mailadres.","Email non valida."],
+  "auth/invalid-credential":["Email o contraseña incorrectos.","Wrong email or password.","Onjuist e-mailadres of wachtwoord.","Email o password errati."],
+  "auth/wrong-password":["Email o contraseña incorrectos.","Wrong email or password.","Onjuist e-mailadres of wachtwoord.","Email o password errati."],
+  "auth/user-not-found":["No hay ninguna cuenta con ese email.","No account with that email.","Geen account met dat e-mailadres.","Nessun account con questa email."],
+  "auth/email-already-in-use":["Ya existe una cuenta con ese email. Pulsa «Entrar».","An account with that email already exists. Use “Sign in”.","Er bestaat al een account met dat e-mailadres. Kies “Inloggen”.","Esiste già un account con questa email. Usa “Entra”."],
+  "auth/weak-password":["La contraseña debe tener al menos 6 caracteres.","Password must be at least 6 characters.","Wachtwoord moet minstens 6 tekens hebben.","La password deve avere almeno 6 caratteri."],
+  "auth/too-many-requests":["Demasiados intentos. Espera un poco y vuelve a probar.","Too many attempts. Wait a bit and try again.","Te veel pogingen. Wacht even en probeer opnieuw.","Troppi tentativi. Attendi e riprova."]
+};
+let lang = "es";
+try { const s = JSON.parse(localStorage.getItem("planfit")); if(s && LANGS.includes(s.lang)) lang = s.lang; else { const n = (navigator.language||"es").slice(0,2); if(LANGS.includes(n)) lang = n; } } catch(e){}
+const $ = id => document.getElementById(id);
+const t = k => TX[k][LANGS.indexOf(lang)];
+let user = null, auth = null, db = null;
+
+function texts(){
+  document.documentElement.lang = lang;
+  document.title = (user ? t("account") : t("title")) + " · Plan Fit";
+  $("back").textContent = t("back"); $("tLoading").textContent = t("loading");
+  $("tTitle").textContent = t("title"); $("tWhy").textContent = t("why"); $("tAge").innerHTML = t("age");
+  $("bGoogle").textContent = t("google"); $("tOr").textContent = t("or");
+  $("email").placeholder = t("email"); $("pass").placeholder = t("pass");
+  $("bIn").textContent = t("enter"); $("bNew").textContent = t("create"); $("bForgot").textContent = t("forgot");
+  $("tAgree").innerHTML = t("agree");
+  $("tAccount").textContent = t("account"); $("tSignedAs").textContent = t("signedAs");
+  $("bGo").textContent = t("go"); $("bOut").textContent = t("logout"); $("bDel").textContent = t("del");
+  $("lPriv").textContent = t("privacy"); $("lCook").textContent = t("cookies"); $("lTerms").textContent = t("terms");
+  $("langs").innerHTML = LANGS.map(l => `<button class="${l===lang?"on":""}" data-l="${l}">${l.toUpperCase()}</button>`).join("");
+  $("langs").querySelectorAll("button").forEach(b => b.onclick = () => {
+    lang = b.dataset.l;
+    try { const s = JSON.parse(localStorage.getItem("planfit")) || {}; s.lang = lang; localStorage.setItem("planfit", JSON.stringify(s)); } catch(e){}
+    texts();
+  });
+}
+function show(v){ ["vLoading","vLogin","vAccount"].forEach(id => $(id).hidden = id !== v); }
+function msg(s, ok, id="msg"){ const m = $(id); m.textContent = s; m.style.color = ok ? "var(--accent)" : "var(--warn)"; }
+function fail(e, id){ if(e && (e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request")) return; const c = e && e.code; msg(ERR[c] ? ERR[c][LANGS.indexOf(lang)] : t("error") + " " + String(c || e).replace("auth/",""), false, id); }
+const goHome = () => location.replace("./");
+function ageOk(){ if($("age").checked) return true; msg(t("ageNeeded")); $("age").focus(); return false; }
+
+texts();
+
+function load(src){ return new Promise((ok, ko) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = ko; document.head.appendChild(s); }); }
+(async () => {
+  const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
+  try { await load(SDK + "firebase-app-compat.js"); await Promise.all([load(SDK + "firebase-auth-compat.js"), load(SDK + "firebase-firestore-compat.js")]); }
+  catch(e){ $("tLoading").textContent = t("noSdk"); return; }
+  firebase.initializeApp(firebaseConfig);
+  auth = firebase.auth(); db = firebase.firestore();
+  auth.useDeviceLanguage();
+  try { const r = await auth.getRedirectResult(); if(r && r.user) return goHome(); } catch(e){ show("vLogin"); fail(e); }
+  auth.onAuthStateChanged(u => {
+    user = u; texts();
+    if(u){ $("who").textContent = u.email || u.displayName || ""; show("vAccount"); }
+    else show("vLogin");
+  });
+
+  $("bGoogle").onclick = () => {
+    if(!ageOk()) return;
+    const pr = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(pr).then(goHome).catch(e => (e && (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment")) ? auth.signInWithRedirect(pr) : fail(e));
+  };
+  $("fEmail").onsubmit = ev => { ev.preventDefault(); if(!ageOk()) return; auth.signInWithEmailAndPassword($("email").value.trim(), $("pass").value).then(goHome).catch(e => fail(e)); };
+  $("bNew").onclick = () => { if(!ageOk()) return; auth.createUserWithEmailAndPassword($("email").value.trim(), $("pass").value).then(goHome).catch(e => fail(e)); };
+  $("bForgot").onclick = () => { const em = $("email").value.trim(); if(!em) return msg(t("needEmail")); auth.sendPasswordResetEmail(em).then(() => msg(t("resetSent"), true)).catch(e => fail(e)); };
+  $("bOut").onclick = () => auth.signOut();
+  $("bDel").onclick = async () => {
+    if(!confirm(t("delConfirm"))) return;
+    try { await db.collection("users").doc(user.uid).delete(); await user.delete(); alert(t("deleted")); }
+    catch(e){ if(e && e.code === "auth/requires-recent-login"){ await auth.signOut(); msg(t("relogin")); } else fail(e, "msg2"); }
+  };
+})();
+</script>
+</body>
+</html>
