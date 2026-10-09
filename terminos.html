@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Términos de uso · Plan Fit</title>
+<style>
+:root{--bg:#f6f7f2;--surface:#fff;--text:#1d2418;--muted:#5d6655;--line:#dde2d4;--accent:#3f7d3a}
+@media (prefers-color-scheme: dark){:root{--bg:#141811;--surface:#1d2219;--text:#e8ecdf;--muted:#a1aa95;--line:#333b2d;--accent:#8cc97f}}
+body{margin:0;background:var(--bg);color:var(--text);font:15.5px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 22px 10px}
+h1{font-size:26px;margin:4px 0 2px}h2{font-size:18px;margin:26px 0 6px}
+a{color:var(--accent)}.muted{color:var(--muted);font-size:13.5px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.langs button{font:inherit;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
+.langs button.on{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+[data-l]{display:none}[data-l].show{display:block}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><a href="./">← Plan Fit</a><div class="langs"><button data-s="es">ES</button> <button data-s="en">EN</button></div></div>
+<div class="card">
+
+<section data-l="es">
+<h1>Términos de uso</h1>
+<p class="muted">Última actualización: 9 de octubre de 2026</p>
+<h2>1. Qué es Plan Fit</h2>
+<p>Plan Fit es una herramienta gratuita, creada por Alessandro Saglimbeni (<a href="mailto:alessandrosg88@gmail.com">alessandrosg88@gmail.com</a>), que genera planes de comidas orientativos según tus preferencias.</p>
+<h2>2. No es consejo médico</h2>
+<p>Las recetas, cantidades, calorías y precios son <b>aproximados y orientativos</b>. Plan Fit no sustituye a un médico, dietista o nutricionista. Si tienes alergias, intolerancias, una condición médica, estás embarazada o tomas medicación, consulta con un profesional antes de cambiar tu alimentación. Revisa siempre los ingredientes.</p>
+<h2>3. Tu cuenta</h2>
+<p>Crear una cuenta es opcional. Eres responsable de mantener tu contraseña segura y de la información que introduces. Puedes eliminar tu cuenta cuando quieras desde la propia web.</p>
+<h2>4. Uso aceptable</h2>
+<p>No uses el servicio para fines ilícitos ni intentes acceder a datos de otras personas o dañar su funcionamiento.</p>
+<h2>5. Disponibilidad y responsabilidad</h2>
+<p>El servicio se ofrece gratis y “tal cual”, sin garantías de disponibilidad continua ni de exactitud. En la medida permitida por la ley, no nos hacemos responsables de daños derivados del uso de la información ofrecida.</p>
+<h2>6. Privacidad</h2>
+<p>El tratamiento de tus datos se explica en la <a href="privacidad.html">Política de privacidad y cookies</a>.</p>
+<h2>7. Cambios</h2>
+<p>Podemos actualizar estos términos; la fecha de arriba indicará la última versión. Si continúas usando el servicio, aceptas la versión vigente.</p>
+</section>
+
+<section data-l="en">
+<h1>Terms of use</h1>
+<p class="muted">Last updated: 9 October 2026</p>
+<h2>1. What Plan Fit is</h2>
+<p>Plan Fit is a free tool by Alessandro Saglimbeni (<a href="mailto:alessandrosg88@gmail.com">alessandrosg88@gmail.com</a>) that creates indicative meal plans based on your preferences.</p>
+<h2>2. Not medical advice</h2>
+<p>Recipes, quantities, calories and prices are <b>approximate and for guidance only</b>. Plan Fit does not replace a doctor, dietitian or nutritionist. If you have allergies, intolerances, a medical condition, are pregnant or take medication, consult a professional before changing your diet. Always check ingredients.</p>
+<h2>3. Your account</h2>
+<p>Creating an account is optional. You are responsible for keeping your password safe and for the information you enter. You can delete your account at any time from the website.</p>
+<h2>4. Acceptable use</h2>
+<p>Don't use the service for unlawful purposes or try to access other people's data or disrupt it.</p>
+<h2>5. Availability and liability</h2>
+<p>The service is provided free and “as is”, without guarantees of availability or accuracy. To the extent permitted by law, we are not liable for damages arising from use of the information provided.</p>
+<h2>6. Privacy</h2>
+<p>How we handle your data is explained in the <a href="privacidad.html">Privacy &amp; cookie policy</a>.</p>
+<h2>7. Changes</h2>
+<p>We may update these terms; the date above shows the latest version. Continuing to use the service means you accept the current version.</p>
+</section>
+
+</div>
+</main>
+<script>
+let lang = "es"; try { const s = JSON.parse(localStorage.getItem("planfit")); if(s && s.lang && s.lang !== "es") lang = "en"; } catch(e){}
+if(/[?&]lang=en/.test(location.search)) lang = "en";
+function setLang(l){ document.documentElement.lang = l; document.querySelectorAll("[data-l]").forEach(s => s.classList.toggle("show", s.dataset.l === l)); document.querySelectorAll("[data-s]").forEach(b => b.classList.toggle("on", b.dataset.s === l)); }
+document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => setLang(b.dataset.s));
+setLang(lang);
+</script>
+</body>
+</html>
