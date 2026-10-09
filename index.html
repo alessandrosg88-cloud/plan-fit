@@ -40,6 +40,12 @@ legend{font-weight:600;font-size:14px;margin-bottom:8px}
 .chip.fav input:checked + span{background:var(--d);border-color:var(--d)}
 .star{color:var(--d)}
 .chip input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.adder{display:flex;gap:8px}.adder input{flex:1;min-width:0}.adder button{flex:none}
+.tags{margin-top:10px}.tags:empty{display:none}
+.utag{display:inline-flex;align-items:center;gap:6px;padding:5px 6px 5px 12px;border-radius:999px;font-size:13.5px;color:var(--surface)}
+.utag.fav{background:var(--d)}.utag.no{background:var(--warn)}
+.utag button{border:none;background:rgba(0,0,0,.18);color:inherit;border-radius:999px;width:22px;height:22px;padding:0;line-height:22px;font-size:13px;cursor:pointer}
+.addmsg{font-size:13px;margin:8px 0 0;min-height:0}.addmsg:empty{display:none}.addmsg.err{color:var(--warn)}.addmsg.ok{color:var(--accent)}
 input[type=text],input[type=date]{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font:inherit}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}
 button{font:inherit;font-weight:600;border:none;border-radius:10px;padding:10px 18px;cursor:pointer}
@@ -166,8 +172,8 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   </div>
   <fieldset style="margin-top:20px"><legend data-i="dislikes"></legend><div class="chips" id="dislikes"></div></fieldset>
   <fieldset style="margin-top:20px"><legend data-i="favs"></legend><div class="chips" id="favs"></div></fieldset>
-  <fieldset style="margin-top:16px"><legend data-i="otherFavs"></legend><input type="text" id="customFav"></fieldset>
-  <fieldset style="margin-top:16px"><legend data-i="otherAvoid"></legend><input type="text" id="custom"></fieldset>
+  <fieldset style="margin-top:16px"><legend data-i="otherFavs"></legend><div class="adder"><input type="text" id="customFavIn" autocomplete="off"><button type="button" class="ghost" id="customFavAdd" data-i="addBtn"></button></div><input type="hidden" id="customFav"><div class="chips tags" id="customFavTags"></div><p class="addmsg" id="customFavMsg" role="status"></p></fieldset>
+  <fieldset style="margin-top:16px"><legend data-i="otherAvoid"></legend><div class="adder"><input type="text" id="customIn" autocomplete="off"><button type="button" class="ghost" id="customAdd" data-i="addBtn"></button></div><input type="hidden" id="custom"><div class="chips tags" id="customTags"></div><p class="addmsg" id="customMsg" role="status"></p></fieldset>
   <div class="row">
     <button class="primary" id="gen" data-i="gen"></button>
     <button class="ghost" id="shuffle" data-i="shuffle"></button>
@@ -328,9 +334,16 @@ start:["Fecha de inicio","Start date","Startdatum","Data di inizio"],
 dislikes:["No me gusta / no puedo comer","I don't like / can't eat","Lust ik niet / mag ik niet","Non mi piace / non posso mangiare"],
 favs:["Mis favoritos (saldrán más a menudo)","My favourites (will appear more often)","Mijn favorieten (komen vaker voor)","I miei preferiti (compariranno più spesso)"],
 otherFavs:["Otros favoritos","Other favourites","Andere favorieten","Altri preferiti"],
-otherFavsPh:["Ej.: quinoa, kiwi, gambas (separados por comas)","E.g. quinoa, kiwi, prawns (comma-separated)","Bijv. quinoa, kiwi, garnalen (met komma's)","Es.: quinoa, kiwi, gamberi (separati da virgole)"],
+otherFavsPh:["Ej.: quinoa","E.g. quinoa","Bijv. quinoa","Es.: quinoa"],
+addBtn:["+ Añadir","+ Add","+ Toevoegen","+ Aggiungi"],
+addDup:["No se puede: «{w}» ya está agregado.","Can't add: “{w}” is already added.","Kan niet: ‘{w}’ is al toegevoegd.","Impossibile: «{w}» è già aggiunto."],
+addMarked:["«{w}» ya estaba en la lista de arriba; lo he marcado.","“{w}” was already in the list above; I've ticked it.","‘{w}’ stond al in de lijst hierboven; ik heb het aangevinkt.","«{w}» era già nell'elenco sopra; l'ho selezionato."],
+addConflictFav:["No se puede: «{w}» está en tus alimentos a evitar.","Can't add: “{w}” is in your foods to avoid.","Kan niet: ‘{w}’ staat bij je te vermijden producten.","Impossibile: «{w}» è tra gli alimenti da evitare."],
+addConflictNo:["No se puede: «{w}» está en tus favoritos.","Can't add: “{w}” is in your favourites.","Kan niet: ‘{w}’ staat bij je favorieten.","Impossibile: «{w}» è tra i preferiti."],
+addOk:["Añadido: «{w}».","Added: “{w}”.","Toegevoegd: ‘{w}’.","Aggiunto: «{w}»."],
+removeLbl:["Quitar","Remove","Verwijderen","Rimuovi"],
 otherAvoid:["Otros alimentos a evitar","Other foods to avoid","Andere producten om te vermijden","Altri alimenti da evitare"],
-otherAvoidPh:["Ej.: berenjena, pepino, mango (separados por comas)","E.g. aubergine, cucumber, mango (comma-separated)","Bijv. aubergine, komkommer, mango (met komma's)","Es.: melanzana, cetriolo, mango (separati da virgole)"],
+otherAvoidPh:["Ej.: berenjena","E.g. aubergine","Bijv. aubergine","Es.: melanzana"],
 gen:["Generar mi plan","Generate my plan","Maak mijn plan","Genera il mio piano"],
 shuffle:["Otra combinación","Another combination","Andere combinatie","Un'altra combinazione"],
 reset:["Borrar selección","Clear selection","Selectie wissen","Cancella selezione"],
@@ -591,8 +604,9 @@ function buildForm(){
   document.title = UI.title[i];
   document.querySelectorAll("[data-i]").forEach(el => el.textContent = t(el.dataset.i));
   document.querySelectorAll("[data-t]").forEach(el => el.textContent = TYPES[el.dataset.t][i]);
-  $("custom").placeholder = t("otherAvoidPh");
-  $("customFav").placeholder = t("otherFavsPh");
+  $("customIn").placeholder = t("otherAvoidPh");
+  $("customFavIn").placeholder = t("otherFavsPh");
+  renderTags();
   $("close").setAttribute("aria-label", t("close"));
   ["diet","goal","meals","dislikes","favs"].forEach(id => $(id).innerHTML = "");
   DIETS.forEach(([v,,l]) => chip("diet","checkbox","diet",v,l[i],state.diet.includes(v)));
@@ -729,6 +743,39 @@ function fitBudget(){
     }
     if(weekCost(w) > budgetFor(w) + 0.01) overWeeks.push(w);
   }
+}
+
+/* añadir alimentos propios (favoritos / evitar) con botón y aviso de duplicados */
+const TAGS = {customFav:{key:"customFav", other:"custom", list:FAVS, lbl:2, kw:1, name:"fav", cls:"fav", conflict:"addConflictFav"},
+              custom:{key:"custom", other:"customFav", list:DISLIKES, lbl:3, kw:2, name:"dis", cls:"no", conflict:"addConflictNo"}};
+const tagList = k => userWords(state[k]);
+function renderTags(){
+  Object.values(TAGS).forEach(c => {
+    $(c.key).value = state[c.key] || "";
+    $(c.key+"Tags").innerHTML = tagList(c.key).map((w,i) => `<span class="utag ${c.cls}">${w.replace(/[&<>"]/g,"")}<button type="button" data-k="${c.key}" data-n="${i}" aria-label="${t("removeLbl")} ${w.replace(/[&<>"]/g,"")}">✕</button></span>`).join("");
+  });
+}
+function presetMatch(c, n){
+  return c.list.find(it => it[c.lbl].concat([it[0]]).some(l => norm(l).split("/").map(x=>x.trim()).includes(n)) || (it[c.kw]||[]).includes(n));
+}
+function addTag(k){
+  const c = TAGS[k], inp = $(k+"In"), msg = $(k+"Msg"), raw = inp.value.trim();
+  const say = (key, w, ok) => { msg.textContent = t(key).replace("{w}", w); msg.className = "addmsg " + (ok ? "ok" : "err"); };
+  if(!raw) return;
+  readForm();
+  const words = raw.split(",").map(w => w.trim()).filter(Boolean);
+  let changed = false;
+  for(const w of words){
+    const n = norm(w), o = TAGS[c.other];
+    const preset = presetMatch(c, n), checked = preset && document.querySelector(`input[name=${c.name}][value="${preset[0]}"]`);
+    if(tagList(k).includes(n) || (checked && checked.checked)){ say("addDup", w); continue; }
+    const oPreset = presetMatch(o, n), oChecked = oPreset && document.querySelector(`input[name=${o.name}][value="${oPreset[0]}"]`);
+    if(tagList(o.key).includes(n) || (oChecked && oChecked.checked)){ say(c.conflict, w); continue; }
+    if(checked){ checked.checked = true; say("addMarked", w, true); changed = true; continue; }
+    state[k] = tagList(k).concat(n).join(", "); say("addOk", w, true); changed = true;
+  }
+  inp.value = "";
+  if(changed){ $(k).value = state[k]; renderTags(); run(); }
 }
 
 const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1] * calFactor();
@@ -929,6 +976,15 @@ function run(){
 
 $("custom").value = state.custom;
 $("customFav").value = state.customFav;
+["custom","customFav"].forEach(k => {
+  $(k+"Add").onclick = () => addTag(k);
+  $(k+"In").addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); addTag(k); } });
+  $(k+"Tags").addEventListener("click", e => {
+    const b = e.target.closest("button[data-k]"); if(!b) return;
+    readForm(); const l = tagList(k); l.splice(+b.dataset.n, 1); state[k] = l.join(", ");
+    $(k).value = state[k]; $(k+"Msg").textContent = ""; renderTags(); run();
+  });
+});
 $("start").value = state.start;
 $("budget").value = state.budget;
 $("kcalTarget").value = state.kcal || "";
