@@ -167,7 +167,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
     <fieldset><legend data-i="calLvl"></legend><div class="money"><input type="number" id="kcalTarget" min="800" max="6000" step="50" inputmode="numeric"><span data-i="kcalUnit"></span></div><p class="hint" style="margin:6px 0 0" data-i="kcalHint"></p></fieldset>
     <fieldset><legend data-i="meals"></legend><div class="chips" id="meals"></div></fieldset>
     <fieldset><legend data-i="start"></legend><input type="date" id="start"></fieldset>
-    <fieldset><legend data-i="budget"></legend><div class="money"><input type="number" id="budget" min="0" step="5" inputmode="decimal"><span>€ / <b data-i="weekLow"></b></span></div></fieldset>
+    <fieldset><legend data-i="budget"></legend><div class="money"><input type="number" id="budget" min="0" step="5" inputmode="decimal"><span><span id="cur">€</span> / <b data-i="weekLow"></b></span></div></fieldset>
     <fieldset><legend data-i="country"></legend><div class="chips" id="country"></div></fieldset>
   </div>
   <fieldset style="margin-top:20px"><legend data-i="dislikes"></legend><div class="chips" id="dislikes"></div></fieldset>
@@ -428,8 +428,12 @@ const GOALS = [
   ["ganar",1.2,["Ganar músculo","Build muscle","Spieren opbouwen","Aumentare muscoli"]]
 ];
 const MEALS = ["d","l","s","c"];
-/* Precios: base España (€), con factor por país calculado con la cesta de preciosmundi.com (oct. 2026) */
-const COUNTRIES = [["es",1,["España","Spain","Spanje","Spagna"]],["de",1.24,["Alemania","Germany","Duitsland","Germania"]],["nl",1.22,["Países Bajos","Netherlands","Nederland","Paesi Bassi"]],["it",1.28,["Italia","Italy","Italië","Italia"]]];
+/* Precios: base España (€), con factor por país calculado con la cesta de preciosmundi.com (oct. 2026).
+   [código, factor (ya en la moneda local), etiquetas, moneda, locale para formatear].
+   UK: nivel de precios ≈1,18× España × 0,847 £/€ ≈ 1,00. USA: ≈1,45× España × 1,121 $/€ ≈ 1,63 (tipos oct. 2026). */
+const COUNTRIES = [["es",1,["España","Spain","Spanje","Spagna"],"EUR"],["de",1.24,["Alemania","Germany","Duitsland","Germania"],"EUR"],["nl",1.22,["Países Bajos","Netherlands","Nederland","Paesi Bassi"],"EUR"],["it",1.28,["Italia","Italy","Italië","Italia"],"EUR"],["uk",1.00,["Reino Unido","United Kingdom","Verenigd Koninkrijk","Regno Unito"],"GBP","en-GB"],["us",1.63,["Estados Unidos","United States","Verenigde Staten","Stati Uniti"],"USD","en-US"]];
+const country = () => COUNTRIES.find(c=>c[0]===state.country)||COUNTRIES[0];
+const CUR_SYM = {EUR:"€",GBP:"£",USD:"$"};
 /* [palabra clave en español, €/kg (o €/l), gramos por unidad, precio fijo si no hay cantidad] — el orden importa */
 const PRICES = [
  ["gazpacho",3,0,0.8],["caldo",1.5,0,0.3],["ensalada",0,0,0.6],["salmon ahumado",30,0],["salmon",15,0],["solomillo",25,0],
@@ -461,7 +465,7 @@ function priceLine(line){
   else grams = num * (p[2] || 100);
   return p[3] != null && !p[1] ? p[3] : grams/1000 * p[1];
 }
-const cFactor = () => (COUNTRIES.find(c=>c[0]===state.country)||COUNTRIES[0])[1];
+const cFactor = () => country()[1];
 /* coste de una receta con raciones del objetivo y nivel de proteína */
 let costCache = {}, favCache = {};
 function cost(type, idx){
@@ -473,7 +477,8 @@ function rawCost(type, idx){
   const m = mult(), f = pFactor();
   return R[type][idx][4].reduce((a,l) => a + priceLine(l) * m * (isProtIng(l) ? f : 1), 0) * cFactor();
 }
-const money = v => v.toLocaleString(LOCALE[state.lang], {style:"currency", currency:"EUR"});
+const money = v => { const c = country(); return v.toLocaleString(state.lang==="en" && c[4] ? c[4] : LOCALE[state.lang], {style:"currency", currency:c[3]}); };
+function updateCur(){ const v = (document.querySelector('input[name=country]:checked')||{}).value; const c = COUNTRIES.find(x=>x[0]===v)||country(); $("cur").textContent = CUR_SYM[c[3]]; }
 /* grupos de alimentos para el gráfico: [id, palabras clave (español), etiquetas]; el orden importa (primera coincidencia) */
 const GROUPS = [
   ["ave",["pollo","pavo"],["Pollo / pavo","Chicken / turkey","Kip / kalkoen","Pollo / tacchino"]],
@@ -573,7 +578,7 @@ const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
 
 let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:""};
 try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
-if(!state.country) state.country = ({es:"es",en:"es",nl:"nl",it:"it"})[(navigator.language||"es").slice(0,2)] || "es";
+if(!state.country){ const nl0 = navigator.language||"es"; state.country = /^en-US/i.test(nl0) ? "us" : /^en-GB/i.test(nl0) ? "uk" : (({es:"es",en:"es",nl:"nl",it:"it"})[nl0.slice(0,2)] || "es"); }
 if(!state.start) state.start = new Date().toISOString().slice(0,10);
 if(!LANGS.includes(state.lang)){ const nav = (navigator.language||"es").slice(0,2); state.lang = LANGS.includes(nav) ? nav : "es"; }
 
@@ -618,6 +623,8 @@ function buildForm(){
   MEALS.forEach(v => chip("meals","checkbox","meals",v,TYPES[v][i],state.meals.includes(v)));
   DISLIKES.forEach(([v,,,l]) => chip("dislikes","checkbox","dis",v,l[i],state.dislikes.includes(v),"no"));
   FAVS.forEach(([v,,l]) => chip("favs","checkbox","fav",v,"★ "+l[i],state.favs.includes(v),"fav"));
+  document.querySelectorAll('input[name=country]').forEach(inp => inp.addEventListener("change", updateCur));
+  updateCur();
   document.querySelectorAll('input[name=diet]').forEach(inp => inp.addEventListener("change", e => {
     const boxes = [...document.querySelectorAll('input[name=diet]')];
     if(e.target.value==="omni" && e.target.checked) boxes.forEach(b => { if(b.value!=="omni") b.checked=false; });
