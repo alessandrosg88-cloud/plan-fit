@@ -185,6 +185,49 @@ input[type=number],select{padding:9px 12px;border:1px solid var(--line);border-r
 .install.on{display:inline-block}
 .ioshint{font-size:12.5px;color:var(--muted);margin:8px 0 0}
 @media (max-width:520px){.calc .f3{grid-template-columns:1fr 1fr}}
+.water{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.glass{width:34px;height:42px;padding:0;border-radius:6px 6px 10px 10px;border:2px solid var(--c);background:transparent;position:relative;overflow:hidden;font-size:0}
+.glass.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:80%;background:var(--c);opacity:.75}
+.wbar{display:flex;gap:4px;align-items:flex-end;height:46px;margin-top:6px}
+.wbar div{flex:1;height:100%;background:var(--surface2);border-radius:4px 4px 0 0;position:relative;min-width:18px}
+.wbar div i{position:absolute;left:0;right:0;bottom:0;background:var(--c);border-radius:4px 4px 0 0}
+.wlbl{display:flex;gap:4px;font-size:11px;color:var(--muted)}.wlbl span{flex:1;text-align:center;min-width:18px}
+.subcard{background:var(--surface2);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.subcard h3{margin:0 0 4px;font-size:15px}
+.adapt{margin-top:14px}
+.micro{font-size:12.5px;color:var(--muted)}
+.bookbar{display:grid;gap:10px}
+.bookbar input[type=search]{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font:inherit}
+.bookgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:14px}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
+.rcard.ban{opacity:.5}
+.rcard h4{margin:0;font-size:14.5px;line-height:1.3}
+.rcard .acts{display:flex;gap:6px;margin-top:auto;padding-top:6px;align-items:center}
+.ibtn{background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:4px 9px;font-size:13px;font-weight:600}
+.ibtn.on{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.ibtn.fav.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.rform{display:grid;gap:10px}
+.rform label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.rform input,.rform select,.rform textarea{width:100%;min-width:0;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font:inherit}
+.rform textarea{min-height:110px;resize:vertical}
+.rform .f4{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.cook{position:fixed;inset:0;z-index:60;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overflow:auto}
+.cook[hidden]{display:none}
+.cook-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--surface)}
+.cook-head h3{margin:0;font-family:Fraunces,Georgia,serif;font-size:20px}
+.cook-body{flex:1;max-width:760px;width:100%;margin:0 auto;padding:18px 16px 24px;display:flex;flex-direction:column;gap:14px}
+.cook-step{font-size:clamp(20px,4.6vw,30px);line-height:1.45;font-weight:500}
+.cook-n{color:var(--muted);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+.cook-nav{display:flex;gap:10px;position:sticky;bottom:0;background:var(--bg);padding:12px 0 4px}
+.cook-nav button{flex:1;padding:16px;font-size:17px}
+.cook-ing{background:var(--surface2);border-radius:12px;padding:10px 14px}
+.cook-ing summary{cursor:pointer;font-weight:600}
+.cook-ing label{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:16px}
+.cook-ing input{width:20px;height:20px;accent-color:var(--accent)}
+.cook-ing label:has(input:checked){text-decoration:line-through;opacity:.55}
+.tbig{font-size:44px;font-weight:700;font-variant-numeric:tabular-nums;text-align:center}
+.tbig.done{color:var(--warn)}
+.cook-timer{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
 footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 .wk-nav{display:none;justify-content:space-between;align-items:center;margin-top:12px;font-weight:600}
 .wk-nav button{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:8px;padding:6px 14px;cursor:pointer;font:inherit}
@@ -198,7 +241,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   .meal{-webkit-line-clamp:1}
 }
 @media print{
-  #prefs,.row,.tabs,footer,.toggle,.marks,.shop-tools,.pbtn,.pantry,[data-sec=progress],.wk-nav,#langs,.authbar,.install,.ioshint,.cal-tools{display:none!important}
+  #prefs,.row,.tabs,footer,.toggle,.marks,.shop-tools,.pbtn,.pantry,[data-sec=progress],[data-sec=book],.cook,.wk-nav,#langs,.authbar,.install,.ioshint,.cal-tools{display:none!important}
   .day.off{display:flex!important}
   .slist input{display:none}
   .card.closed .sec-body{display:block}
@@ -239,6 +282,8 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
         <p class="hint" style="margin:0" data-i="calcNote"></p>
       </div></fieldset>
     <fieldset><legend data-i="people"></legend><div class="money people"><input type="number" id="people" min="1" max="12" step="1" inputmode="numeric"><span data-i="peopleUnit"></span></div><p class="hint" style="margin:6px 0 0" data-i="peopleHint"></p></fieldset>
+    <fieldset><legend data-i="timeLbl"></legend><div class="chips" id="maxTime"></div></fieldset>
+    <fieldset><legend data-i="batch"></legend><div class="chips" id="batchChips"></div><p class="hint" style="margin:6px 0 0" data-i="batchHint"></p></fieldset>
     <fieldset><legend data-i="meals"></legend><div class="chips" id="meals"></div></fieldset>
     <fieldset><legend data-i="start"></legend><input type="date" id="start"></fieldset>
     <fieldset><legend data-i="budget"></legend><div class="money"><input type="number" id="budget" min="0" step="5" inputmode="decimal"><span><span id="cur">€</span> / <b data-i="weekLow"></b></span></div></fieldset>
@@ -304,26 +349,52 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   </div>
 </section>
 
+<section class="card" data-sec="book">
+  <div class="sec-head"><div><h2 data-i="book"></h2><p class="hint" style="margin:0" data-i="bookHint"></p></div><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
+  <div class="sec-body">
+    <div class="bookbar">
+      <input type="search" id="bSearch" autocomplete="off">
+      <div class="chips" id="bTypes"></div>
+      <div class="chips" id="bFilters"></div>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="primary small" id="bAdd" data-i="addMine"></button><span class="hint" id="bCount" style="margin:0"></span></div>
+    <div class="bookgrid" id="bGrid"></div>
+    <div class="row" style="justify-content:center"><button class="ghost small" id="bMore" data-i="more" hidden></button></div>
+  </div>
+</section>
+
 <section class="card" data-sec="progress">
   <div class="sec-head"><div><h2 data-i="s5"></h2><p class="hint" style="margin:0" data-i="s5hint"></p></div><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
   <div class="sec-body">
+    <div class="subcard"><h3 data-i="water"></h3><p class="hint" style="margin:0" id="waterHint"></p><div class="water" id="water"></div>
+      <div class="micro" data-i="water7"></div><div class="wbar" id="wBar"></div><div class="wlbl" id="wLbl"></div>
+      <div class="row" style="margin-top:12px"><button class="ghost small" id="remindBtn" data-i="remindBtn"></button></div><p class="hint" style="margin:6px 0 0" data-i="remindHint"></p></div>
     <div class="pform">
       <label><span data-i="date"></span><input type="date" id="pDate"></label>
       <label><span data-i="weight"></span><input type="number" id="pW" min="30" max="300" step="0.1" inputmode="decimal"></label>
       <label><span data-i="waist"></span><input type="number" id="pWaist" min="30" max="250" step="0.5" inputmode="decimal"></label>
       <label><span data-i="hip"></span><input type="number" id="pHip" min="30" max="250" step="0.5" inputmode="decimal"></label>
       <label><span data-i="chest"></span><input type="number" id="pChest" min="30" max="250" step="0.5" inputmode="decimal"></label>
+      <label><span data-i="neck"></span><input type="number" id="pNeck" min="20" max="80" step="0.5" inputmode="decimal"></label>
       <button type="button" class="primary" id="pSave" data-i="saveEntry"></button>
     </div>
     <p class="addmsg" id="pMsg" role="status"></p>
     <div class="tabs" id="pTabs"></div>
     <div class="stats" id="pStats"></div>
     <div class="pchart" id="pChart"></div>
+    <p class="hint" id="bfNote" style="margin:8px 0 0"></p>
     <div class="tablewrap"><table class="ptable" id="pTable"></table></div>
+    <div class="row"><button class="ghost small" id="csvBtn" data-i="csv"></button></div>
+    <div class="subcard adapt" id="adapt"></div>
   </div>
 </section>
 
 <footer data-i="footer"></footer>
+</div>
+
+<div class="cook" id="cook" hidden role="dialog" aria-modal="true">
+  <div class="cook-head"><h3 id="cookTitle"></h3><button class="ghost" id="cookClose" aria-label="✕">✕</button></div>
+  <div class="cook-body" id="cookBody"></div>
 </div>
 
 <dialog id="dlg">
@@ -555,7 +626,7 @@ calcUse:["Usar estas kcal","Use these kcal","Gebruik deze kcal","Usa queste kcal
 calcRes:["Metabolismo basal: <b>{b}</b> kcal · gasto diario: <b>{t}</b> kcal · con tu objetivo: <b>{k} kcal/día</b>","Resting metabolism: <b>{b}</b> kcal · daily burn: <b>{t}</b> kcal · with your goal: <b>{k} kcal/day</b>","Ruststofwisseling: <b>{b}</b> kcal · dagelijks verbruik: <b>{t}</b> kcal · met je doel: <b>{k} kcal/dag</b>","Metabolismo basale: <b>{b}</b> kcal · dispendio giornaliero: <b>{t}</b> kcal · con il tuo obiettivo: <b>{k} kcal/giorno</b>"],
 calcNote:["Fórmula de Mifflin-St Jeor. Perder grasa: −20 %; ganar músculo: +10 %. Nunca menos de 1200 kcal (mujer) o 1500 kcal (hombre).","Mifflin-St Jeor formula. Lose fat: −20%; build muscle: +10%. Never below 1200 kcal (female) or 1500 kcal (male).","Mifflin-St Jeor-formule. Vet verliezen: −20%; spieren opbouwen: +10%. Nooit minder dan 1200 kcal (vrouw) of 1500 kcal (man).","Formula di Mifflin-St Jeor. Perdere grasso: −20%; aumentare muscoli: +10%. Mai meno di 1200 kcal (donna) o 1500 kcal (uomo)."],
 calcMissing:["Rellena edad, altura y peso.","Fill in age, height and weight.","Vul leeftijd, lengte en gewicht in.","Compila età, altezza e peso."],
-s5:["5. Tu progreso","5. Your progress","5. Je voortgang","5. I tuoi progressi"],
+s5:["6. Tu progreso","6. Your progress","6. Je voortgang","6. I tuoi progressi"],
 s5hint:["Apunta tu peso y medidas cuando quieras (mejor en ayunas y a la misma hora). Se guarda y se sincroniza con tu cuenta.","Log your weight and measurements whenever you like (ideally before breakfast, same time of day). Saved and synced to your account.","Noteer je gewicht en maten wanneer je wilt (liefst nuchter, op hetzelfde tijdstip). Wordt opgeslagen en gesynchroniseerd.","Annota peso e misure quando vuoi (meglio a digiuno e alla stessa ora). Viene salvato e sincronizzato con il tuo account."],
 date:["Fecha","Date","Datum","Data"],
 waist:["Cintura (cm)","Waist (cm)","Taille (cm)","Vita (cm)"],
@@ -574,6 +645,91 @@ del:["Borrar","Delete","Verwijderen","Elimina"],
 pChartAria:["Gráfica de evolución de","Progress chart of","Voortgangsgrafiek van","Grafico dell'andamento di"],
 install:["📲 Instalar app","📲 Install app","📲 App installeren","📲 Installa app"],
 iosInstall:["Para instalarla en iPhone: toca Compartir y luego «Añadir a pantalla de inicio».","To install on iPhone: tap Share, then “Add to Home Screen”.","Installeren op iPhone: tik op Delen en daarna ‘Zet op beginscherm’.","Per installarla su iPhone: tocca Condividi e poi «Aggiungi alla schermata Home»."],
+fiber:["fibra","fibre","vezels","fibre"],
+sugar:["azúcares","sugars","suikers","zuccheri"],
+salt:["sal","salt","zout","sale"],
+fiberDay:["fibra/día (objetivo ≥25 g)","fibre/day (aim ≥25 g)","vezels/dag (doel ≥25 g)","fibre/giorno (obiettivo ≥25 g)"],
+saltDay:["sal/día (máx. 5 g)","salt/day (max 5 g)","zout/dag (max 5 g)","sale/giorno (max 5 g)"],
+microNote:["Fibra, azúcares y sal estimados a partir de los ingredientes (la sal sin cantidad cuenta como una pizca).","Fibre, sugars and salt estimated from the ingredients (salt without an amount counts as a pinch).","Vezels, suikers en zout geschat op basis van de ingrediënten (zout zonder hoeveelheid telt als een snufje).","Fibre, zuccheri e sale stimati dagli ingredienti (il sale senza quantità conta come un pizzico)."],
+cookMode:["👩‍🍳 Modo cocina","👩‍🍳 Cooking mode","👩‍🍳 Kookmodus","👩‍🍳 Modalità cucina"],
+step:["Paso","Step","Stap","Passo"],
+prev:["◀ Anterior","◀ Back","◀ Vorige","◀ Indietro"],
+next:["Siguiente ▶","Next ▶","Volgende ▶","Avanti ▶"],
+finish:["✓ Terminar","✓ Finish","✓ Klaar","✓ Fine"],
+ingredients:["Ingredientes","Ingredients","Ingrediënten","Ingredienti"],
+timer:["⏱ Temporizador {n} min","⏱ {n} min timer","⏱ Timer {n} min","⏱ Timer {n} min"],
+timerDone:["¡Tiempo!","Time's up!","Tijd!","Tempo scaduto!"],
+stop:["Parar","Stop","Stop","Ferma"],
+awake:["La pantalla se mantiene encendida mientras cocinas.","The screen stays on while you cook.","Het scherm blijft aan terwijl je kookt.","Lo schermo resta acceso mentre cucini."],
+water:["💧 Agua de hoy","💧 Water today","💧 Water vandaag","💧 Acqua di oggi"],
+waterHint:["Toca un vaso (250 ml) para apuntarlo. Objetivo: {g} (unos 35 ml por kg de peso).","Tap a glass (250 ml) to log it. Goal: {g} (about 35 ml per kg of body weight).","Tik op een glas (250 ml) om het te noteren. Doel: {g} (ongeveer 35 ml per kg lichaamsgewicht).","Tocca un bicchiere (250 ml) per segnarlo. Obiettivo: {g} (circa 35 ml per kg di peso)."],
+water7:["Últimos 7 días","Last 7 days","Laatste 7 dagen","Ultimi 7 giorni"],
+remindBtn:["🔔 Recordatorios en mi calendario (.ics)","🔔 Reminders in my calendar (.ics)","🔔 Herinneringen in mijn agenda (.ics)","🔔 Promemoria nel calendario (.ics)"],
+remindHint:["Crea avisos que se repiten: beber agua (10:00, 12:30, 16:00 y 18:30) y pesarte los lunes a las 8:00. Las comidas del archivo del calendario ya avisan 15 min antes.","Creates repeating alerts: drink water (10:00, 12:30, 16:00 and 18:30) and weigh yourself on Mondays at 8:00. Meals in the calendar file already alert 15 min before.","Maakt terugkerende meldingen: water drinken (10:00, 12:30, 16:00 en 18:30) en wegen op maandag om 8:00. Maaltijden in het agendabestand geven al 15 min van tevoren een melding.","Crea avvisi ricorrenti: bere acqua (10:00, 12:30, 16:00 e 18:30) e pesarti il lunedì alle 8:00. I pasti nel file del calendario avvisano già 15 min prima."],
+remWater:["💧 Bebe un vaso de agua","💧 Drink a glass of water","💧 Drink een glas water","💧 Bevi un bicchiere d'acqua"],
+remWeigh:["⚖️ Pésate y apúntalo en Plan Fit","⚖️ Weigh yourself and log it in Fit Plan","⚖️ Weeg jezelf en noteer het in Fit Plan","⚖️ Pesati e segnalo in Piano Fit"],
+adaptTitle:["Ajuste de calorías","Calorie check-in","Calorie-check","Verifica calorie"],
+adaptNeed:["Con al menos dos pesos separados por 10 días o más te diré si conviene ajustar las calorías.","Log at least two weights 10+ days apart and I'll tell you whether to adjust your calories.","Noteer minstens twee gewichten met 10+ dagen ertussen en ik vertel je of je calorieën moeten worden aangepast.","Con almeno due pesate a 10+ giorni di distanza ti dirò se conviene modificare le calorie."],
+adaptRate:["Tendencia: <b>{r}</b> por semana ({p} % de tu peso).","Trend: <b>{r}</b> per week ({p}% of your weight).","Trend: <b>{r}</b> per week ({p}% van je gewicht).","Tendenza: <b>{r}</b> a settimana ({p}% del tuo peso)."],
+adaptOk:["✓ Vas a buen ritmo para tu objetivo. Mantén las calorías.","✓ You're on track for your goal. Keep your calories.","✓ Je zit goed op schema. Houd je calorieën zo.","✓ Sei sulla buona strada. Mantieni le calorie."],
+adaptSlowLose:["Pierdes más despacio de lo recomendado (0,5–1 % por semana). Te propongo bajar a {k} kcal/día.","You're losing slower than recommended (0.5–1% a week). I suggest {k} kcal/day.","Je valt langzamer af dan aanbevolen (0,5–1% per week). Voorstel: {k} kcal/dag.","Stai perdendo più lentamente del consigliato (0,5–1% a settimana). Ti propongo {k} kcal/giorno."],
+adaptFastLose:["Pierdes peso demasiado rápido (más del 1 % por semana). Te propongo subir a {k} kcal/día.","You're losing too fast (over 1% a week). I suggest {k} kcal/day.","Je valt te snel af (meer dan 1% per week). Voorstel: {k} kcal/dag.","Stai perdendo troppo in fretta (oltre l'1% a settimana). Ti propongo {k} kcal/giorno."],
+adaptSlowGain:["Ganas peso más despacio de lo previsto (0,1–0,5 % por semana). Te propongo subir a {k} kcal/día.","You're gaining slower than planned (0.1–0.5% a week). I suggest {k} kcal/day.","Je komt langzamer aan dan gepland (0,1–0,5% per week). Voorstel: {k} kcal/dag.","Stai aumentando più lentamente del previsto (0,1–0,5% a settimana). Ti propongo {k} kcal/giorno."],
+adaptFastGain:["Ganas peso demasiado rápido (más del 0,5 % por semana). Te propongo bajar a {k} kcal/día.","You're gaining too fast (over 0.5% a week). I suggest {k} kcal/day.","Je komt te snel aan (meer dan 0,5% per week). Voorstel: {k} kcal/dag.","Stai aumentando troppo in fretta (oltre lo 0,5% a settimana). Ti propongo {k} kcal/giorno."],
+adaptDrift:["Tu peso cambia más de lo esperado para mantener. Te propongo {k} kcal/día.","Your weight is moving more than expected for maintenance. I suggest {k} kcal/day.","Je gewicht verandert meer dan verwacht bij behoud. Voorstel: {k} kcal/dag.","Il tuo peso cambia più del previsto per il mantenimento. Ti propongo {k} kcal/giorno."],
+adaptApply:["Aplicar {k} kcal","Apply {k} kcal","{k} kcal toepassen","Applica {k} kcal"],
+neck:["Cuello (cm)","Neck (cm)","Nek (cm)","Collo (cm)"],
+bodyFat:["% grasa","Body fat %","Vet %","% grasso"],
+bfNeed:["Para calcular el % de grasa: apunta cintura y cuello (y cadera si eres mujer) y rellena sexo y altura en «Calcular con mis datos».","To estimate body fat: log waist and neck (and hips if female) and fill in sex and height under “Work it out from my details”.","Voor je vetpercentage: noteer taille en nek (en heupen als vrouw) en vul geslacht en lengte in bij ‘Bereken met mijn gegevens’.","Per stimare il % di grasso: annota vita e collo (e fianchi se donna) e compila sesso e altezza in «Calcola con i miei dati»."],
+bfNote:["% de grasa estimado con el método de la Marina de EE. UU. (margen de ±3-4 %).","Body fat estimated with the US Navy method (±3–4% margin).","Vetpercentage geschat met de US Navy-methode (marge ±3–4%).","% di grasso stimato con il metodo della Marina USA (margine ±3-4%)."],
+csv:["⬇ Exportar CSV (Excel)","⬇ Export CSV (Excel)","⬇ CSV exporteren (Excel)","⬇ Esporta CSV (Excel)"],
+time:["min","min","min","min"],
+timeLbl:["Tiempo máximo de preparación","Maximum prep time","Maximale bereidingstijd","Tempo massimo di preparazione"],
+anyTime:["Sin límite","No limit","Geen limiet","Senza limite"],
+rest:["+ reposo","+ resting","+ rusttijd","+ riposo"],
+batch:["Cocinar por tandas","Batch cooking","In één keer koken","Cucinare in anticipo"],
+batchNo:["No","No","Nee","No"],
+batchDouble:["Comida y cena para 2 días","Lunch & dinner for 2 days","Lunch en diner voor 2 dagen","Pranzo e cena per 2 giorni"],
+batchHint:["Cocinas una vez y comes lo mismo dos días seguidos: menos tiempo en la cocina y menos comida tirada.","Cook once, eat the same two days in a row: less time cooking and less food waste.","Eén keer koken, twee dagen hetzelfde eten: minder tijd in de keuken en minder verspilling.","Cucini una volta e mangi lo stesso per due giorni: meno tempo ai fornelli e meno sprechi."],
+batchCook:["🍱 Cocina ración doble: mañana repites este plato.","🍱 Cook a double batch: you'll have this again tomorrow.","🍱 Kook een dubbele portie: morgen eet je dit weer.","🍱 Cucina una porzione doppia: domani ripeti questo piatto."],
+batchLeft:["🍱 Sobras de ayer: solo hay que calentar.","🍱 Yesterday's leftovers: just reheat.","🍱 Restjes van gisteren: alleen opwarmen.","🍱 Avanzi di ieri: basta riscaldare."],
+pantryAdd:["Añadir a la despensa","Add to pantry","Aan voorraad toevoegen","Aggiungi alla dispensa"],
+pantryPh:["Ej.: arroz, huevos…","E.g. rice, eggs…","Bijv. rijst, eieren…","Es.: riso, uova…"],
+pantryFirst:["Las recetas que usan lo que tienes en casa salen más a menudo en el plan.","Recipes that use what you have at home appear more often in the plan.","Recepten met wat je in huis hebt, komen vaker in het plan.","Le ricette che usano ciò che hai in casa compaiono più spesso nel piano."],
+pantryUnknown:["No reconozco «{w}». Prueba con otro nombre (ej.: arroz, pollo, tomate).","I don't recognise “{w}”. Try another name (e.g. rice, chicken, tomato).","‘{w}’ herken ik niet. Probeer een andere naam (bijv. rijst, kip, tomaat).","Non riconosco «{w}». Prova un altro nome (es.: riso, pollo, pomodoro)."],
+book:["5. Recetario","5. Recipe book","5. Receptenboek","5. Ricettario"],
+bookHint:["Busca entre todas las recetas, marca tus favoritas (♥ salen más a menudo), descarta las que no quieres (🚫) y añade las tuyas.","Browse all recipes, mark favourites (♥ appear more often), hide ones you don't want (🚫) and add your own.","Doorzoek alle recepten, markeer favorieten (♥ komen vaker), verberg wat je niet wilt (🚫) en voeg je eigen toe.","Sfoglia tutte le ricette, segna le preferite (♥ compaiono più spesso), escludi quelle che non vuoi (🚫) e aggiungi le tue."],
+search:["Buscar receta o ingrediente…","Search recipe or ingredient…","Zoek recept of ingrediënt…","Cerca ricetta o ingrediente…"],
+allTypes:["Todas","All","Alle","Tutte"],
+onlyOk:["Solo compatibles con mis filtros","Only those matching my filters","Alleen passend bij mijn filters","Solo compatibili con i miei filtri"],
+onlyFav:["Solo ♥","Only ♥","Alleen ♥","Solo ♥"],
+showBanned:["Ver descartadas","Show hidden","Verborgen tonen","Mostra escluse"],
+results:["recetas","recipes","recepten","ricette"],
+more:["Ver más","Show more","Meer tonen","Mostra altre"],
+view:["Ver","View","Bekijk","Apri"],
+favR:["Favorita","Favourite","Favoriet","Preferita"],
+banR:["No la quiero en mi plan","Don't put it in my plan","Niet in mijn plan","Non metterla nel piano"],
+banned:["descartada","hidden","verborgen","esclusa"],
+addToPlan:["Poner en mi plan el día…","Put it in my plan on…","Zet in mijn plan op…","Metti nel piano il giorno…"],
+added:["Hecho: «{n}» está en el día {d}.","Done: “{n}” is on day {d}.","Klaar: ‘{n}’ staat op dag {d}.","Fatto: «{n}» è nel giorno {d}."],
+notCompat:["Esta receta no encaja con tus filtros actuales, así que no se puede poner en el plan.","This recipe doesn't match your current filters, so it can't go in the plan.","Dit recept past niet bij je huidige filters en kan dus niet in het plan.","Questa ricetta non è compatibile con i filtri attuali, quindi non può entrare nel piano."],
+myRecipe:["Mi receta","My recipe","Mijn recept","La mia ricetta"],
+addMine:["+ Añadir mi receta","+ Add my recipe","+ Mijn recept toevoegen","+ Aggiungi la mia ricetta"],
+editMine:["✎ Editar","✎ Edit","✎ Bewerken","✎ Modifica"],
+delMine:["🗑 Borrar receta","🗑 Delete recipe","🗑 Recept verwijderen","🗑 Elimina ricetta"],
+delConfirm:["¿Borrar «{n}»? No se puede deshacer.","Delete “{n}”? This can't be undone.","‘{n}’ verwijderen? Dit kan niet ongedaan worden.","Eliminare «{n}»? Non si può annullare."],
+rName:["Nombre","Name","Naam","Nome"],
+rType:["Comida del día","Meal","Maaltijd","Pasto"],
+rKcal:["kcal por ración","kcal per serving","kcal per portie","kcal a porzione"],
+rProt:["Proteína (g)","Protein (g)","Eiwit (g)","Proteine (g)"],
+rTime:["Tiempo (min)","Time (min)","Tijd (min)","Tempo (min)"],
+rIng:["Ingredientes (uno por línea, con cantidad: «150 g pechuga de pollo»)","Ingredients (one per line, with amount: “150 g chicken breast”)","Ingrediënten (één per regel, met hoeveelheid: ‘150 g kipfilet’)","Ingredienti (uno per riga, con quantità: «150 g petto di pollo»)"],
+rSteps:["Preparación","Method","Bereiding","Preparazione"],
+rFlags:["Contiene (para tus filtros de dieta)","Contains (for your diet filters)","Bevat (voor je dieetfilters)","Contiene (per i filtri dieta)"],
+rSave:["Guardar receta","Save recipe","Recept opslaan","Salva ricetta"],
+rReq:["Pon nombre, kcal, proteína y al menos un ingrediente.","Add a name, kcal, protein and at least one ingredient.","Vul naam, kcal, eiwit en minstens één ingrediënt in.","Inserisci nome, kcal, proteine e almeno un ingrediente."],
+rIngTip:["Si escribes los ingredientes en español (ej.: «2 huevos», «80 g arroz») se agrupan en la lista de la compra, con precio y nutrientes.","If you write ingredients in Spanish (e.g. “2 huevos”, “80 g arroz”) they're grouped in the shopping list with price and nutrients.","Als je ingrediënten in het Spaans schrijft (bijv. ‘2 huevos’, ‘80 g arroz’) worden ze gegroepeerd in de boodschappenlijst, met prijs en voedingswaarden.","Se scrivi gli ingredienti in spagnolo (es. «2 huevos», «80 g arroz») vengono raggruppati nella lista della spesa, con prezzo e nutrienti."],
+flagNames:[["Gluten","Lácteos","Huevo","Frutos secos","Carne roja","Cerdo","Pollo / pavo","Pescado","Marisco"],["Gluten","Dairy","Egg","Nuts","Red meat","Pork","Chicken / turkey","Fish","Seafood"],["Gluten","Zuivel","Ei","Noten","Rood vlees","Varkensvlees","Kip / kalkoen","Vis","Schaaldieren"],["Glutine","Latticini","Uova","Frutta secca","Carne rossa","Maiale","Pollo / tacchino","Pesce","Frutti di mare"]],
 dow:[["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],["Ma","Di","Wo","Do","Vr","Za","Zo"],["Lun","Mar","Mer","Gio","Ven","Sab","Dom"]]
 };
 const TYPES = {d:["Desayuno","Breakfast","Ontbijt","Colazione"],l:["Comida","Lunch","Lunch","Pranzo"],s:["Snack","Snack","Snack","Spuntino"],c:["Cena","Dinner","Avondeten","Cena"]};
@@ -585,7 +741,9 @@ const DIETS = [
   ["vegan","mcpfsle",["Vegana","Vegan","Veganistisch","Vegana"]],
   ["pesce","mcp",["Pescetariana","Pescatarian","Pescotarisch","Pescetariana"]],
   ["singluten","g",["Sin gluten","Gluten-free","Glutenvrij","Senza glutine"]],
-  ["sinlactosa","l",["Sin lactosa","Lactose-free","Lactosevrij","Senza lattosio"]]
+  ["sinlactosa","l",["Sin lactosa","Lactose-free","Lactosevrij","Senza lattosio"]],
+  ["lowcarb","",["Baja en hidratos","Low carb","Koolhydraatarm","Pochi carboidrati"]],
+  ["highprot","",["Alta en proteína","High protein","Eiwitrijk","Ricca di proteine"]]
 ];
 const GOALS = [
   ["perder",0.85,["Perder grasa","Lose fat","Vet verliezen","Perdere grasso"]],
@@ -705,6 +863,36 @@ function lineAmt(line, ing){
   if(u){ const g = n*(UNITG[u]||30); return {k:"g", v:g, g}; }
   return {k:"ud", v:n, g:n*((ing && ing[5]) || 100)};
 }
+/* fibra, azúcares y sal (g) de la receta base */
+const microMemo = {};
+function microOf(type, idx){
+  const key = type+idx; if(key in microMemo) return microMemo[key];
+  let fi = 0, su = 0, sa = 0;
+  R[type][idx][4].forEach(l => {
+    const g = ingOf(l), a = g && lineAmt(l, g), m = g && typeof MICRO !== "undefined" && MICRO[g[0]];
+    if(a && m){ fi += a.g*m[0]/100; su += a.g*m[1]/100; sa += a.g*m[2]/100; }
+    if(/(^|[^a-z])sal([^a-z]|$)/.test(norm(l))) sa += 0.5;
+  });
+  return microMemo[key] = [fi, su, sa];
+}
+/* tiempo de preparación aprox. (min) a partir de los pasos; las recetas propias llevan el suyo */
+const timeMemo = {};
+function prepTime(type, idx){
+  const key = type+idx; if(key in timeMemo) return timeMemo[key];
+  const r = R[type][idx]; if(+r[6] > 0) return timeMemo[key] = +r[6];
+  const st = norm(r[5]), ing = norm(r[4].join(" "));
+  if(/noche/.test(st)) return timeMemo[key] = 5;
+  const nums = [...st.matchAll(/(\d+)(?:-(\d+))?\s*min(?:utos?)?(\s*por lado)?/g)].map(m => +(m[2]||m[1]) * (m[3] ? 2 : 1));
+  let tm = nums.length ? Math.max(...nums) : 0;
+  if(nums.length > 1) tm += (nums.reduce((a,b)=>a+b,0) - Math.max(...nums)) * 0.4;
+  if(/(cuece|hidrata|con) (el|la|los) (arroz|quinoa|pasta|fideos)|sirve con (el )?arroz|con la pasta/.test(st) && !/arroz \d|quinoa \d/.test(st)) tm = Math.max(tm, /arroz integral/.test(ing) ? 30 : /pasta|fideos/.test(ing) ? 12 : 18);
+  if((type==="l" || type==="c") && /plancha|dora|marca|saltea|sofrie|vapor|cuece|hornea|asa /.test(st)) tm = Math.max(tm, nums.length ? tm : 12);
+  tm += Math.min(10, r[4].length * 1.2);
+  if(type==="l" || type==="c") tm = Math.max(tm, 10);
+  return timeMemo[key] = Math.max(5, Math.round(tm/5)*5);
+}
+const isRest = (type, idx) => /noche/.test(norm(R[type][idx][5]));
+const timeTxt = (type, idx) => `⏱ ${prepTime(type, idx)} ${t("time")}${isRest(type, idx) ? " " + t("rest") : ""}`;
 /* hidratos y grasa: se reparte la energía que no es proteína según la composición de los ingredientes */
 const cfMemo = {};
 function baseCF(type, idx){
@@ -768,13 +956,28 @@ const $ = id => document.getElementById(id);
 const esc = w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
 const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
 
-let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:"", people:1, swaps:{}, pantry:[], bought:{}, profile:{}, progress:[]};
+let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:"", people:1, swaps:{}, pantry:[], bought:{}, profile:{}, progress:[], maxTime:0, batch:"no", favRecipes:[], banned:[], myRecipes:[], water:{}};
 try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
 if(!state.country){ const nl0 = navigator.language||"es"; state.country = /^en-US/i.test(nl0) ? "us" : /^en-GB/i.test(nl0) ? "uk" : (({es:"es",en:"es",nl:"nl",it:"it"})[nl0.slice(0,2)] || "es"); }
 if(!state.start) state.start = new Date().toISOString().slice(0,10);
 if(!LANGS.includes(state.lang)){ const nav = (navigator.language||"es").slice(0,2); state.lang = LANGS.includes(nav) ? nav : "es"; }
 
 const L = () => LANGS.indexOf(state.lang);
+/* ---- recetas propias: se añaden al final de R; BASE marca dónde empiezan ---- */
+const BASE = {}; Object.keys(R).forEach(t => BASE[t] = R[t].length);
+let mySig = null, USER_ID = {};
+function syncMyRecipes(){
+  const sig = JSON.stringify(state.myRecipes || []);
+  if(sig === mySig) return;
+  mySig = sig; USER_ID = {};
+  Object.keys(R).forEach(t => { R[t].length = BASE[t]; USER_ID[t] = {}; });
+  (state.myRecipes || []).forEach(m => { if(!R[m.t]) return; R[m.t].push([m.name, m.flags||"", +m.kcal, +m.prot, m.ing, m.steps||"", +m.time||0]); USER_ID[m.t][R[m.t].length-1] = m.id; });
+  costCache = {}; favCache = {}; [cfMemo, microMemo, timeMemo].forEach(o => Object.keys(o).forEach(k => delete o[k]));
+}
+const rkey = (t, i) => i >= BASE[t] ? "u" + ((USER_ID[t]||{})[i]) : t + i;
+const isUser = (t, i) => i >= BASE[t];
+const isFavR = (t, i) => (state.favRecipes||[]).includes(rkey(t,i));
+const isBanned = (t, i) => (state.banned||[]).includes(rkey(t,i));
 const ppl = () => Math.min(12, Math.max(1, parseInt(state.people) || 1));
 const t = k => UI[k][L()];
 /* receta en el idioma actual: [nombre, flags, kcal, prot, ingredientes, pasos] */
@@ -812,6 +1015,9 @@ function buildForm(){
   $("prot").innerHTML = ""; $("country").innerHTML = "";
   $("kcalTarget").placeholder = t("kcalAuto");
   COUNTRIES.forEach(([v,,l]) => chip("country","radio","country",v,l[i],state.country===v));
+  $("maxTime").innerHTML = ""; $("batchChips").innerHTML = "";
+  [0,15,30,45].forEach(v => chip("maxTime","radio","maxTime",v, v ? "≤ "+v+" min" : t("anyTime"), +state.maxTime===v));
+  [["no","batchNo"],["double","batchDouble"]].forEach(([v,k]) => chip("batchChips","radio","batch",v,t(k),(state.batch||"no")===v));
   PROT.forEach(([v,,l]) => chip("prot","radio","prot",v,l[i],state.protein===v));
   MEALS.forEach(v => chip("meals","checkbox","meals",v,TYPES[v][i],state.meals.includes(v)));
   DISLIKES.forEach(([v,,,l]) => chip("dislikes","checkbox","dis",v,l[i],state.dislikes.includes(v),"no"));
@@ -839,6 +1045,8 @@ function readForm(){
   state.country = (document.querySelector('input[name=country]:checked')||{}).value || "es";
   state.budget = $("budget").value;
   state.people = Math.min(12, Math.max(1, parseInt($("people").value) || 1));
+  state.maxTime = +((document.querySelector('input[name=maxTime]:checked')||{}).value || 0);
+  state.batch = (document.querySelector('input[name=batch]:checked')||{}).value || "no";
   state.meals = MEALS.filter(m => document.querySelector(`input[name=meals][value=${m}]`).checked);
   state.dislikes = [...document.querySelectorAll('input[name=dis]:checked')].map(i=>i.value);
   state.favs = [...document.querySelectorAll('input[name=fav]:checked')].map(i=>i.value);
@@ -858,6 +1066,10 @@ function allowed(type, idx){
   state.dislikes.forEach(id => { const d = DISLIKES.find(x=>x[0]===id); if(d){ flags += d[1]; words.push(...d[2]); } });
   words.push(...userWords(state.custom));
   if([...rec[1]].some(f => flags.includes(f))) return false;
+  if(isBanned(type, idx)) return false;
+  if(+state.maxTime > 0 && prepTime(type, idx) > +state.maxTime) return false;
+  if(state.diet.includes("lowcarb") && baseCF(type, idx)[0]*4/rec[2] > (type==="l" ? 0.5 : 0.35)) return false;
+  if(state.diet.includes("highprot") && rec[3]*4/rec[2] < (type==="s" ? 0.2 : 0.25)) return false;
   const text = searchText(type, idx);
   return !words.some(w => wordRe(w).test(text));
 }
@@ -875,10 +1087,17 @@ function rawFav(type, idx){
   return words.some(w => wordRe(w).test(text));
 }
 
-/* cuántas veces entra una receta en cada ronda: favoritos ×3, y según el nivel de proteína */
+/* usa algo de la despensa (sin contar básicos como aceite, sal o especias) */
+function usesPantry(type, idx){
+  const pt = state.pantry || []; if(!pt.length) return false;
+  return R[type][idx][4].some(l => { const g = ingOf(l); return g && g[1] !== "desp" && pt.includes(g[0]); });
+}
+/* cuántas veces entra una receta en cada ronda: favoritos ×3, recetas ♥ ×3, despensa ×2 y según el nivel de proteína */
 function weight(type, idx){
   const r = R[type][idx], ratio = r[3]*4 / r[2];
   let w = isFav(type, idx) ? 3 : 1;
+  if(isFavR(type, idx)) w *= 3;
+  if(usesPantry(type, idx)) w *= 2;
   if(state.protein === "mas") w *= ratio >= 0.3 ? 3 : ratio >= 0.2 ? 2 : 1;
   if(state.protein === "menos") w *= ratio < 0.15 ? 3 : ratio < 0.25 ? 2 : 1;
   return w;
@@ -913,11 +1132,17 @@ function generate(){
     plan.push(day);
   }
   fitBudget();
+  /* cocinar por tandas: la comida y la cena de los días pares se repiten al día siguiente */
+  if(state.batch === "double"){
+    for(let i=1;i<plan.length;i+=2) ["l","c"].forEach(x => { if(state.meals.includes(x)) plan[i][x] = plan[i-1][x]; });
+    if(parseFloat(state.budget) > 0) overWeeks = Array.from({length:Math.ceil(30/7)},(_,w)=>w).filter(w => weekCost(w) > budgetFor(w) + 0.01);
+  }
   /* platos cambiados a mano: mandan sobre el generador */
   let sw = false;
   plan.forEach((day,i) => state.meals.forEach(x => { const s = (state.swaps||{})[dkey(i)+"|"+x]; if(s != null && pools[x].includes(s) && day[x] !== s){ day[x] = s; sw = true; } }));
   if(sw && parseFloat(state.budget) > 0) overWeeks = Array.from({length:Math.ceil(30/7)},(_,w)=>w).filter(w => weekCost(w) > budgetFor(w) + 0.01);
 }
+const batchRole = (i, x) => state.batch !== "double" || !["l","c"].includes(x) ? null : i % 2 ? "left" : (i+1 < plan.length ? "cook" : null);
 const isSwapped = (i, x) => { const s = (state.swaps||{})[dkey(i)+"|"+x]; return s != null && plan[i] && plan[i][x] === s; };
 
 const weekDays = w => plan.map((_,k)=>k).slice(w*7, w*7+7);
@@ -989,6 +1214,8 @@ function addTag(k){
 const mult = () => (GOALS.find(g=>g[0]===state.goal)||GOALS[1])[1] * calFactor();
 const dayDate = i => { const d = new Date(state.start+"T12:00:00"); d.setDate(d.getDate()+i); return d; };
 const fmt = (d,o) => d.toLocaleDateString(LOCALE[state.lang], o);
+const microDay = day => state.meals.reduce((a,x) => { if(day[x]==null) return a; const v = microOf(x, day[x]); return [a[0]+v[0], a[1]+v[1], a[2]+v[2]]; }, [0,0,0]);
+const microTxt = (v, m) => `${t("fiber")} ${Math.round(v[0]*m)} g · ${t("sugar")} ${Math.round(v[1]*m)} g · ${t("salt")} ${(v[2]*m).toLocaleString(LOCALE[state.lang],{maximumFractionDigits:1})} g`;
 const sumDay = (day, k) => state.meals.reduce((a,t)=>a+(day[t]!=null?macros(t,day[t])[k-2]:0),0);
 
 function renderSummary(){
@@ -1003,12 +1230,14 @@ function renderSummary(){
     <div class="stat"><b>${Math.round(prot)} g</b><small>${t("protDay")}</small></div>
     <div class="stat"><b>${Math.round(plan.reduce((a,d)=>a+sumDay(d,4),0)/30*m)} g</b><small>${t("carbsDay")}</small></div>
     <div class="stat"><b>${Math.round(plan.reduce((a,d)=>a+sumDay(d,5),0)/30*m)} g</b><small>${t("fatDay")}</small></div>
+    <div class="stat"><b>${Math.round(plan.reduce((a,d)=>a+microDay(d)[0],0)/30*m)} g</b><small>${t("fiberDay")}</small></div>
+    <div class="stat"><b>${(plan.reduce((a,d)=>a+microDay(d)[2],0)/30*m).toLocaleString(LOCALE[state.lang],{maximumFractionDigits:1})} g</b><small>${t("saltDay")}</small></div>
     <div class="stat"><b>${plan.filter((_,k)=>state.done[dkey(k)]==="y").length}/30</b><small>${t("daysDone")}</small></div>
     <div class="stat"><b>${money(plan.reduce((a,d)=>a+dayCost(d),0)/30*7)}</b><small>${t("perWeek")}</small></div>
     <div class="stat"><b>${n}</b><small>${t("compat")}</small></div>
     <div class="stat"><b>${fmt(dayDate(0),{day:"numeric",month:"short"})} – ${fmt(dayDate(29),{day:"numeric",month:"short"})}</b><small>${t("days30")}</small></div>
   </div>
-  <p class="hint" style="margin:12px 0 0">${t("macroNote")}${ppl()>1 ? " "+t("forPeople").replace("{n}",ppl()) : ""}</p>
+  <p class="hint" style="margin:12px 0 0">${t("macroNote")} ${t("microNote")}${ppl()>1 ? " "+t("forPeople").replace("{n}",ppl()) : ""}</p>
   ${parseFloat(state.budget)>0 ? `<p class="hint" style="margin:12px 0 0">${t("budgetAdj")}</p>` : ""}
   ${overWeeks.length ? `<div class="alert">${t("over")} (${overWeeks.map(w=>t("week")+" "+(w+1)).join(", ")}). ${t("overHint")}</div>` : ""}
   ${missing.length ? `<div class="alert">${t("noRecipes")} <b>${missing.join(", ")}</b>. ${t("tryRemove")}</div>` : ""}
@@ -1036,7 +1265,7 @@ function renderCalendar(){
     b.dataset.wk = Math.floor((offset+i)/7);
     b.tabIndex = 0; b.setAttribute("role","button");
     b.innerHTML = `<div class="num">${fmt(d,{weekday:"short",day:"numeric",month:"short"})}<em>${t("day")} ${i+1}</em></div>` +
-      state.meals.map(x => day[x]!=null ? `<div class="meal" style="border-color:${COLORS[x]}">${star(x,day[x])}${tr(x,day[x])[0]}</div>` : "").join("") +
+      state.meals.map(x => day[x]!=null ? `<div class="meal" style="border-color:${COLORS[x]}">${batchRole(i,x)==="left" ? "🍱 " : ""}${star(x,day[x])}${tr(x,day[x])[0]}</div>` : "").join("") +
       marksHTML(i);
     b.onclick = e => { const m = e.target.closest(".mk"); if(m){ e.stopPropagation(); mark(i, m.dataset.v); } else openDay(i); };
     b.onkeydown = e => { if((e.key==="Enter"||e.key===" ") && e.target===b){ e.preventDefault(); openDay(i); } };
@@ -1097,12 +1326,13 @@ const macroBar = (mc) => { const e = [mc[1]*4, mc[2]*4, mc[3]*9], tot = e.reduce
 const macroTxt = (mc, m) => `${Math.round(mc[0]*m)} kcal · <b style="color:var(--l)">P</b> ${Math.round(mc[1]*m)} g · <b style="color:var(--d)">${t("carbs").charAt(0).toUpperCase()}</b> ${Math.round(mc[2]*m)} g · <b style="color:var(--c)">${t("fat").charAt(0).toUpperCase()}</b> ${Math.round(mc[3]*m)} g`;
 function openDay(i){
   if(openIdx !== i) swapOpen = null;
-  openIdx = i;
+  openIdx = i; viewing = null;
   const m = mult(), day = plan[i], li = L(), n = ppl();
   $("dlgTitle").textContent = `${t("day")} ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
   const st = state.done[dkey(i)];
   $("dlgBody").innerHTML = `<p class="macro" style="margin-bottom:0">${t("markDay")}</p><div class="dlg-marks"><button class="mk y ${st==="y"?"on":""}" data-v="y" aria-pressed="${st==="y"}">✓ ${t("doneLbl")}</button><button class="mk n ${st==="n"?"on":""}" data-v="n" aria-pressed="${st==="n"}">✗ ${t("missedLbl")}</button></div>
   <p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b> · ${t("protein")} <b>${Math.round(sumDay(day,3)*m)} g</b> · ${t("carbs")} <b>${Math.round(sumDay(day,4)*m)} g</b> · ${t("fat")} <b>${Math.round(sumDay(day,5)*m)} g</b> · ${t("dayCost")} <b>${money(dayCost(day))}</b></p>
+  <p class="micro" style="margin-top:-4px">${microTxt(microDay(day), m)}</p>
   ${n>1 ? `<p class="macro">${t("forPeople").replace("{n}",n)}</p>` : ""}` + state.meals.map(x => {
     if(day[x]==null) return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><p>${t("none")}</p></div>`;
     const r = tr(x, day[x]), mc = macros(x, day[x]), es = R[x][day[x]][4];
@@ -1112,18 +1342,21 @@ function openDay(i){
       sw = `<p class="macro" style="margin-top:8px">${t("swapPick")}</p>` + (alts.length ? `<div class="swaplist">${alts.map(k => { const mk = macros(x,k); return `<button type="button" data-swap="${x}" data-r="${k}">${star(x,k)}${tr(x,k)[0]}<br><small>${Math.round(mk[0]*m)} kcal · ${Math.round(mk[1]*m)} g ${t("protein")} · ≈ ${money(cost(x,k))}</small></button>`; }).join("")}</div>` : `<p>${t("swapNone")}</p>`) +
         `<div class="swapbar">${alts.length ? `<button type="button" class="ghost small" data-rand="${x}">${t("swapRandom")}</button>` : ""}<button type="button" class="ghost small" data-cancel="1">${t("cancel")}</button></div>`;
     } else {
-      sw = `<div class="swapbar"><button type="button" class="ghost small" data-open="${x}">${t("swap")}</button>${isSwapped(i,x) ? `<button type="button" class="ghost small" data-undo="${x}">${t("swapUndo")}</button>` : ""}<a href="${gcalLink(i,x)}" target="_blank" rel="noopener">${t("gcal")}</a></div>`;
+      sw = `<div class="swapbar"><button type="button" class="ghost small" data-cook="${x}">${t("cookMode")}</button><button type="button" class="ghost small" data-open="${x}">${t("swap")}</button>${isSwapped(i,x) ? `<button type="button" class="ghost small" data-undo="${x}">${t("swapUndo")}</button>` : ""}<a href="${gcalLink(i,x)}" target="_blank" rel="noopener">${t("gcal")}</a></div>`;
     }
     return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span>${isSwapped(i,x) ? `<span class="swtag">${t("swapped")}</span>` : ""}<h4>${star(x,day[x])}${r[0]}</h4>
-      <div class="macro">${macroTxt(mc, m)} · ≈ ${money(cost(x,day[x]))}</div>${macroBar(mc)}
+      <div class="macro">${macroTxt(mc, m)} · ≈ ${money(cost(x,day[x]))} · ${timeTxt(x,day[x])}</div>${macroBar(mc)}
+      <div class="micro">${microTxt(microOf(x,day[x]), m)}</div>
+      ${batchRole(i,x) ? `<p class="macro" style="color:var(--accent);font-weight:600">${t(batchRole(i,x)==="cook" ? "batchCook" : "batchLeft")}</p>` : ""}
       <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]),n)}</li>`).join("")}</ul><p>${r[5]}</p>${sw}</div>`;
   }).join("");
   if(!$("dlg").open) $("dlg").showModal();
 }
-function setSwap(i, x, r){
-  const k = dkey(i)+"|"+x;
+function setSwap(i, x, r, quiet){
   state.swaps = {...(state.swaps||{})};
-  if(r == null) delete state.swaps[k]; else state.swaps[k] = r;
+  /* por tandas: el plato se cambia en los dos días de la pareja */
+  const role = batchRole(i, x), days = role === "cook" ? [i, i+1] : role === "left" ? [i-1, i] : [i];
+  days.forEach(j => { const k = dkey(j)+"|"+x; if(r == null) delete state.swaps[k]; else state.swaps[k] = r; });
   swapOpen = null; save(); run();
 }
 $("dlgBody").addEventListener("click", e => {
@@ -1134,6 +1367,7 @@ $("dlgBody").addEventListener("click", e => {
   else if(d.swap) setSwap(openIdx, d.swap, +d.r);
   else if(d.rand){ const x = d.rand, alts = pools[x].filter(k => k !== plan[openIdx][x]); if(alts.length) setSwap(openIdx, x, alts[Math.floor(Math.random()*alts.length)]); }
   else if(d.undo) setSwap(openIdx, d.undo, null);
+  else if(d.cook) openCook(d.cook, plan[openIdx][d.cook]);
 });
 
 let week = 0;
@@ -1190,7 +1424,9 @@ function renderShop(){
   } else html += `</div>`;
   $("shopTotal").innerHTML = html + `<p class="hint" style="margin:8px 0 0">${t("priceNote")}</p>`;
   $("shopTools").innerHTML = `<button type="button" class="primary small" id="shareWa">${t("shareWa")}</button>${navigator.share ? `<button type="button" class="ghost small" id="shareNat">${t("share")}</button>` : ""}<button type="button" class="ghost small" id="shopPrint">${t("printPdf")}</button><button type="button" class="ghost small" id="uncheck">${t("uncheckAll")}</button>`;
-  $("pantry").innerHTML = `<h4>${t("pantry")}</h4><p class="hint" style="margin:0">${state.pantry.length ? t("pantryHint") : t("pantryEmpty")}</p>` +
+  $("pantry").innerHTML = `<h4>${t("pantry")}</h4><p class="hint" style="margin:0">${state.pantry.length ? t("pantryHint") : t("pantryEmpty")} ${t("pantryFirst")}</p>
+    <form class="adder" style="margin-top:10px"><input type="text" id="pantryIn" list="ingrList" autocomplete="off" placeholder="${t("pantryPh")}" aria-label="${t("pantryAdd")}"><button class="ghost">${t("pantryAdd")}</button></form>
+    <datalist id="ingrList">${typeof INGR !== "undefined" ? INGR.filter(g => g[1] !== "otros").map(g => `<option value="${escH(g[6][li])}">`).join("") : ""}</datalist><p class="addmsg" id="pantryMsg" role="status"></p>` +
     (state.pantry.length ? `<div class="chips">${state.pantry.map(id => `<span class="ptag">${escH(pantryName(id))}<button type="button" data-unp="${escH(id)}" aria-label="${t("removeLbl")} ${escH(pantryName(id))}">✕</button></span>`).join("")}</div>` : "");
 }
 function shopText(){
@@ -1240,7 +1476,8 @@ function icsText(){
     const r = tr(x, day[x]), d = dayDate(i), [h,mi] = MEAL_TIME[x], es = R[x][day[x]][4];
     const ing = r[4].map((y,k) => "- " + scaleQty(y, mult(), isProtIng(es[k]), ppl())).join("\n");
     L_.push("BEGIN:VEVENT", `UID:planfit-${dkey(i)}-${x}-${day[x]}@plan-fit`, "DTSTAMP:"+stamp, `DTSTART:${ymdC(d)}T${pad(h)}${pad(mi)}00`, "DURATION:PT30M",
-      "SUMMARY:"+esc_(`${TYPES[x][L()]}: ${r[0]}`), "DESCRIPTION:"+esc_(`${ing}\n\n${r[5]}`), "END:VEVENT");
+      "SUMMARY:"+esc_(`${TYPES[x][L()]}: ${r[0]}`), "DESCRIPTION:"+esc_(`${ing}\n\n${r[5]}`),
+      "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT15M", "DESCRIPTION:"+esc_(`${TYPES[x][L()]}: ${r[0]}`), "END:VALARM", "END:VEVENT");
   }));
   L_.push("END:VCALENDAR");
   return L_.map(fold).join("\r\n");
@@ -1290,29 +1527,120 @@ $("calcBox").addEventListener("change", () => { readCalc(); renderCalc(); save()
 document.addEventListener("change", e => { if(e.target.name === "goal" && !$("calcBox").hidden) renderCalc(); });
 $("calcUse").onclick = () => { const c = calcKcal(); if(!c) return; $("kcalTarget").value = c.k; run(); };
 
-/* progreso: peso y medidas */
-const PFIELDS = [["w","weight","kg"],["waist","waist","cm"],["hip","hip","cm"],["chest","chest","cm"]];
+/* progreso: peso y medidas (+ % de grasa calculado) */
+const PFIELDS = [["w","weight","kg"],["waist","waist","cm"],["hip","hip","cm"],["chest","chest","cm"],["neck","neck","cm"]];
+const PINPUTS = {w:"pW", waist:"pWaist", hip:"pHip", chest:"pChest", neck:"pNeck"};
+const PALL = PFIELDS.concat([["bf","bodyFat","%"]]);
 let pMetric = "w";
 const numFmt = (v, d=1) => (+v).toLocaleString(LOCALE[state.lang], {maximumFractionDigits:d});
+const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+/* método de la Marina de EE. UU. */
+function bodyFat(e){
+  const p = state.profile || {}, h = +p.h;
+  if(!(h > 0) || !(e.waist > 0) || !(e.neck > 0)) return null;
+  let v;
+  if(p.sex === "m"){ if(e.waist <= e.neck) return null; v = 495/(1.0324 - 0.19077*Math.log10(e.waist - e.neck) + 0.15456*Math.log10(h)) - 450; }
+  else { if(!(e.hip > 0) || e.waist + e.hip <= e.neck) return null; v = 495/(1.29579 - 0.35004*Math.log10(e.waist + e.hip - e.neck) + 0.22100*Math.log10(h)) - 450; }
+  return v > 2 && v < 65 ? Math.round(v*10)/10 : null;
+}
+const progressList = () => (state.progress||[]).slice().sort((a,b) => a.d.localeCompare(b.d)).map(e => { const bf = bodyFat(e); return bf == null ? {...e} : {...e, bf}; });
 function renderProgress(){
-  const li = L(), list = (state.progress||[]).slice().sort((a,b) => a.d.localeCompare(b.d));
-  if(!$("pDate").value) $("pDate").value = new Date().toISOString().slice(0,10);
-  const avail = PFIELDS.filter(f => list.some(e => e[f[0]] != null));
+  const list = progressList();
+  if(!$("pDate").value) $("pDate").value = todayKey();
+  renderWater(); renderAdapt(list);
+  const avail = PALL.filter(f => list.some(e => e[f[0]] != null));
   if(!avail.find(f => f[0] === pMetric) && avail.length) pMetric = avail[0][0];
   const lab = f => t(f[1]).replace(/\s*\(.*\)/,"");
   $("pTabs").innerHTML = avail.length > 1 ? avail.map(f => `<button class="ghost ${f[0]===pMetric?"on":""}" data-m="${f[0]}">${lab(f)}</button>`).join("") : "";
-  const F = PFIELDS.find(f => f[0] === pMetric), pts = list.filter(e => e[pMetric] != null);
+  const hasBf = list.some(e => e.bf != null);
+  $("bfNote").textContent = list.length ? (hasBf ? t("bfNote") : t("bfNeed")) : "";
+  $("csvBtn").hidden = !list.length;
+  const F = PALL.find(f => f[0] === pMetric), pts = list.filter(e => e[pMetric] != null);
   if(!pts.length){ $("pStats").innerHTML = ""; $("pChart").innerHTML = `<p class="hint">${t("noEntries")}</p>`; $("pTable").innerHTML = ""; return; }
   const first = pts[0][pMetric], last = pts[pts.length-1][pMetric], diff = last - first, unit = F[2];
-  const h = +((state.profile||{}).h);
-  $("pStats").innerHTML = `<div class="stat"><b>${numFmt(first)} ${unit}</b><small>${t("pStart")} · ${fmt(new Date(pts[0].d+"T12:00:00"),{day:"numeric",month:"short"})}</small></div>
-    <div class="stat"><b>${numFmt(last)} ${unit}</b><small>${t("pNow")} · ${fmt(new Date(pts[pts.length-1].d+"T12:00:00"),{day:"numeric",month:"short"})}</small></div>
-    <div class="stat"><b>${diff>0?"+":diff<0?"−":""}${numFmt(Math.abs(diff))} ${unit}</b><small>${t("pChange")}</small></div>
+  const h = +((state.profile||{}).h), sp = unit === "%" ? "" : " ";
+  $("pStats").innerHTML = `<div class="stat"><b>${numFmt(first)}${sp}${unit}</b><small>${t("pStart")} · ${fmt(new Date(pts[0].d+"T12:00:00"),{day:"numeric",month:"short"})}</small></div>
+    <div class="stat"><b>${numFmt(last)}${sp}${unit}</b><small>${t("pNow")} · ${fmt(new Date(pts[pts.length-1].d+"T12:00:00"),{day:"numeric",month:"short"})}</small></div>
+    <div class="stat"><b>${diff>0?"+":diff<0?"−":""}${numFmt(Math.abs(diff))}${sp}${unit}</b><small>${t("pChange")}</small></div>
     ${pMetric==="w" && h > 0 ? `<div class="stat"><b>${numFmt(last/((h/100)**2))}</b><small>${t("bmi")}</small></div>` : ""}`;
   $("pChart").innerHTML = pts.length < 2 ? `<p class="hint">${t("needTwo")}</p>` : progressSVG(pts, F, lab(F));
-  $("pTable").innerHTML = `<thead><tr><th>${t("date")}</th>${PFIELDS.map(f => `<th>${t(f[1])}</th>`).join("")}<th></th></tr></thead><tbody>` +
-    list.slice().reverse().map(e => `<tr><td>${fmt(new Date(e.d+"T12:00:00"),{day:"numeric",month:"short",year:"numeric"})}</td>${PFIELDS.map(f => `<td>${e[f[0]] != null ? numFmt(e[f[0]]) : "—"}</td>`).join("")}<td><button type="button" data-del="${e.d}" title="${t("del")}" aria-label="${t("del")}">✕</button></td></tr>`).join("") + `</tbody>`;
+  const cols = PALL.filter(f => f[0] !== "bf" || hasBf);
+  $("pTable").innerHTML = `<thead><tr><th>${t("date")}</th>${cols.map(f => `<th>${t(f[1])}</th>`).join("")}<th></th></tr></thead><tbody>` +
+    list.slice().reverse().map(e => `<tr><td>${fmt(new Date(e.d+"T12:00:00"),{day:"numeric",month:"short",year:"2-digit"})}</td>${cols.map(f => `<td>${e[f[0]] != null ? numFmt(e[f[0]]) : "—"}</td>`).join("")}<td><button type="button" data-del="${e.d}" title="${t("del")}" aria-label="${t("del")}">✕</button></td></tr>`).join("") + `</tbody>`;
 }
+/* agua */
+const waterGoal = () => { const w = +((state.profile||{}).w) || +((progressList().filter(e=>e.w).slice(-1)[0]||{}).w); return w > 0 ? Math.min(4000, Math.max(1500, Math.round(w*35/250)*250)) : 2000; };
+function renderWater(){
+  const goal = waterGoal(), ml = (state.water||{})[todayKey()] || 0, n = ml/250, g = goal/250;
+  $("waterHint").textContent = t("waterHint").replace("{g}", (goal/1000).toLocaleString(LOCALE[state.lang]) + " l");
+  $("water").innerHTML = Array.from({length: Math.max(g, n+1)}, (_,k) => `<button type="button" class="glass ${k<n?"on":""}" data-g="${k}" aria-label="${(k+1)*250} ml" title="${(k+1)*250} ml">${k}</button>`).join("") +
+    `<b style="margin-left:6px">${(ml/1000).toLocaleString(LOCALE[state.lang])} / ${(goal/1000).toLocaleString(LOCALE[state.lang])} l</b>`;
+  const days = Array.from({length:7}, (_,k) => { const d = new Date(); d.setDate(d.getDate() - 6 + k); return d; });
+  const key = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  $("wBar").innerHTML = days.map(d => { const v = (state.water||{})[key(d)] || 0; return `<div title="${fmt(d,{weekday:"short",day:"numeric"})}: ${v} ml"><i style="height:${Math.min(100, v/goal*100)}%"></i></div>`; }).join("");
+  $("wLbl").innerHTML = days.map(d => `<span>${fmt(d,{weekday:"narrow"})}</span>`).join("");
+}
+$("water").addEventListener("click", e => {
+  const b = e.target.closest("button[data-g]"); if(!b) return;
+  const k = +b.dataset.g, cur = ((state.water||{})[todayKey()] || 0)/250;
+  const next = k < cur ? k : k + 1;
+  const w = {...(state.water||{})}; w[todayKey()] = next*250;
+  const cut = new Date(); cut.setDate(cut.getDate() - 90);
+  Object.keys(w).forEach(d => { if(new Date(d+"T12:00:00") < cut) delete w[d]; });
+  state.water = w; save(); renderWater();
+});
+/* recordatorios (.ics con eventos que se repiten) */
+$("remindBtn").onclick = () => {
+  const esc_ = v => String(v).replace(/\\/g,"\\\\").replace(/;/g,"\;").replace(/,/g,"\\,");
+  const d = new Date(), ymd = ymdC(d), stamp = ymd + "T000000Z";
+  const ev = (uid, hh, mm, rule, text) => ["BEGIN:VEVENT", `UID:planfit-${uid}@plan-fit`, "DTSTAMP:"+stamp, `DTSTART:${ymd}T${pad(hh)}${pad(mm)}00`, "DURATION:PT5M", "RRULE:"+rule,
+    "SUMMARY:"+esc_(text), "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:PT0M", "DESCRIPTION:"+esc_(text), "END:VALARM", "END:VEVENT"];
+  const lines = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Plan Fit//Recordatorios//ES","CALSCALE:GREGORIAN"]
+    .concat(...[[10,0],[12,30],[16,0],[18,30]].map(([h,m],k) => ev("agua"+k, h, m, "FREQ=DAILY", t("remWater"))))
+    .concat(ev("peso", 8, 0, "FREQ=WEEKLY;BYDAY=MO", t("remWeigh")), ["END:VCALENDAR"]);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([lines.join("\r\n")], {type:"text/calendar"}));
+  a.download = "plan-fit-recordatorios.ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+};
+/* ajuste de calorías según la tendencia de peso (últimas 5 semanas) */
+let adaptK = null;
+function renderAdapt(list){
+  const box = $("adapt"), cut = Date.now() - 35*864e5;
+  const pts = list.filter(e => e.w && new Date(e.d+"T12:00:00").getTime() >= cut);
+  const span = pts.length > 1 ? (new Date(pts[pts.length-1].d) - new Date(pts[0].d))/864e5 : 0;
+  adaptK = null;
+  if(pts.length < 2 || span < 10){ box.innerHTML = `<h3>${t("adaptTitle")}</h3><p class="hint" style="margin:0">${t("adaptNeed")}</p>`; return; }
+  const xs = pts.map(e => new Date(e.d+"T12:00:00").getTime()/864e5/7), ys = pts.map(e => e.w);
+  const mx = xs.reduce((a,b)=>a+b,0)/xs.length, my = ys.reduce((a,b)=>a+b,0)/ys.length;
+  const slope = xs.reduce((a,x,k)=>a+(x-mx)*(ys[k]-my),0) / (xs.reduce((a,x)=>a+(x-mx)**2,0) || 1);
+  const pct = slope / ys[ys.length-1] * 100;
+  const cur = kcalTarget() || Math.round(plan.reduce((a,d)=>a+sumDay(d,2),0)/30*mult());
+  const goal = state.goal, r50 = v => Math.round(v/50)*50;
+  let msg = "adaptOk", delta = 0;
+  if(goal === "perder"){ if(pct > -0.25){ msg = "adaptSlowLose"; delta = -150; } else if(pct < -1){ msg = "adaptFastLose"; delta = 150; } }
+  else if(goal === "ganar"){ if(pct < 0.1){ msg = "adaptSlowGain"; delta = 150; } else if(pct > 0.5){ msg = "adaptFastGain"; delta = -150; } }
+  else if(Math.abs(pct) > 0.25){ msg = "adaptDrift"; delta = pct > 0 ? -150 : 150; }
+  const minK = (state.profile||{}).sex === "m" ? 1500 : 1200;
+  if(delta) adaptK = Math.max(minK, r50(cur + delta));
+  if(adaptK === cur) adaptK = null;
+  box.innerHTML = `<h3>${t("adaptTitle")}</h3><p style="margin:0 0 6px;font-size:14px">${t("adaptRate").replace("{r}", (slope>0?"+":slope<0?"−":"") + numFmt(Math.abs(slope),2) + " kg").replace("{p}", (pct>0?"+":pct<0?"−":"") + numFmt(Math.abs(pct),2))}</p>
+    <p style="margin:0;font-size:14px" class="${delta ? "" : "okmsg"}">${t(msg).replace("{k}", adaptK || cur)}</p>
+    ${adaptK ? `<div style="margin-top:10px"><button type="button" class="primary small" id="adaptApply">${t("adaptApply").replace("{k}", adaptK)}</button></div>` : ""}`;
+}
+$("adapt").addEventListener("click", e => { if(e.target.id === "adaptApply" && adaptK){ $("kcalTarget").value = adaptK; run(); } });
+/* exportar historial */
+$("csvBtn").onclick = () => {
+  const list = progressList(), dec = state.lang === "en" ? "." : ",", sep = ";";
+  const num = v => v == null ? "" : String(v).replace(".", dec);
+  const head = [t("date")].concat(PALL.map(f => t(f[1]).replace(/\s*\(.*\)/,"") + (f[2] === "%" ? "" : ` (${f[2]})`)));
+  const rows = list.map(e => [e.d].concat(PALL.map(f => num(e[f[0]]))));
+  const csv = "\ufeff" + [head].concat(rows).map(r => r.join(sep)).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"}));
+  a.download = "plan-fit-progreso.csv"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+};
 function progressSVG(pts, F, label){
   const W = Math.max(280, Math.round($("pChart").clientWidth || 640)), H = 230, ml = 44, mr = 14, mt = 14, mb = 28, key = F[0];
   const xs = pts.map(e => new Date(e.d+"T12:00:00").getTime()), ys = pts.map(e => e[key]);
@@ -1339,14 +1667,14 @@ $("pChart").addEventListener("mouseleave", () => $("tip").hidden = true);
 $("pTabs").addEventListener("click", e => { const b = e.target.closest("button[data-m]"); if(b){ pMetric = b.dataset.m; renderProgress(); } });
 $("pTable").addEventListener("click", e => { const b = e.target.closest("button[data-del]"); if(!b) return; state.progress = (state.progress||[]).filter(x => x.d !== b.dataset.del); save(); renderProgress(); });
 $("pSave").onclick = () => {
-  const d = $("pDate").value || new Date().toISOString().slice(0,10), e = {d};
-  PFIELDS.forEach(([k], j) => { const v = parseFloat([$("pW"),$("pWaist"),$("pHip"),$("pChest")][j].value.replace(",",".")); if(v > 0) e[k] = Math.round(v*10)/10; });
+  const d = $("pDate").value || todayKey(), e = {d};
+  PFIELDS.forEach(([k]) => { const v = parseFloat($(PINPUTS[k]).value.replace(",",".")); if(v > 0) e[k] = Math.round(v*10)/10; });
   const msg = $("pMsg");
   if(Object.keys(e).length < 2){ msg.textContent = t("entryReq"); msg.className = "addmsg err"; return; }
   const old = (state.progress||[]).find(x => x.d === d) || {};
   state.progress = (state.progress||[]).filter(x => x.d !== d).concat({...old, ...e});
   if(e.w){ state.profile = {...(state.profile||{}), w: e.w}; }
-  ["pW","pWaist","pHip","pChest"].forEach(id => $(id).value = "");
+  Object.values(PINPUTS).forEach(id => $(id).value = "");
   msg.textContent = t("entrySaved"); msg.className = "addmsg ok";
   save(); renderProgress();
 };
@@ -1413,7 +1741,7 @@ $("openAll").onclick = () => { state.closed = []; save(); applySections(); };
 $("closeAll").onclick = () => { state.closed = [...document.querySelectorAll("[data-sec]")].map(s=>s.dataset.sec); save(); applySections(); };
 
 function run(){
-  readForm(); updateKcalF(); generate(); updateKcalF(); renderSummary(); renderCalendar(); renderChart(); renderShop(); renderProgress(); applySections();
+  syncMyRecipes(); readForm(); updateKcalF(); generate(); updateKcalF(); renderSummary(); renderCalendar(); renderChart(); renderShop(); renderBook(); renderProgress(); applySections();
   if($("dlg").open && openIdx!=null) openDay(openIdx);
 }
 
@@ -1446,6 +1774,191 @@ $("reset").onclick = () => {
 $("close").onclick = () => $("dlg").close();
 $("dlgBody").addEventListener("click", e => { const m = e.target.closest(".mk"); if(m && openIdx!=null) mark(openIdx, m.dataset.v); });
 $("dlg").addEventListener("click", e => { if(e.target === $("dlg")) $("dlg").close(); });
+
+/* ---- recetario ---- */
+let planDaySel = 0, bType = "all", bOnlyOk = true, bOnlyFav = false, bShowBan = false, bLimit = 30, bQuery = "", viewing = null, bMsg = "";
+function renderBook(){
+  const li = L();
+  $("bSearch").placeholder = t("search");
+  $("bTypes").innerHTML = [["all", t("allTypes")]].concat(MEALS.map(x => [x, TYPES[x][li]])).map(([v,l]) => `<label class="chip"><input type="radio" name="bType" value="${v}" ${bType===v?"checked":""}><span>${l}</span></label>`).join("");
+  $("bFilters").innerHTML = [["ok", t("onlyOk"), bOnlyOk], ["fav", t("onlyFav"), bOnlyFav], ["ban", t("showBanned"), bShowBan]].map(([v,l,c]) => `<label class="chip"><input type="checkbox" name="bF" value="${v}" ${c?"checked":""}><span>${l}</span></label>`).join("");
+  const q = norm(bQuery.trim());
+  let items = [];
+  (bType === "all" ? MEALS : [bType]).forEach(x => R[x].forEach((_,i) => {
+    if(q && !searchText(x,i).includes(q)) return;
+    if(bOnlyOk && !allowed(x,i) && !isBanned(x,i)) return;
+    if(bOnlyFav && !isFavR(x,i)) return;
+    if(!bShowBan && isBanned(x,i)) return;
+    items.push([x,i]);
+  }));
+  items.sort((a,b) => (isFavR(...b) - isFavR(...a)) || tr(...a)[0].localeCompare(tr(...b)[0], state.lang));
+  $("bCount").textContent = `${items.length} ${t("results")}`;
+  $("bGrid").innerHTML = items.slice(0, bLimit).map(([x,i]) => { const mc = macros(x,i), m = mult(), fv = isFavR(x,i), bn = isBanned(x,i);
+    return `<div class="rcard ${bn?"ban":""}"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}${isUser(x,i) ? ` · ${t("myRecipe")}` : ""}${bn ? ` · ${t("banned")}` : ""}</span>
+      <h4>${star(x,i)}${escH(tr(x,i)[0])}</h4><div class="micro">${Math.round(mc[0]*m)} kcal · ${Math.round(mc[1]*m)} g ${t("protein")} · ${timeTxt(x,i)}</div>
+      <div class="acts"><button type="button" class="ibtn" data-v="${x}:${i}">${t("view")}</button><button type="button" class="ibtn fav ${fv?"on":""}" data-f="${x}:${i}" aria-pressed="${fv}" title="${t("favR")}" aria-label="${t("favR")}">♥</button><button type="button" class="ibtn ${bn?"on":""}" data-b="${x}:${i}" aria-pressed="${bn}" title="${t("banR")}" aria-label="${t("banR")}">🚫</button></div></div>`; }).join("");
+  $("bMore").hidden = items.length <= bLimit;
+}
+function toggleList(key, x, i){ const k = rkey(x,i), l = state[key] || []; state[key] = l.includes(k) ? l.filter(v => v !== k) : l.concat(k); }
+$("bSearch").addEventListener("input", e => { bQuery = e.target.value; bLimit = 30; renderBook(); });
+$("bTypes").addEventListener("change", e => { bType = e.target.value; bLimit = 30; renderBook(); });
+$("bFilters").addEventListener("change", e => { const v = e.target.value, c = e.target.checked; if(v==="ok") bOnlyOk = c; if(v==="fav") bOnlyFav = c; if(v==="ban") bShowBan = c; bLimit = 30; renderBook(); });
+$("bMore").onclick = () => { bLimit += 30; renderBook(); };
+$("bAdd").onclick = () => openRecipeForm(null);
+$("bGrid").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  const [x, i] = (b.dataset.v || b.dataset.f || b.dataset.b || ":").split(":"), n = +i;
+  if(b.dataset.v){ bMsg = ""; openRecipe(x, n); }
+  else if(b.dataset.f){ toggleList("favRecipes", x, n); save(); run(); }
+  else if(b.dataset.b){ toggleList("banned", x, n); save(); run(); }
+});
+/* ver una receta suelta */
+function openRecipe(x, i){
+  openIdx = null; viewing = [x, i];
+  const r = tr(x, i), mc = macros(x, i), m = mult(), n = ppl(), es = R[x][i][4], li = L();
+  const canPlan = state.meals.includes(x) && allowed(x, i);
+  $("dlgTitle").textContent = r[0];
+  $("dlgBody").innerHTML = `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}${isUser(x,i) ? ` · ${t("myRecipe")}` : ""}</span>
+    <div class="macro" style="margin-top:6px">${macroTxt(mc, m)} · ≈ ${money(cost(x,i))} · ${timeTxt(x,i)}</div>${macroBar(mc)}
+    <div class="micro">${microTxt(microOf(x,i), m)}</div>${n>1 ? `<p class="macro">${t("forPeople").replace("{n}",n)}</p>` : ""}
+    <ul>${r[4].map((y,k)=>`<li>${escH(scaleQty(y,m,isProtIng(es[k]),n))}</li>`).join("")}</ul><p>${escH(r[5])}</p>
+    <div class="swapbar"><button type="button" class="primary small" data-cookr="1">${t("cookMode")}</button>
+      <button type="button" class="ibtn fav ${isFavR(x,i)?"on":""}" data-favr="1">♥ ${t("favR")}</button>
+      <button type="button" class="ibtn ${isBanned(x,i)?"on":""}" data-banr="1">🚫 ${t("banR")}</button>
+      ${isUser(x,i) ? `<button type="button" class="ghost small" data-editr="1">${t("editMine")}</button><button type="button" class="ghost small" data-delr="1">${t("delMine")}</button>` : ""}</div>
+    ${canPlan ? `<div class="swapbar" style="margin-top:12px"><label class="macro" for="planDay">${t("addToPlan")}</label><select id="planDay">${plan.map((_,k) => `<option value="${k}" ${k===planDaySel?"selected":""}>${t("day")} ${k+1} · ${fmt(dayDate(k),{weekday:"short",day:"numeric",month:"short"})}</option>`).join("")}</select><button type="button" class="ghost small" data-planr="1">OK</button></div>`
+      : `<p class="hint" style="margin-top:12px">${t("notCompat")}</p>`}
+    ${bMsg ? `<p class="addmsg ok">${bMsg}</p>` : ""}</div>`;
+  if(!$("dlg").open) $("dlg").showModal();
+}
+/* formulario de receta propia */
+const FLAGS = "glenmcpfs";
+function openRecipeForm(id){
+  openIdx = null; viewing = null;
+  const m = (state.myRecipes||[]).find(x => x.id === id) || {t:"l", flags:"", ing:[]}, li = L();
+  $("dlgTitle").textContent = id ? t("editMine").replace(/^\S+\s/,"") : t("addMine").replace(/^\+\s*/,"");
+  $("dlgBody").innerHTML = `<form class="rform" id="rForm" data-id="${id||""}" style="padding-top:12px">
+    <label>${t("rName")}<input name="name" required maxlength="80" value="${escH(m.name||"")}"></label>
+    <div class="f4"><label>${t("rType")}<select name="t">${MEALS.map(x => `<option value="${x}" ${m.t===x?"selected":""}>${TYPES[x][li]}</option>`).join("")}</select></label>
+      <label>${t("rKcal")}<input name="kcal" type="number" min="20" max="2500" required value="${m.kcal||""}"></label>
+      <label>${t("rProt")}<input name="rprot" type="number" min="0" max="200" required value="${m.prot ?? ""}"></label>
+      <label>${t("rTime")}<input name="time" type="number" min="1" max="600" value="${m.time||""}"></label></div>
+    <label>${t("rIng")}<textarea name="ing" required>${escH((m.ing||[]).join("\n"))}</textarea></label>
+    <p class="hint" style="margin:-4px 0 0">${t("rIngTip")}</p>
+    <label>${t("rSteps")}<textarea name="steps">${escH(m.steps||"")}</textarea></label>
+    <fieldset><legend style="font-size:12.5px;color:var(--muted)">${t("rFlags")}</legend><div class="chips">${[...FLAGS].map((f,k) => `<label class="chip"><input type="checkbox" name="fl" value="${f}" ${(m.flags||"").includes(f)?"checked":""}><span>${UI.flagNames[li][k]}</span></label>`).join("")}</div></fieldset>
+    <p class="addmsg err" id="rMsg"></p>
+    <div><button class="primary">${t("rSave")}</button></div></form>`;
+  if(!$("dlg").open) $("dlg").showModal();
+}
+$("dlgBody").addEventListener("submit", e => {
+  if(e.target.id !== "rForm") return;
+  e.preventDefault();
+  const f = e.target, v = k => f.elements[k].value.trim();
+  const ing = v("ing").split("\n").map(x => x.trim()).filter(Boolean);
+  if(!v("name") || !(+v("kcal") > 0) || v("rprot") === "" || !ing.length){ $("rMsg").textContent = t("rReq"); return; }
+  const id = f.dataset.id || Date.now().toString(36);
+  const rec = {id, t: v("t"), name: v("name"), kcal: Math.round(+v("kcal")), prot: Math.round(+v("rprot")), time: Math.round(+v("time")) || 0, ing, steps: v("steps"),
+    flags: [...f.querySelectorAll("input[name=fl]:checked")].map(x => x.value).join("")};
+  const old = (state.myRecipes||[]).find(x => x.id === id);
+  if(old && old.t !== rec.t) clearTypeRefs(old.t);
+  state.myRecipes = old ? state.myRecipes.map(x => x.id === id ? rec : x) : (state.myRecipes||[]).concat(rec);
+  save(); run();
+  const idx = Object.entries(USER_ID[rec.t]).find(([,u]) => u === id);
+  bMsg = ""; if(idx) openRecipe(rec.t, +idx[0]);
+});
+/* al borrar o mover una receta propia cambian los índices: se quitan los cambios a mano de ese tipo */
+function clearTypeRefs(x){ const sw = {...(state.swaps||{})}; Object.keys(sw).forEach(k => { if(k.endsWith("|"+x)) delete sw[k]; }); state.swaps = sw; }
+$("dlgBody").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b || !viewing) return;
+  const [x, i] = viewing, d = b.dataset;
+  if(d.cookr) openCook(x, i);
+  else if(d.favr){ toggleList("favRecipes", x, i); save(); run(); openRecipe(x, i); }
+  else if(d.banr){ toggleList("banned", x, i); save(); run(); openRecipe(x, i); }
+  else if(d.editr) openRecipeForm(USER_ID[x][i]);
+  else if(d.delr){
+    const id = USER_ID[x][i], nm = tr(x,i)[0];
+    if(!confirm(t("delConfirm").replace("{n}", nm))) return;
+    const k = "u"+id;
+    state.myRecipes = state.myRecipes.filter(r => r.id !== id);
+    state.favRecipes = (state.favRecipes||[]).filter(v => v !== k); state.banned = (state.banned||[]).filter(v => v !== k);
+    clearTypeRefs(x); viewing = null; save(); run(); $("dlg").close();
+  }
+  else if(d.planr){
+    const day = planDaySel = +$("planDay").value;
+    setSwap(day, x, i);
+    bMsg = t("added").replace("{n}", tr(x,i)[0]).replace("{d}", day+1);
+    openRecipe(x, i);
+  }
+});
+$("dlg").addEventListener("close", () => { viewing = null; bMsg = ""; });
+
+/* ---- modo cocina: pasos uno a uno, temporizador y pantalla encendida ---- */
+let cook = null, wakeLock = null, timerId = null, timerEnd = 0;
+async function keepAwake(){ try { if("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen"); } catch(e){} }
+document.addEventListener("visibilitychange", () => { if(cook && document.visibilityState === "visible") keepAwake(); });
+function openCook(x, i){
+  const r = tr(x, i), es = R[x][i][4], m = mult(), n = ppl();
+  const steps = String(r[5]).split(/(?<=[.!?])\s+(?=\S)/).map(v => v.trim()).filter(Boolean);
+  cook = {x, i, step: 0, steps: steps.length ? steps : [r[5]], ing: r[4].map((y,k) => scaleQty(y, m, isProtIng(es[k]), n)), name: r[0]};
+  if($("dlg").open) $("dlg").close();
+  $("cook").hidden = false; document.body.style.overflow = "hidden";
+  keepAwake(); renderCook();
+}
+function renderCook(){
+  const c = cook, last = c.step === c.steps.length - 1, st = c.steps[c.step];
+  const tm = st.match(/(\d+)(?:\s*-\s*(\d+))?\s*min/i);
+  $("cookTitle").textContent = c.name;
+  $("cookBody").innerHTML = `<details class="cook-ing" ${c.step===0?"open":""}><summary>${t("ingredients")} (${c.ing.length})</summary>${c.ing.map((y,k) => `<label><input type="checkbox" ${c.got && c.got[k] ? "checked" : ""} data-k="${k}">${escH(y)}</label>`).join("")}</details>
+    <div class="cook-n">${t("step")} ${c.step+1} / ${c.steps.length}</div>
+    <div class="cook-step">${escH(st)}</div>
+    <div class="cook-timer" id="cookTimer">${tm ? `<button type="button" class="ghost" data-timer="${+(tm[2]||tm[1])}">${t("timer").replace("{n}", +(tm[2]||tm[1]))}</button>` : ""}</div>
+    <p class="hint" style="margin:0">${t("awake")}</p>
+    <div class="cook-nav"><button type="button" class="ghost" data-nav="-1" ${c.step===0?"disabled":""}>${t("prev")}</button><button type="button" class="primary" data-nav="${last ? "end" : "1"}">${last ? t("finish") : t("next")}</button></div>`;
+  if(timerId) drawTimer();
+}
+function drawTimer(){
+  const left = Math.max(0, Math.round((timerEnd - Date.now())/1000)), el = $("cookTimer"); if(!el) return;
+  el.innerHTML = `<div class="tbig ${left?"":"done"}">${left ? `${Math.floor(left/60)}:${pad(left%60)}` : t("timerDone")}</div><button type="button" class="ghost small" data-stop="1">${t("stop")}</button>`;
+}
+function beep(){
+  try { const ac = new (window.AudioContext || window.webkitAudioContext)(); [0, 0.35, 0.7].forEach(s0 => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = 880; o.connect(g); g.connect(ac.destination); g.gain.setValueAtTime(0.25, ac.currentTime+s0); o.start(ac.currentTime+s0); o.stop(ac.currentTime+s0+0.22); }); } catch(e){}
+  try { navigator.vibrate && navigator.vibrate([300,150,300,150,300]); } catch(e){}
+}
+function closeCook(){
+  clearInterval(timerId); timerId = null; cook = null;
+  $("cook").hidden = true; document.body.style.overflow = "";
+  try { wakeLock && wakeLock.release(); } catch(e){} wakeLock = null;
+}
+$("cookClose").onclick = closeCook;
+document.addEventListener("keydown", e => { if(!cook) return; if(e.key === "Escape") closeCook(); if(e.key === "ArrowRight" && cook.step < cook.steps.length-1){ cook.step++; renderCook(); } if(e.key === "ArrowLeft" && cook.step > 0){ cook.step--; renderCook(); } });
+$("cookBody").addEventListener("change", e => { const k = e.target.dataset.k; if(k != null){ cook.got = cook.got || {}; cook.got[k] = e.target.checked; } });
+$("cookBody").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b || !cook) return;
+  if(b.dataset.nav === "end") return closeCook();
+  if(b.dataset.nav){ cook.step = Math.min(cook.steps.length-1, Math.max(0, cook.step + +b.dataset.nav)); renderCook(); }
+  if(b.dataset.timer){
+    clearInterval(timerId); timerEnd = Date.now() + +b.dataset.timer*60000; let rang = false;
+    timerId = setInterval(() => { drawTimer(); if(!rang && Date.now() >= timerEnd){ rang = true; beep(); } }, 500); drawTimer();
+  }
+  if(b.dataset.stop){ clearInterval(timerId); timerId = null; renderCook(); }
+});
+
+/* ---- despensa: añadir a mano ---- */
+function findIngr(w){
+  const n = norm(w).trim(); if(!n || typeof INGR === "undefined") return null;
+  return INGR.find(g => g[6].some(l => norm(l) === n)) || INGR.find(g => g[2].some(k => wordRe(k).test(n) || wordRe(n).test(k))) || INGR.find(g => g[6].some(l => norm(l).includes(n)));
+}
+$("pantry").addEventListener("submit", e => {
+  e.preventDefault();
+  const inp = $("pantryIn"), msg = $("pantryMsg"), words = inp.value.split(",").map(w => w.trim()).filter(Boolean);
+  const bad = [];
+  words.forEach(w => { const g = findIngr(w); if(!g) bad.push(w); else if(!state.pantry.includes(g[0])) state.pantry = state.pantry.concat(g[0]); });
+  inp.value = "";
+  save(); run();
+  if(bad.length){ $("pantryMsg").textContent = t("pantryUnknown").replace("{w}", bad.join(", ")); $("pantryMsg").className = "addmsg err"; }
+});
+
 run();
 
 /* ---- app instalable (PWA) ---- */

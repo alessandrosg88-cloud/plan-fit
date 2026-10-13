@@ -80,7 +80,7 @@ function render(){
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 /* ---------- sincronización ---------- */
-const SYNC_KEYS = ["diet","goal","protein","kcal","meals","dislikes","favs","custom","customFav","start","seed","closed","done","budget","country","people","swaps","pantry","bought","profile","progress"];
+const SYNC_KEYS = ["diet","goal","protein","kcal","meals","dislikes","favs","custom","customFav","start","seed","closed","done","budget","country","people","swaps","pantry","bought","profile","progress","maxTime","batch","favRecipes","banned","myRecipes","water"];
 const pick = () => { const o = {}; SYNC_KEYS.forEach(k => { if(state[k] !== undefined) o[k] = state[k]; }); return o; };
 
 function applyCloud(data){

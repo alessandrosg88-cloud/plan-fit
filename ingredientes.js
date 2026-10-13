@@ -150,3 +150,24 @@ const INGR = [
  ["sal","desp",["sal"],0,0,0,["Sal y pimienta","Salt & pepper","Zout & peper","Sale e pepe"]],
  ["hielo","otros",["hielo"],0,0,0,["Hielo","Ice","IJs","Ghiaccio"]]
 ];
+/* fibra, azúcares y sal (g por 100 g) por ingrediente; valores medios aproximados de tablas de composición */
+const MICRO = {
+ gazpacho:[1.2,3,0.5], tomtrit:[1.5,4,0.1], atunlata:[0,0,0.9], lechecoco:[0,2,0.05], bavena:[0.8,4,0.1], bsoja:[0.6,0.5,0.1],
+ balmendra:[0.2,0,0.1], bcoco:[0.1,2,0.1], semcalabaza:[6,1,0], coco:[16,7,0], edamame:[5,2,0], tamari:[0.8,1,14],
+ yogveg:[1,1,0.1], fideos:[1.5,0,0], tortarroz:[4,0.5,0.1], lonchas:[0,1,2], pavopicado:[0,0,0.2], salmonahu:[0,0,3],
+ terpicada:[0,0,0.2], lentrojas:[11,2,0], lentcoc:[4,1,0.4], quesorall:[0,0,1.6], qfbatido:[0,4,0.1], yoggriego:[0,4,0.1],
+ pancenteno:[6,3,1.1], tortrigo:[6,2,1], tormaiz:[5,1,0.6], arrozint:[3.5,0.7,0], basmati:[1,0,0],
+ aguacate:[7,0.7,0], apio:[1.6,1.3,0.2], berenjena:[3,3.5,0], boniato:[3,4,0.1], patata:[2,0.8,0], brocoli:[2.6,1.7,0.1],
+ coliflor:[2,1.9,0], calabacin:[1,2.5,0], calabaza:[0.5,2.8,0], cebolla:[1.7,4.2,0], puerro:[1.8,3.9,0], ajo:[2.1,1,0],
+ champinon:[1,2,0], setas:[2,1,0], espinaca:[2.2,0.4,0.2], kale:[3.6,2.3,0.1], esparrago:[2,1.9,0], judias:[2.7,3.3,0],
+ guisantes:[5,5.7,0], lechuga:[1.3,0.8,0], ensalada:[1.5,1,0], rucula:[1.6,2,0.1], pepino:[0.5,1.7,0], pimiento:[2,4,0],
+ tomate:[1.2,2.6,0], zanahoria:[2.8,4.7,0.2], jengibre:[2,1.7,0], limon:[2.8,2.5,0], lima:[2.8,1.7,0], platano:[2.6,12,0],
+ manzana:[2.4,10,0], pera:[3.1,10,0], mango:[1.6,14,0], naranja:[2.4,9,0], mandarina:[1.8,10,0], kiwi:[3,9,0],
+ pina:[1.4,10,0], frutosrojos:[5,5,0], pollo:[0,0,0.2], pavo:[0,0,0.2], solomillo:[0,0,0.1], ternera:[0,0,0.2], cerdo:[0,0,0.2],
+ salmon:[0,0,0.1], merluza:[0,0,0.2], bacalao:[0,0,0.3], atun:[0,0,0.1], dorada:[0,0,0.2], gamba:[0,0,0.5], sepia:[0,0,0.9],
+ huevo:[0,0.4,0.35], yogur:[0,5,0.1], kefir:[0,4,0.1], requeson:[0,3,0.4], feta:[0,1,2.7], mozzarella:[0,1,0.8], parmesano:[0,0,1.6],
+ whey:[0,6,0.4], pan:[7,3,1.1], avena:[10,1,0], quinoa:[7,0,0], cuscus:[5,0.5,0], arroz:[1,0,0], pasta:[8,3,0],
+ lenteja:[11,2,0], hummus:[6,0.5,1], garbanzo:[7,0.5,0.3], alubia:[6,0.5,0.3], tofu:[1,0.5,0], tempeh:[5,0,0],
+ nueces:[7,2.6,0], almendra:[12,4,0], cacahuete:[6,6,0.5], chia:[34,0,0], canamo:[4,1.5,0], lino:[27,1.5,0], sesamo:[12,0.3,0],
+ tahini:[9,0.5,0.1], chocolate:[11,14,0], aceite:[0,0,0], miel:[0,82,0], caldo:[0,0.5,0.8]
+};
