@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Plan Fit 30 días</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3f7d3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Plan Fit">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
 <style>
@@ -125,6 +133,58 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .overmsg{color:var(--warn);font-weight:600}
 .shop-total{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:14px;margin-top:6px}
 .cost{color:var(--muted);font-size:12.5px}
+/* --- novedades --- */
+input[type=number],select{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font:inherit}
+.people input{max-width:90px}
+.linkbtn{background:none;border:none;padding:0;color:var(--accent);font-weight:600;text-decoration:underline;cursor:pointer;font-size:13px}
+.calc{margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:12px;display:grid;gap:10px}
+.calc .f3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.calc label{font-size:12.5px;color:var(--muted);display:grid;gap:4px}
+.calc input,.calc select{width:100%;min-width:0}
+.calc .res{font-size:13.5px;margin:0}
+.swapbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.swapbar a{font-size:13px;color:var(--accent);font-weight:600}
+.swaplist{display:grid;gap:6px;margin:10px 0;max-height:280px;overflow:auto;padding:2px}
+.swaplist button{text-align:left;font-weight:500;background:var(--surface2);color:var(--text);border:1px solid var(--line);padding:8px 12px}
+.swaplist button small{color:var(--muted);font-weight:400}
+.swaplist button:hover{border-color:var(--accent)}
+.swtag{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
+.mbar{display:flex;height:6px;border-radius:999px;overflow:hidden;margin:6px 0 2px;max-width:260px;gap:2px}
+.mbar i{display:block;height:100%}
+.shop-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.aisles{columns:2 280px;gap:28px;margin-top:14px}
+.aisle{break-inside:avoid;margin-bottom:16px}
+.aisle h4{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.slist{list-style:none;margin:0;padding:0}
+.slist li{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.slist label{flex:1;display:flex;gap:8px;align-items:baseline;cursor:pointer;min-width:0}
+.slist input{accent-color:var(--accent);width:17px;height:17px;flex:none;align-self:center}
+.slist .amt{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.slist .cost{white-space:nowrap}
+.slist li.got .nm,.slist li.got .amt{text-decoration:line-through;opacity:.55}
+.pbtn{background:none;border:1px solid var(--line);border-radius:8px;padding:2px 6px;font-size:13px;line-height:1.2;flex:none}
+.pantry{margin-top:6px;padding:12px 14px;background:var(--surface2);border-radius:12px}
+.pantry h4{margin:0 0 4px;font-size:14px}
+.pantry .chips{margin-top:8px}
+.ptag{display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 12px;border-radius:999px;font-size:13px;background:var(--surface);border:1px solid var(--line)}
+.ptag button{border:none;background:var(--surface2);color:var(--text);border-radius:999px;width:22px;height:22px;padding:0;font-size:12px}
+.pform{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;align-items:end}
+.pform label{font-size:12.5px;color:var(--muted);display:grid;gap:4px}
+.pform input{width:100%;min-width:0}
+.pchart{margin-top:10px;position:relative}
+.pchart svg{width:100%;height:230px;display:block;overflow:visible}
+.pchart .grid line{stroke:var(--line)}
+.pchart text{fill:var(--muted);font-size:11px;font-family:Inter,system-ui,sans-serif}
+.ptable{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+.ptable th,.ptable td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+.ptable th:first-child,.ptable td:first-child{text-align:left}
+.ptable th{color:var(--muted);font-weight:600;font-size:12px}
+.ptable button{background:none;border:none;color:var(--muted);padding:2px 6px;font-size:13px}
+.tablewrap{overflow-x:auto}
+.install{display:none}
+.install.on{display:inline-block}
+.ioshint{font-size:12.5px;color:var(--muted);margin:8px 0 0}
+@media (max-width:520px){.calc .f3{grid-template-columns:1fr 1fr}}
 footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 .wk-nav{display:none;justify-content:space-between;align-items:center;margin-top:12px;font-weight:600}
 .wk-nav button{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:8px;padding:6px 14px;cursor:pointer;font:inherit}
@@ -138,7 +198,9 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   .meal{-webkit-line-clamp:1}
 }
 @media print{
-  #prefs,.row,.tabs,footer,.toggle,.marks{display:none}
+  #prefs,.row,.tabs,footer,.toggle,.marks,.shop-tools,.pbtn,.pantry,[data-sec=progress],.wk-nav,#langs,.authbar,.install,.ioshint,.cal-tools{display:none!important}
+  .day.off{display:flex!important}
+  .slist input{display:none}
   .card.closed .sec-body{display:block}
   body{background:#fff}
   .card{box-shadow:none;border:none}
@@ -154,7 +216,9 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   <div class="row" style="margin-top:12px">
     <button class="ghost small" id="openAll" data-i="openAll"></button>
     <button class="ghost small" id="closeAll" data-i="closeAll"></button>
+    <button class="primary small install" id="installBtn" data-i="install"></button>
   </div>
+  <p class="ioshint" id="iosHint" hidden></p>
 </header>
 
 <section class="card" id="prefs" data-sec="prefs">
@@ -164,7 +228,17 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
     <fieldset><legend data-i="diet"></legend><div class="chips" id="diet"></div></fieldset>
     <fieldset><legend data-i="goal"></legend><div class="chips" id="goal"></div></fieldset>
     <fieldset><legend data-i="protLvl"></legend><div class="chips" id="prot"></div></fieldset>
-    <fieldset><legend data-i="calLvl"></legend><div class="money"><input type="number" id="kcalTarget" min="800" max="6000" step="50" inputmode="numeric"><span data-i="kcalUnit"></span></div><p class="hint" style="margin:6px 0 0" data-i="kcalHint"></p></fieldset>
+    <fieldset><legend data-i="calLvl"></legend><div class="money"><input type="number" id="kcalTarget" min="800" max="6000" step="50" inputmode="numeric"><span data-i="kcalUnit"></span></div><p class="hint" style="margin:6px 0 0" data-i="kcalHint"></p>
+      <button type="button" class="linkbtn" id="calcToggle" data-i="calc"></button>
+      <div class="calc" id="calcBox" hidden>
+        <div class="chips" id="sexChips"></div>
+        <div class="f3"><label><span data-i="age"></span><input type="number" id="cAge" min="14" max="99" inputmode="numeric"></label><label><span data-i="height"></span><input type="number" id="cH" min="120" max="230" inputmode="numeric"></label><label><span data-i="weight"></span><input type="number" id="cW" min="30" max="300" step="0.1" inputmode="decimal"></label></div>
+        <label style="font-size:12.5px;color:var(--muted);display:grid;gap:4px"><span data-i="activity"></span><select id="cAct"></select></label>
+        <p class="res" id="calcRes"></p>
+        <div><button type="button" class="primary small" id="calcUse" data-i="calcUse"></button></div>
+        <p class="hint" style="margin:0" data-i="calcNote"></p>
+      </div></fieldset>
+    <fieldset><legend data-i="people"></legend><div class="money people"><input type="number" id="people" min="1" max="12" step="1" inputmode="numeric"><span data-i="peopleUnit"></span></div><p class="hint" style="margin:6px 0 0" data-i="peopleHint"></p></fieldset>
     <fieldset><legend data-i="meals"></legend><div class="chips" id="meals"></div></fieldset>
     <fieldset><legend data-i="start"></legend><input type="date" id="start"></fieldset>
     <fieldset><legend data-i="budget"></legend><div class="money"><input type="number" id="budget" min="0" step="5" inputmode="decimal"><span><span id="cur">€</span> / <b data-i="weekLow"></b></span></div></fieldset>
@@ -203,6 +277,8 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
     </div>
     <div class="wk-nav"><button type="button" id="wkPrev" aria-label="◀">◀</button><span id="wkLbl"></span><button type="button" id="wkNext" aria-label="▶">▶</button></div>
     <div class="cal" id="cal"></div>
+    <div class="row cal-tools"><button class="ghost small" id="icsBtn" data-i="icsBtn"></button><button class="ghost small" id="printBtn" data-i="printPdf"></button></div>
+    <p class="hint cal-tools" style="margin:8px 0 0" data-i="icsHint"></p>
   </div>
 </section>
 
@@ -222,7 +298,28 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
   <div class="sec-body">
     <div class="tabs" id="weekTabs"></div>
     <div id="shopTotal"></div>
-    <ul class="shop" id="shop" style="margin-top:14px"></ul>
+    <div class="shop-tools" id="shopTools"></div>
+    <div id="shop"></div>
+    <div class="pantry" id="pantry"></div>
+  </div>
+</section>
+
+<section class="card" data-sec="progress">
+  <div class="sec-head"><div><h2 data-i="s5"></h2><p class="hint" style="margin:0" data-i="s5hint"></p></div><button class="toggle" aria-expanded="true"><span class="chev">▾</span></button></div>
+  <div class="sec-body">
+    <div class="pform">
+      <label><span data-i="date"></span><input type="date" id="pDate"></label>
+      <label><span data-i="weight"></span><input type="number" id="pW" min="30" max="300" step="0.1" inputmode="decimal"></label>
+      <label><span data-i="waist"></span><input type="number" id="pWaist" min="30" max="250" step="0.5" inputmode="decimal"></label>
+      <label><span data-i="hip"></span><input type="number" id="pHip" min="30" max="250" step="0.5" inputmode="decimal"></label>
+      <label><span data-i="chest"></span><input type="number" id="pChest" min="30" max="250" step="0.5" inputmode="decimal"></label>
+      <button type="button" class="primary" id="pSave" data-i="saveEntry"></button>
+    </div>
+    <p class="addmsg" id="pMsg" role="status"></p>
+    <div class="tabs" id="pTabs"></div>
+    <div class="stats" id="pStats"></div>
+    <div class="pchart" id="pChart"></div>
+    <div class="tablewrap"><table class="ptable" id="pTable"></table></div>
   </div>
 </section>
 
@@ -235,6 +332,8 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 </dialog>
 
 <script src="recetas-i18n.js"></script>
+<script src="recetas-extra.js"></script>
+<script src="ingredientes.js"></script>
 <script>
 /* Flags: g gluten, l lactosa, m carne roja, c cerdo, p pollo/pavo, f pescado, s marisco, e huevo, n frutos secos */
 const R = {
@@ -319,6 +418,8 @@ s:[
 ["Garbanzos tostados","",160,8,["100 g garbanzos cocidos","Pimentón y comino"],"Seca los garbanzos, aliña y hornea 25 min a 200 °C."],
 ["Plátano y chocolate negro","",190,3,["1 plátano","2 onzas chocolate negro 85%"],"Listo para comer."]
 ]};
+/* recetas añadidas (recetas-extra.js): se añaden al final para mantener los índices */
+if(typeof RX !== "undefined") for(const t in RX) RX[t].forEach(([es,...x]) => { R[t].push(es); ["en","nl","it"].forEach((lg,k) => { if(typeof RT !== "undefined" && RT[lg]) RT[lg][t].push(x[k]); }); });
 
 const LANGS = ["es","en","nl","it"];
 const LOCALE = {es:"es-ES",en:"en-GB",nl:"nl-NL",it:"it-IT"};
@@ -409,6 +510,70 @@ overHint:["No hay recetas más baratas que encajen con tus restricciones; prueba
 budgetAdj:["Con presupuesto, el plan cambia las comidas más caras por otras más baratas hasta que la semana encaja.","With a budget set, the plan swaps the priciest meals for cheaper ones until each week fits.","Met een budget vervangt het plan de duurste maaltijden door goedkopere tot elke week past.","Con un budget, il piano sostituisce i pasti più cari con altri più economici finché ogni settimana rientra."],
 priceNote:["Precios orientativos de supermercado (revisados cada 2 meses; última revisión: oct. 2026); varían según tienda y marca. Se calcula lo que gastas en las cantidades de las recetas.","Approximate supermarket prices (reviewed every 2 months; last review: Oct 2026); they vary by shop and brand. Cost is based on the recipe quantities.","Indicatieve supermarktprijzen (elke 2 maanden herzien; laatste herziening: okt. 2026); ze verschillen per winkel en merk. Kosten zijn gebaseerd op de hoeveelheden in de recepten.","Prezzi indicativi da supermercato (rivisti ogni 2 mesi; ultima revisione: ott. 2026); variano per negozio e marca. Il costo si basa sulle quantità delle ricette."],
 dayCost:["Coste aprox. del día:","Approx. cost of the day:","Geschatte kosten van de dag:","Costo circa della giornata:"],
+people:["Personas","People","Personen","Persone"],
+peopleUnit:["persona(s)","person(s)","persoon/personen","persona/e"],
+peopleHint:["Multiplica cantidades, lista de la compra y coste. Las kcal se muestran por persona.","Multiplies amounts, shopping list and cost. Calories are shown per person.","Vermenigvuldigt hoeveelheden, boodschappenlijst en kosten. Calorieën per persoon.","Moltiplica quantità, lista della spesa e costo. Le calorie sono a persona."],
+forPeople:["Cantidades para {n} personas · kcal y macros por persona.","Amounts for {n} people · calories and macros per person.","Hoeveelheden voor {n} personen · kcal en macro's per persoon.","Quantità per {n} persone · kcal e macro a persona."],
+carbs:["hidratos","carbs","koolhydraten","carboidrati"],
+fat:["grasa","fat","vet","grassi"],
+carbsDay:["hidratos/día","carbs/day","koolh./dag","carboidrati/giorno"],
+fatDay:["grasa/día","fat/day","vet/dag","grassi/giorno"],
+macroNote:["Hidratos y grasa estimados a partir de los ingredientes.","Carbs and fat estimated from the ingredients.","Koolhydraten en vet geschat op basis van de ingrediënten.","Carboidrati e grassi stimati dagli ingredienti."],
+swap:["⇄ Cambiar plato","⇄ Swap dish","⇄ Gerecht wisselen","⇄ Cambia piatto"],
+swapPick:["Elige otro plato. La lista de la compra se actualiza sola.","Pick another dish. The shopping list updates itself.","Kies een ander gerecht. De boodschappenlijst past zich aan.","Scegli un altro piatto. La lista della spesa si aggiorna da sola."],
+swapRandom:["🎲 Al azar","🎲 Random","🎲 Willekeurig","🎲 A caso"],
+swapUndo:["↺ Volver al original","↺ Back to original","↺ Terug naar origineel","↺ Torna all'originale"],
+swapped:["cambiado","swapped","gewisseld","cambiato"],
+swapNone:["No hay otras recetas compatibles.","No other compatible recipes.","Geen andere passende recepten.","Nessun'altra ricetta compatibile."],
+cancel:["Cancelar","Cancel","Annuleren","Annulla"],
+gcal:["＋ Google Calendar","＋ Google Calendar","＋ Google Agenda","＋ Google Calendar"],
+haveIt:["Lo tengo en casa","I have it at home","Heb ik thuis","Ce l'ho a casa"],
+pantry:["🏠 Tu despensa","🏠 Your pantry","🏠 Je voorraad","🏠 La tua dispensa"],
+pantryHint:["Lo que ya tienes en casa no sale en la lista ni en lo que queda por comprar. Toca ✕ para devolverlo a la lista.","Things you already have are left off the list and the to-buy total. Tap ✕ to put one back.","Wat je al in huis hebt, staat niet op de lijst en telt niet mee. Tik op ✕ om het terug te zetten.","Ciò che hai già in casa non compare nella lista né nel totale da comprare. Tocca ✕ per rimetterlo."],
+pantryEmpty:["Toca 🏠 junto a un producto para añadirlo a tu despensa.","Tap 🏠 next to an item to add it to your pantry.","Tik op 🏠 naast een product om het aan je voorraad toe te voegen.","Tocca 🏠 accanto a un prodotto per aggiungerlo alla dispensa."],
+toBuy:["Te queda por comprar:","Left to buy:","Nog te kopen:","Ancora da comprare:"],
+itemsLbl:["productos","items","producten","prodotti"],
+uncheckAll:["Desmarcar todo","Uncheck all","Alles uitvinken","Deseleziona tutto"],
+shareWa:["Compartir por WhatsApp","Share on WhatsApp","Delen via WhatsApp","Condividi su WhatsApp"],
+share:["Compartir…","Share…","Delen…","Condividi…"],
+copied:["Lista copiada al portapapeles.","List copied to the clipboard.","Lijst gekopieerd.","Lista copiata negli appunti."],
+printPdf:["🖨 Imprimir / guardar PDF","🖨 Print / save PDF","🖨 Afdrukken / PDF","🖨 Stampa / salva PDF"],
+icsBtn:["📅 Pasar las comidas a mi calendario (.ics)","📅 Add meals to my calendar (.ics)","📅 Maaltijden in mijn agenda (.ics)","📅 Aggiungi i pasti al calendario (.ics)"],
+icsHint:["Descarga un archivo con los 30 días de comidas (desayuno 8:00, comida 14:00, snack 17:30, cena 21:00). En Google Calendar: Configuración → Importar y exportar. En cada día también puedes añadir una comida suelta.","Downloads a file with all 30 days of meals (breakfast 8:00, lunch 14:00, snack 17:30, dinner 21:00). In Google Calendar: Settings → Import & export. You can also add single meals from each day.","Downloadt een bestand met 30 dagen maaltijden (ontbijt 8:00, lunch 14:00, snack 17:30, avondeten 21:00). In Google Agenda: Instellingen → Importeren en exporteren. Per dag kun je ook losse maaltijden toevoegen.","Scarica un file con i 30 giorni di pasti (colazione 8:00, pranzo 14:00, spuntino 17:30, cena 21:00). In Google Calendar: Impostazioni → Importa ed esporta. Da ogni giorno puoi anche aggiungere un singolo pasto."],
+ud:["ud","pcs","st","pz"],
+sl:["reb.","slices","sneetjes","fette"],
+cl:["dientes","cloves","teentjes","spicchi"],
+calc:["Calcular con mis datos (peso, altura, edad, actividad)","Work it out from my details (weight, height, age, activity)","Bereken met mijn gegevens (gewicht, lengte, leeftijd, activiteit)","Calcola con i miei dati (peso, altezza, età, attività)"],
+sexM:["Hombre","Male","Man","Uomo"],
+sexF:["Mujer","Female","Vrouw","Donna"],
+age:["Edad","Age","Leeftijd","Età"],
+height:["Altura (cm)","Height (cm)","Lengte (cm)","Altezza (cm)"],
+weight:["Peso (kg)","Weight (kg)","Gewicht (kg)","Peso (kg)"],
+activity:["Actividad","Activity","Activiteit","Attività"],
+acts:[["Sedentaria (poco o nada de ejercicio)","Ligera (ejercicio 1-3 días/sem.)","Moderada (3-5 días/sem.)","Alta (6-7 días/sem.)","Muy alta (trabajo físico o 2 sesiones/día)"],["Sedentary (little or no exercise)","Light (exercise 1-3 days/wk)","Moderate (3-5 days/wk)","High (6-7 days/wk)","Very high (physical job or twice a day)"],["Zittend (weinig of geen sport)","Licht (1-3 dagen/week)","Gemiddeld (3-5 dagen/week)","Hoog (6-7 dagen/week)","Zeer hoog (fysiek werk of 2× per dag)"],["Sedentaria (poco o niente sport)","Leggera (1-3 giorni/sett.)","Moderata (3-5 giorni/sett.)","Alta (6-7 giorni/sett.)","Molto alta (lavoro fisico o 2 sessioni/giorno)"]],
+calcUse:["Usar estas kcal","Use these kcal","Gebruik deze kcal","Usa queste kcal"],
+calcRes:["Metabolismo basal: <b>{b}</b> kcal · gasto diario: <b>{t}</b> kcal · con tu objetivo: <b>{k} kcal/día</b>","Resting metabolism: <b>{b}</b> kcal · daily burn: <b>{t}</b> kcal · with your goal: <b>{k} kcal/day</b>","Ruststofwisseling: <b>{b}</b> kcal · dagelijks verbruik: <b>{t}</b> kcal · met je doel: <b>{k} kcal/dag</b>","Metabolismo basale: <b>{b}</b> kcal · dispendio giornaliero: <b>{t}</b> kcal · con il tuo obiettivo: <b>{k} kcal/giorno</b>"],
+calcNote:["Fórmula de Mifflin-St Jeor. Perder grasa: −20 %; ganar músculo: +10 %. Nunca menos de 1200 kcal (mujer) o 1500 kcal (hombre).","Mifflin-St Jeor formula. Lose fat: −20%; build muscle: +10%. Never below 1200 kcal (female) or 1500 kcal (male).","Mifflin-St Jeor-formule. Vet verliezen: −20%; spieren opbouwen: +10%. Nooit minder dan 1200 kcal (vrouw) of 1500 kcal (man).","Formula di Mifflin-St Jeor. Perdere grasso: −20%; aumentare muscoli: +10%. Mai meno di 1200 kcal (donna) o 1500 kcal (uomo)."],
+calcMissing:["Rellena edad, altura y peso.","Fill in age, height and weight.","Vul leeftijd, lengte en gewicht in.","Compila età, altezza e peso."],
+s5:["5. Tu progreso","5. Your progress","5. Je voortgang","5. I tuoi progressi"],
+s5hint:["Apunta tu peso y medidas cuando quieras (mejor en ayunas y a la misma hora). Se guarda y se sincroniza con tu cuenta.","Log your weight and measurements whenever you like (ideally before breakfast, same time of day). Saved and synced to your account.","Noteer je gewicht en maten wanneer je wilt (liefst nuchter, op hetzelfde tijdstip). Wordt opgeslagen en gesynchroniseerd.","Annota peso e misure quando vuoi (meglio a digiuno e alla stessa ora). Viene salvato e sincronizzato con il tuo account."],
+date:["Fecha","Date","Datum","Data"],
+waist:["Cintura (cm)","Waist (cm)","Taille (cm)","Vita (cm)"],
+hip:["Cadera (cm)","Hips (cm)","Heupen (cm)","Fianchi (cm)"],
+chest:["Pecho (cm)","Chest (cm)","Borst (cm)","Petto (cm)"],
+saveEntry:["Guardar","Save","Opslaan","Salva"],
+entrySaved:["Guardado.","Saved.","Opgeslagen.","Salvato."],
+entryReq:["Escribe al menos un dato.","Enter at least one value.","Vul minstens één waarde in.","Inserisci almeno un valore."],
+noEntries:["Aún no hay registros. Añade el primero arriba.","No entries yet. Add the first one above.","Nog geen metingen. Voeg hierboven de eerste toe.","Ancora nessuna misurazione. Aggiungi la prima qui sopra."],
+needTwo:["Con dos registros o más verás la gráfica.","Add two or more entries to see the chart.","Met twee of meer metingen zie je de grafiek.","Con due o più misurazioni vedrai il grafico."],
+pStart:["Inicio","Start","Begin","Inizio"],
+pNow:["Ahora","Now","Nu","Ora"],
+pChange:["Cambio","Change","Verschil","Variazione"],
+bmi:["IMC","BMI","BMI","IMC"],
+del:["Borrar","Delete","Verwijderen","Elimina"],
+pChartAria:["Gráfica de evolución de","Progress chart of","Voortgangsgrafiek van","Grafico dell'andamento di"],
+install:["📲 Instalar app","📲 Install app","📲 App installeren","📲 Installa app"],
+iosInstall:["Para instalarla en iPhone: toca Compartir y luego «Añadir a pantalla de inicio».","To install on iPhone: tap Share, then “Add to Home Screen”.","Installeren op iPhone: tik op Delen en daarna ‘Zet op beginscherm’.","Per installarla su iPhone: tocca Condividi e poi «Aggiungi alla schermata Home»."],
 dow:[["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],["Ma","Di","Wo","Do","Vr","Za","Zo"],["Lun","Mar","Mer","Gio","Ven","Sab","Dom"]]
 };
 const TYPES = {d:["Desayuno","Breakfast","Ontbijt","Colazione"],l:["Comida","Lunch","Lunch","Pranzo"],s:["Snack","Snack","Snack","Spuntino"],c:["Cena","Dinner","Avondeten","Cena"]};
@@ -445,11 +610,11 @@ const PRICES = [
  ["pan de centeno",4,40],["pan",3,40],["pasta",2.2,0],["quinoa",7,0],["tortilla",4,40],["lentejas rojas",3,0],["lenteja",2.2,0],
  ["hummus",8,0],["garbanzo",2.5,0],["alubia",2.5,0],["edamame",7,0],["boniato",2.2,250],["patata",1.6,200],
  ["semillas de calabaza",15,0],["semillas",12,0],["chia",10,0],["crema de cacahuete",9,0],["nueces",12,0],["almendra",12,0],
- ["copos de coco",10,0],["sesamo",8,0],["chocolate",15,10],["tomate triturado",1.5,0],["tomate",2.2,150],["brocoli",3,0],
+ ["copos de coco",10,0],["sesamo",8,0],["chocolate",15,10],["tomate triturado",1.5,0],["tomate",2.2,150],["brocoli",3,0],["coliflor",2.5,0],["guisantes",3,0],["cuscus",3,0],
  ["espinaca",5,30],["kale",6,30],["calabacin",2,250],["zanahoria",1.2,80],["cebolla",1.75,150],["puerro",2.5,150],["pimiento",3,200],
  ["esparrago",8,250],["judias verdes",4,0],["setas",7,0],["champinon",4,0],["lechuga",3,400],["canonigos",8,0,0.4],["rucula",12,0,0.5],
  ["pepino",1.8,300],["calabaza",1.5,0],["berenjena",2.5,300],["apio",2,40],["aguacate",6,200],["platano",1.8,120],["manzana",2.2,180],
- ["mango",4,350],["pina",2,0],["naranja",1.9,200],["mandarina",2.5,80],["kiwi",4,80],["frutos rojos",10,0],["limon",2.5,100],
+ ["pera",2.2,170],["mango",4,350],["pina",2,0],["naranja",1.9,200],["mandarina",2.5,80],["kiwi",4,80],["frutos rojos",10,0],["limon",2.5,100],
  ["lima",4,70],["miel",8,0],["aceite",9,0],["tahini",12,0],["tamari",15,0],["curry",25,0],["azafran",0,0,0.5]
 ];
 const UNITG = {cda:13,cdas:13,cdta:5,cacito:30,rebanada:40,rebanadas:40,"puñado":30,"puñados":30,diente:5,dientes:5,manojo:250,lata:80,onzas:10,rama:40};
@@ -469,13 +634,13 @@ const cFactor = () => country()[1];
 /* coste de una receta con raciones del objetivo y nivel de proteína */
 let costCache = {}, favCache = {};
 function cost(type, idx){
-  const key = `${type}${idx}|${state.goal}|${kcalF.toFixed(3)}|${state.protein}|${state.country}`;
+  const key = `${type}${idx}|${state.goal}|${kcalF.toFixed(3)}|${state.protein}|${state.country}|${ppl()}`;
   if(key in costCache) return costCache[key];
   return costCache[key] = rawCost(type, idx);
 }
 function rawCost(type, idx){
   const m = mult(), f = pFactor();
-  return R[type][idx][4].reduce((a,l) => a + priceLine(l) * m * (isProtIng(l) ? f : 1), 0) * cFactor();
+  return R[type][idx][4].reduce((a,l) => a + priceLine(l) * m * (isProtIng(l) ? f : 1), 0) * cFactor() * ppl();
 }
 const money = v => { const c = country(); return v.toLocaleString(state.lang==="en" && c[4] ? c[4] : LOCALE[state.lang], {style:"currency", currency:c[3]}); };
 function updateCur(){ const v = (document.querySelector('input[name=country]:checked')||{}).value; const c = COUNTRIES.find(x=>x[0]===v)||country(); $("cur").textContent = CUR_SYM[c[3]]; }
@@ -489,10 +654,10 @@ const GROUPS = [
   ["legumbres",["lenteja","garbanzo","alubia","hummus","edamame","tofu","tempeh"],["Legumbres y soja","Legumes & soy","Peulvruchten & soja","Legumi e soia"]],
   ["lacteos",["yogur","queso","requeson","kefir","mozzarella","parmesano","whey","bebida de"],["Lácteos y bebidas veg.","Dairy & plant milks","Zuivel & plantaardige drinks","Latticini e bevande veg."]],
   ["fsecos",["nueces","almendra","cacahuete","semillas","chia","sesamo"],["Frutos secos y semillas","Nuts & seeds","Noten & zaden","Frutta secca e semi"]],
-  ["cereales",["arroz","avena","pan","pasta","quinoa","tortilla","fideos","tortitas"],["Cereales","Grains","Granen","Cereali"]],
+  ["cereales",["arroz","avena","pan","pasta","quinoa","tortilla","fideos","tortitas","cuscus"],["Cereales","Grains","Granen","Cereali"]],
   ["patata",["patata","boniato"],["Patata / boniato","Potato / sweet potato","Aardappel / zoete aardappel","Patata / patata dolce"]],
-  ["verduras",["brocoli","espinaca","calabacin","zanahoria","cebolla","pimiento","tomate","esparrago","judias","setas","champinon","kale","lechuga","rucula","pepino","puerro","calabaza","berenjena","apio","ensalada","aguacate","gazpacho"],["Verduras","Vegetables","Groenten","Verdure"]],
-  ["fruta",["platano","manzana","mango","pina","naranja","mandarina","kiwi","frutos rojos"],["Fruta","Fruit","Fruit","Frutta"]]
+  ["verduras",["brocoli","espinaca","calabacin","zanahoria","cebolla","pimiento","tomate","esparrago","judias","setas","champinon","kale","lechuga","rucula","pepino","puerro","calabaza","berenjena","apio","ensalada","aguacate","gazpacho","coliflor","guisantes"],["Verduras","Vegetables","Groenten","Verdure"]],
+  ["fruta",["platano","manzana","pera","mango","pina","naranja","mandarina","kiwi","frutos rojos"],["Fruta","Fruit","Fruit","Frutta"]]
 ];
 /* [id, factor sobre la ración de proteína, etiquetas] */
 const PROT = [
@@ -520,7 +685,34 @@ function macros(type, idx){
   const r = R[type][idx], f = pFactor();
   const hasSrc = r[4].some(isProtIng);
   const p = hasSrc ? r[3]*(1+(f-1)*0.7) : r[3];
-  return [r[2] + (p - r[3])*5, p];
+  const [c, g] = baseCF(type, idx);
+  return [r[2] + (p - r[3])*5, p, c, g];
+}
+/* ---- ingredientes canónicos (ingredientes.js): agrupar duplicados, pasillos y macros ---- */
+const ingMemo = {};
+const ingOf = line => { const n = norm(line); if(n in ingMemo) return ingMemo[n]; return ingMemo[n] = (typeof INGR !== "undefined" && INGR.find(g => g[2].some(w => wordRe(w).test(n)))) || null; };
+const QTY_RE = /^(\d+\/\d+|\d+(?:[.,]\d+)?)\s*(g|ml|cdas?|cdta|cacito|rebanadas?|puñados?|dientes?|manojo|lata|onzas|rama)?\b/i;
+const parseNum = x => x.includes("/") ? (([a,b]) => a/b)(x.split("/").map(Number)) : parseFloat(x.replace(",","."));
+/* cantidad de una línea (en español): k = g | ml | ud | sl (rebanadas) | cl (dientes); g = gramos aprox. */
+function lineAmt(line, ing){
+  const q = line.match(QTY_RE); if(!q) return null;
+  const n = parseNum(q[1]), u = (q[2]||"").toLowerCase();
+  if(u === "g") return {k:"g", v:n, g:n};
+  if(u === "ml") return {k:"ml", v:n, g:n};
+  if(/^rebanada/.test(u)) return {k:"sl", v:n, g:n*40};
+  if(/^diente/.test(u)) return {k:"cl", v:n, g:n*5};
+  if(u === "lata") return {k:"ud", v:n, g:n*80};
+  if(u){ const g = n*(UNITG[u]||30); return {k:"g", v:g, g}; }
+  return {k:"ud", v:n, g:n*((ing && ing[5]) || 100)};
+}
+/* hidratos y grasa: se reparte la energía que no es proteína según la composición de los ingredientes */
+const cfMemo = {};
+function baseCF(type, idx){
+  const key = type+idx; if(key in cfMemo) return cfMemo[key];
+  const r = R[type][idx]; let c = 0, f = 0;
+  r[4].forEach(l => { const ing = ingOf(l), a = ing && lineAmt(l, ing); if(a){ c += a.g*ing[3]/100; f += a.g*ing[4]/100; } });
+  const rest = Math.max(0, r[2] - 4*r[3]), ec = 4*c, ef = 9*f, tot = ec + ef;
+  return cfMemo[key] = tot > 0 ? [rest*ec/tot/4, rest*ef/tot/9] : [rest*0.55/4, rest*0.45/9];
 }
 /* [id, flags, palabras clave (en el texto en español), etiquetas] */
 const DISLIKES = [
@@ -576,13 +768,14 @@ const $ = id => document.getElementById(id);
 const esc = w => w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
 const wordRe = w => new RegExp("(^|[^a-z])" + esc(w));
 
-let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:""};
+let state = {lang:"", diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", start:"", seed:1, closed:[], done:{}, budget:"", country:"", people:1, swaps:{}, pantry:[], bought:{}, profile:{}, progress:[]};
 try { const saved = JSON.parse(localStorage.getItem("planfit")); if(saved) state = {...state, ...saved}; } catch(e){}
 if(!state.country){ const nl0 = navigator.language||"es"; state.country = /^en-US/i.test(nl0) ? "us" : /^en-GB/i.test(nl0) ? "uk" : (({es:"es",en:"es",nl:"nl",it:"it"})[nl0.slice(0,2)] || "es"); }
 if(!state.start) state.start = new Date().toISOString().slice(0,10);
 if(!LANGS.includes(state.lang)){ const nav = (navigator.language||"es").slice(0,2); state.lang = LANGS.includes(nav) ? nav : "es"; }
 
 const L = () => LANGS.indexOf(state.lang);
+const ppl = () => Math.min(12, Math.max(1, parseInt(state.people) || 1));
 const t = k => UI[k][L()];
 /* receta en el idioma actual: [nombre, flags, kcal, prot, ingredientes, pasos] */
 function tr(type, idx){
@@ -630,6 +823,8 @@ function buildForm(){
     if(e.target.value==="omni" && e.target.checked) boxes.forEach(b => { if(b.value!=="omni") b.checked=false; });
     else if(e.target.checked) boxes.find(b=>b.value==="omni").checked=false;
   }));
+  $("people").value = ppl();
+  if(!$("calcBox").hidden) buildCalc();
   $("langs").innerHTML = LANGS.map(l => `<button class="${l===state.lang?"on":""}" data-l="${l}">${l.toUpperCase()}</button>`).join("");
   $("langs").querySelectorAll("button").forEach(b => b.onclick = () => { readForm(); state.lang = b.dataset.l; save(); buildForm(); run(); });
 }
@@ -643,6 +838,7 @@ function readForm(){
   state.kcal = $("kcalTarget").value;
   state.country = (document.querySelector('input[name=country]:checked')||{}).value || "es";
   state.budget = $("budget").value;
+  state.people = Math.min(12, Math.max(1, parseInt($("people").value) || 1));
   state.meals = MEALS.filter(m => document.querySelector(`input[name=meals][value=${m}]`).checked);
   state.dislikes = [...document.querySelectorAll('input[name=dis]:checked')].map(i=>i.value);
   state.favs = [...document.querySelectorAll('input[name=fav]:checked')].map(i=>i.value);
@@ -717,7 +913,12 @@ function generate(){
     plan.push(day);
   }
   fitBudget();
+  /* platos cambiados a mano: mandan sobre el generador */
+  let sw = false;
+  plan.forEach((day,i) => state.meals.forEach(x => { const s = (state.swaps||{})[dkey(i)+"|"+x]; if(s != null && pools[x].includes(s) && day[x] !== s){ day[x] = s; sw = true; } }));
+  if(sw && parseFloat(state.budget) > 0) overWeeks = Array.from({length:Math.ceil(30/7)},(_,w)=>w).filter(w => weekCost(w) > budgetFor(w) + 0.01);
 }
+const isSwapped = (i, x) => { const s = (state.swaps||{})[dkey(i)+"|"+x]; return s != null && plan[i] && plan[i][x] === s; };
 
 const weekDays = w => plan.map((_,k)=>k).slice(w*7, w*7+7);
 const dayCost = day => state.meals.reduce((a,x)=>a+(day[x]!=null?cost(x,day[x]):0),0);
@@ -800,11 +1001,14 @@ function renderSummary(){
   <div class="stats">
     <div class="stat"><b>${Math.round(kcal)}</b><small>${t("kcalDay")}</small></div>
     <div class="stat"><b>${Math.round(prot)} g</b><small>${t("protDay")}</small></div>
+    <div class="stat"><b>${Math.round(plan.reduce((a,d)=>a+sumDay(d,4),0)/30*m)} g</b><small>${t("carbsDay")}</small></div>
+    <div class="stat"><b>${Math.round(plan.reduce((a,d)=>a+sumDay(d,5),0)/30*m)} g</b><small>${t("fatDay")}</small></div>
     <div class="stat"><b>${plan.filter((_,k)=>state.done[dkey(k)]==="y").length}/30</b><small>${t("daysDone")}</small></div>
     <div class="stat"><b>${money(plan.reduce((a,d)=>a+dayCost(d),0)/30*7)}</b><small>${t("perWeek")}</small></div>
     <div class="stat"><b>${n}</b><small>${t("compat")}</small></div>
     <div class="stat"><b>${fmt(dayDate(0),{day:"numeric",month:"short"})} – ${fmt(dayDate(29),{day:"numeric",month:"short"})}</b><small>${t("days30")}</small></div>
   </div>
+  <p class="hint" style="margin:12px 0 0">${t("macroNote")}${ppl()>1 ? " "+t("forPeople").replace("{n}",ppl()) : ""}</p>
   ${parseFloat(state.budget)>0 ? `<p class="hint" style="margin:12px 0 0">${t("budgetAdj")}</p>` : ""}
   ${overWeeks.length ? `<div class="alert">${t("over")} (${overWeeks.map(w=>t("week")+" "+(w+1)).join(", ")}). ${t("overHint")}</div>` : ""}
   ${missing.length ? `<div class="alert">${t("noRecipes")} <b>${missing.join(", ")}</b>. ${t("tryRemove")}</div>` : ""}
@@ -865,55 +1069,287 @@ function mark(i, v){
   if($("dlg").open && openIdx===i) openDay(i);
 }
 
-function scaleQty(line, m, isP){
+const FRAC = {0.25:"¼",0.5:"½",0.75:"¾"};
+function fmtCount(v){ const q = Math.round(v*4)/4, w = Math.floor(q), f = q - w; return (w || !f ? String(w) : "") + (FRAC[f] || ""); }
+/* cantidades de la receta: gramos según objetivo (y proteína) y nº de personas; unidades según personas */
+function scaleQty(line, m, isP, n=1){
   if(isP) m *= pFactor();
-  if(m===1) return line;
+  const gm = m*n, um = isP ? m*n : n;
   if(/^\d+(?:[.,]\d+)?\s*(g|ml)\b/.test(line))
-    return line.replace(/^(\d+(?:[.,]\d+)?)/, n => Math.round(parseFloat(n.replace(",","."))*m/5)*5);
-  if(isP) return line.replace(/^(\d+)(?=\s)/, n => Math.max(1, Math.round(+n*m)));
-  return line;
+    return gm===1 ? line : line.replace(/^(\d+(?:[.,]\d+)?)/, x => Math.round(parseFloat(x.replace(",","."))*gm/5)*5);
+  const q = line.match(/^(\d+\/\d+|\d+(?:[.,]\d+)?)(?=\s)/);
+  if(!q || um===1) return line;
+  const v = parseNum(q[1])*um;
+  return (isP ? String(Math.max(1, Math.round(v))) : fmtCount(v)) + line.slice(q[1].length);
 }
 
-let openIdx = null;
+let openIdx = null, swapOpen = null;
+const MEAL_TIME = {d:[8,0],l:[14,0],s:[17,30],c:[21,0]};
+const ymdC = d => `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+function gcalLink(i, x){
+  const r = tr(x, plan[i][x]), d = dayDate(i), [h,mi] = MEAL_TIME[x], end = new Date(d); end.setHours(h, mi+30);
+  const st = `${ymdC(d)}T${pad(h)}${pad(mi)}00`, en = `${ymdC(end)}T${pad(end.getHours())}${pad(end.getMinutes())}00`;
+  const det = r[4].join("\n") + "\n\n" + r[5];
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(`${TYPES[x][L()]}: ${r[0]}`) + `&dates=${st}/${en}&details=` + encodeURIComponent(det);
+}
+const macroBar = (mc) => { const e = [mc[1]*4, mc[2]*4, mc[3]*9], tot = e.reduce((a,b)=>a+b,0) || 1;
+  return `<div class="mbar" aria-hidden="true"><i style="width:${e[0]/tot*100}%;background:var(--l)"></i><i style="width:${e[1]/tot*100}%;background:var(--d)"></i><i style="width:${e[2]/tot*100}%;background:var(--c)"></i></div>`; };
+const macroTxt = (mc, m) => `${Math.round(mc[0]*m)} kcal · <b style="color:var(--l)">P</b> ${Math.round(mc[1]*m)} g · <b style="color:var(--d)">${t("carbs").charAt(0).toUpperCase()}</b> ${Math.round(mc[2]*m)} g · <b style="color:var(--c)">${t("fat").charAt(0).toUpperCase()}</b> ${Math.round(mc[3]*m)} g`;
 function openDay(i){
+  if(openIdx !== i) swapOpen = null;
   openIdx = i;
-  const m = mult(), day = plan[i], li = L();
+  const m = mult(), day = plan[i], li = L(), n = ppl();
   $("dlgTitle").textContent = `${t("day")} ${i+1} · ${fmt(dayDate(i),{weekday:"long",day:"numeric",month:"long"})}`;
   const st = state.done[dkey(i)];
-  $("dlgBody").innerHTML = `<p class="macro" style="margin-bottom:0">${t("markDay")}</p><div class="dlg-marks"><button class="mk y ${st==="y"?"on":""}" data-v="y" aria-pressed="${st==="y"}">✓ ${t("doneLbl")}</button><button class="mk n ${st==="n"?"on":""}" data-v="n" aria-pressed="${st==="n"}">✗ ${t("missedLbl")}</button></div><p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b> · ${t("dayCost")} <b>${money(dayCost(day))}</b></p>` + state.meals.map(x => {
+  $("dlgBody").innerHTML = `<p class="macro" style="margin-bottom:0">${t("markDay")}</p><div class="dlg-marks"><button class="mk y ${st==="y"?"on":""}" data-v="y" aria-pressed="${st==="y"}">✓ ${t("doneLbl")}</button><button class="mk n ${st==="n"?"on":""}" data-v="n" aria-pressed="${st==="n"}">✗ ${t("missedLbl")}</button></div>
+  <p class="macro">${t("total")} <b>${Math.round(sumDay(day,2)*m)} kcal</b> · ${t("protein")} <b>${Math.round(sumDay(day,3)*m)} g</b> · ${t("carbs")} <b>${Math.round(sumDay(day,4)*m)} g</b> · ${t("fat")} <b>${Math.round(sumDay(day,5)*m)} g</b> · ${t("dayCost")} <b>${money(dayCost(day))}</b></p>
+  ${n>1 ? `<p class="macro">${t("forPeople").replace("{n}",n)}</p>` : ""}` + state.meals.map(x => {
     if(day[x]==null) return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><p>${t("none")}</p></div>`;
     const r = tr(x, day[x]), mc = macros(x, day[x]), es = R[x][day[x]][4];
-    return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span><h4>${star(x,day[x])}${r[0]}</h4>
-      <div class="macro">${Math.round(mc[0]*m)} kcal · ${Math.round(mc[1]*m)} g ${t("protein")} · ≈ ${money(cost(x,day[x]))}</div>
-      <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]))}</li>`).join("")}</ul><p>${r[5]}</p></div>`;
+    let sw = "";
+    if(swapOpen === x){
+      const alts = pools[x].filter(k => k !== day[x]).sort((a,b) => (isFav(x,b)-isFav(x,a)) || tr(x,a)[0].localeCompare(tr(x,b)[0], state.lang));
+      sw = `<p class="macro" style="margin-top:8px">${t("swapPick")}</p>` + (alts.length ? `<div class="swaplist">${alts.map(k => { const mk = macros(x,k); return `<button type="button" data-swap="${x}" data-r="${k}">${star(x,k)}${tr(x,k)[0]}<br><small>${Math.round(mk[0]*m)} kcal · ${Math.round(mk[1]*m)} g ${t("protein")} · ≈ ${money(cost(x,k))}</small></button>`; }).join("")}</div>` : `<p>${t("swapNone")}</p>`) +
+        `<div class="swapbar">${alts.length ? `<button type="button" class="ghost small" data-rand="${x}">${t("swapRandom")}</button>` : ""}<button type="button" class="ghost small" data-cancel="1">${t("cancel")}</button></div>`;
+    } else {
+      sw = `<div class="swapbar"><button type="button" class="ghost small" data-open="${x}">${t("swap")}</button>${isSwapped(i,x) ? `<button type="button" class="ghost small" data-undo="${x}">${t("swapUndo")}</button>` : ""}<a href="${gcalLink(i,x)}" target="_blank" rel="noopener">${t("gcal")}</a></div>`;
+    }
+    return `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}</span>${isSwapped(i,x) ? `<span class="swtag">${t("swapped")}</span>` : ""}<h4>${star(x,day[x])}${r[0]}</h4>
+      <div class="macro">${macroTxt(mc, m)} · ≈ ${money(cost(x,day[x]))}</div>${macroBar(mc)}
+      <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]),n)}</li>`).join("")}</ul><p>${r[5]}</p>${sw}</div>`;
   }).join("");
   if(!$("dlg").open) $("dlg").showModal();
 }
+function setSwap(i, x, r){
+  const k = dkey(i)+"|"+x;
+  state.swaps = {...(state.swaps||{})};
+  if(r == null) delete state.swaps[k]; else state.swaps[k] = r;
+  swapOpen = null; save(); run();
+}
+$("dlgBody").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b || openIdx == null) return;
+  const d = b.dataset;
+  if(d.open){ swapOpen = d.open; openDay(openIdx); }
+  else if(d.cancel){ swapOpen = null; openDay(openIdx); }
+  else if(d.swap) setSwap(openIdx, d.swap, +d.r);
+  else if(d.rand){ const x = d.rand, alts = pools[x].filter(k => k !== plan[openIdx][x]); if(alts.length) setSwap(openIdx, x, alts[Math.floor(Math.random()*alts.length)]); }
+  else if(d.undo) setSwap(openIdx, d.undo, null);
+});
 
 let week = 0;
 const UNIT = /^[\d\/.,+\s]+(?:(g|ml|cdas?|cdtas?|tbsp|tsp|el|tl|cucchia(?:i|io|ino)(?: di| d')?|cacito|scoop|schepje|misurino(?: di)?)\b)?\s*/i;
+/* lista de la compra: ingredientes canónicos (agrupa "huevo", "huevos", "huevo cocido"…), cantidades sumadas y por pasillo */
+function shopItems(w){
+  const items = {}, m = mult(), f = pFactor(), cf = cFactor(), n = ppl(), li = L();
+  weekDays(w).forEach(k => state.meals.forEach(x => {
+    const r = plan[k][x]; if(r == null) return;
+    const es = R[x][r][4], loc = tr(x, r)[4];
+    es.forEach((line, j) => {
+      const ing = ingOf(line), isP = isProtIng(line);
+      let id, name, aisle;
+      if(ing){ id = ing[0]; name = ing[6][li]; aisle = ing[1]; }
+      else { const nm = (loc[j]||line).replace(UNIT,"").trim(); name = nm.charAt(0).toUpperCase()+nm.slice(1); id = "x:"+norm(name); aisle = "otros"; }
+      const it = items[id] || (items[id] = {id, name, aisle, amt:{}, n:0, cost:0});
+      it.n++;
+      it.cost += priceLine(line) * m * (isP ? f : 1) * cf * n;
+      const am = lineAmt(line, ing);
+      if(am){ const sc = (am.k==="g" || am.k==="ml") ? m*(isP ? f : 1) : (isP ? m*f : 1); it.amt[am.k] = (it.amt[am.k]||0) + am.v*sc*n; }
+    });
+  }));
+  return Object.values(items);
+}
+function fmtAmt(a){
+  const out = [], r5 = v => v >= 100 ? Math.round(v/10)*10 : Math.max(5, Math.round(v/5)*5);
+  if(a.g) out.push(a.g >= 1000 ? (Math.round(a.g/100)/10).toLocaleString(LOCALE[state.lang]) + " kg" : r5(a.g) + " g");
+  if(a.ml) out.push(a.ml >= 1000 ? (Math.round(a.ml/100)/10).toLocaleString(LOCALE[state.lang]) + " l" : r5(a.ml) + " ml");
+  ["ud","sl","cl"].forEach(k => { if(a[k]) out.push(Math.max(1, Math.ceil(a[k] - 0.05)) + " " + t(k)); });
+  return out.join(" + ");
+}
+const pantryName = id => { const g = typeof INGR !== "undefined" && INGR.find(x => x[0] === id); if(g) return g[6][L()]; const s_ = id.replace(/^x:/,""); return s_.charAt(0).toUpperCase()+s_.slice(1); };
+const escH = v => String(v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let shopCache = [];
 function renderShop(){
-  const weeks = Math.ceil(30/7);
+  const weeks = Math.ceil(30/7), li = L();
+  state.pantry = state.pantry || []; state.bought = state.bought || {};
   $("weekTabs").innerHTML = Array.from({length:weeks},(_,w)=>`<button class="ghost ${w===week?"on":""}" data-w="${w}">${t("week")} ${w+1}</button>`).join("");
   $("weekTabs").querySelectorAll("button").forEach(b => b.onclick = () => { week = +b.dataset.w; renderShop(); });
-  const count = {}, costs = {}, m = mult(), f = pFactor(), cf = cFactor();
-  plan.slice(week*7, week*7+7).forEach(day => state.meals.forEach(x => { if(day[x]==null) return; const es = R[x][day[x]][4]; tr(x,day[x])[4].forEach((y,k) => {
-    const name = y.replace(UNIT,"").trim();
-    const key = name.charAt(0).toUpperCase()+name.slice(1);
-    count[key] = (count[key]||0)+1;
-    costs[key] = (costs[key]||0) + priceLine(es[k]) * m * (isProtIng(es[k]) ? f : 1) * cf;
-  }); }));
-  $("shop").innerHTML = Object.entries(count).sort((a,b)=>a[0].localeCompare(b[0],state.lang))
-    .map(([k,v])=>`<li>${k} <span>×${v} · ${money(costs[k])}</span></li>`).join("") || `<li>${t("noIngr")}</li>`;
+  const all = shopItems(week);
+  shopCache = all.filter(it => !state.pantry.includes(it.id));
+  const bk = it => week+"|"+it.id;
+  const byAisle = AISLES.map(([id, lbl]) => [lbl[li], shopCache.filter(it => it.aisle === id).sort((a,b) => a.name.localeCompare(b.name, state.lang))]).filter(g => g[1].length);
+  $("shop").innerHTML = byAisle.length ? `<div class="aisles">${byAisle.map(([lbl, its]) => `<div class="aisle"><h4>${lbl}</h4><ul class="slist">${its.map(it => {
+    const got = !!state.bought[bk(it)], am = fmtAmt(it.amt);
+    return `<li class="${got?"got":""}"><label><input type="checkbox" data-b="${escH(it.id)}" ${got?"checked":""}><span class="nm">${escH(it.name)}</span><span class="amt">${am ? am + " · " : ""}×${it.n}</span></label><span class="cost">${money(it.cost)}</span><button type="button" class="pbtn" data-p="${escH(it.id)}" title="${t("haveIt")}" aria-label="${t("haveIt")}: ${escH(it.name)}">🏠</button></li>`; }).join("")}</ul></div>`).join("")}</div>` : `<p>${t("noIngr")}</p>`;
+  const left = shopCache.filter(it => !state.bought[bk(it)]);
   const total = weekCost(week), b = parseFloat(state.budget);
-  let html = `<div class="shop-total"><span>${t("estTotal")} <b>${money(total)}</b></span>`;
+  let html = `<div class="shop-total"><span>${t("estTotal")} <b>${money(total)}</b></span><span>${t("toBuy")} <b>${money(left.reduce((a,it)=>a+it.cost,0))}</b> · ${left.length} ${t("itemsLbl")}</span>`;
   if(b > 0){
     const bw = budgetFor(week), pct = Math.min(100, total/bw*100), over = total > bw + 0.01;
     html += `<span class="${over?"overmsg":"okmsg"}">${over ? `${t("over")} ${money(total-bw)}` : t("within")} · ${money(bw)}</span></div>
       <div class="budget-bar ${over?"over":""}"><i style="width:${pct}%"></i></div><p class="hint" style="margin:0">${Math.round(total/bw*100)} % ${t("ofBudget")}</p>`;
   } else html += `</div>`;
   $("shopTotal").innerHTML = html + `<p class="hint" style="margin:8px 0 0">${t("priceNote")}</p>`;
+  $("shopTools").innerHTML = `<button type="button" class="primary small" id="shareWa">${t("shareWa")}</button>${navigator.share ? `<button type="button" class="ghost small" id="shareNat">${t("share")}</button>` : ""}<button type="button" class="ghost small" id="shopPrint">${t("printPdf")}</button><button type="button" class="ghost small" id="uncheck">${t("uncheckAll")}</button>`;
+  $("pantry").innerHTML = `<h4>${t("pantry")}</h4><p class="hint" style="margin:0">${state.pantry.length ? t("pantryHint") : t("pantryEmpty")}</p>` +
+    (state.pantry.length ? `<div class="chips">${state.pantry.map(id => `<span class="ptag">${escH(pantryName(id))}<button type="button" data-unp="${escH(id)}" aria-label="${t("removeLbl")} ${escH(pantryName(id))}">✕</button></span>`).join("")}</div>` : "");
 }
+function shopText(){
+  const li = L(), d0 = dayDate(week*7), d1 = dayDate(Math.min(29, week*7+6)), bk = it => week+"|"+it.id;
+  const its = shopCache.filter(it => !state.bought[bk(it)]);
+  let txt = `🛒 ${UI.s3[li].replace(/^\d+\.\s*/,"")} · ${t("week")} ${week+1} (${fmt(d0,{day:"numeric",month:"short"})} – ${fmt(d1,{day:"numeric",month:"short"})})\n`;
+  AISLES.forEach(([id, lbl]) => { const g = its.filter(it => it.aisle === id).sort((a,b)=>a.name.localeCompare(b.name, state.lang)); if(!g.length) return;
+    txt += `\n*${lbl[li]}*\n` + g.map(it => { const am = fmtAmt(it.amt); return `• ${it.name}${am ? " — " + am : ""}`; }).join("\n") + "\n"; });
+  return txt + `\n${t("toBuy")} ≈ ${money(its.reduce((a,it)=>a+it.cost,0))}`;
+}
+$("shopTools").addEventListener("click", async e => {
+  const id = (e.target.closest("button")||{}).id;
+  if(id === "shareWa") window.open("https://wa.me/?text=" + encodeURIComponent(shopText()), "_blank", "noopener");
+  else if(id === "shareNat"){ try { await navigator.share({title: t("title"), text: shopText()}); } catch(err){} }
+  else if(id === "shopPrint") printPlan();
+  else if(id === "uncheck"){ Object.keys(state.bought).forEach(k => { if(k.startsWith(week+"|")) delete state.bought[k]; }); save(); renderShop(); }
+});
+$("shop").addEventListener("change", e => {
+  const c = e.target.closest("input[data-b]"); if(!c) return;
+  const k = week+"|"+c.dataset.b;
+  if(c.checked) state.bought[k] = true; else delete state.bought[k];
+  save(); c.closest("li").classList.toggle("got", c.checked);
+  renderShop();
+});
+$("shop").addEventListener("click", e => {
+  const b = e.target.closest("button[data-p]"); if(!b) return;
+  if(!state.pantry.includes(b.dataset.p)) state.pantry = [...state.pantry, b.dataset.p];
+  save(); renderShop();
+});
+$("pantry").addEventListener("click", e => {
+  const b = e.target.closest("button[data-unp]"); if(!b) return;
+  state.pantry = state.pantry.filter(x => x !== b.dataset.unp); save(); renderShop();
+});
+function printPlan(){
+  const closed = state.closed; document.querySelectorAll("[data-sec]").forEach(s_ => s_.classList.remove("closed"));
+  setTimeout(() => { window.print(); applySections(); }, 50);
+}
+
+/* exportar el plan a un calendario (.ics, lo importa Google Calendar, Apple y Outlook) */
+function icsText(){
+  const esc_ = v => String(v).replace(/\\/g,"\\\\").replace(/;/g,"\;").replace(/,/g,"\\,").replace(/\n/g,"\\n");
+  const fold = l => { const out = []; while(l.length > 74){ out.push(l.slice(0,74)); l = " " + l.slice(74); } out.push(l); return out.join("\r\n"); };
+  const now = new Date(), stamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}00Z`;
+  const L_ = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Plan Fit//Plan Fit 30//ES","CALSCALE:GREGORIAN","X-WR-CALNAME:"+esc_(t("title"))];
+  plan.forEach((day,i) => state.meals.forEach(x => {
+    if(day[x] == null) return;
+    const r = tr(x, day[x]), d = dayDate(i), [h,mi] = MEAL_TIME[x], es = R[x][day[x]][4];
+    const ing = r[4].map((y,k) => "- " + scaleQty(y, mult(), isProtIng(es[k]), ppl())).join("\n");
+    L_.push("BEGIN:VEVENT", `UID:planfit-${dkey(i)}-${x}-${day[x]}@plan-fit`, "DTSTAMP:"+stamp, `DTSTART:${ymdC(d)}T${pad(h)}${pad(mi)}00`, "DURATION:PT30M",
+      "SUMMARY:"+esc_(`${TYPES[x][L()]}: ${r[0]}`), "DESCRIPTION:"+esc_(`${ing}\n\n${r[5]}`), "END:VEVENT");
+  }));
+  L_.push("END:VCALENDAR");
+  return L_.map(fold).join("\r\n");
+}
+$("icsBtn").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([icsText()], {type:"text/calendar"}));
+  a.download = "plan-fit.ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+};
+$("printBtn").onclick = printPlan;
+
+/* calculadora de calorías (Mifflin-St Jeor) */
+const ACT = [1.2, 1.375, 1.55, 1.725, 1.9];
+const GOAL_ADJ = {perder:0.8, mantener:1, ganar:1.1};
+function calcKcal(){
+  const p = state.profile || {}, a = +p.age, h = +p.h, w = +p.w;
+  if(!(a > 0 && h > 0 && w > 0)) return null;
+  const bmr = 10*w + 6.25*h - 5*a + (p.sex === "m" ? 5 : -161);
+  const tdee = bmr * (ACT[p.act ?? 1] || 1.375);
+  const goal = (document.querySelector('input[name=goal]:checked')||{}).value || state.goal;
+  const k = Math.max(p.sex === "m" ? 1500 : 1200, Math.round(tdee * (GOAL_ADJ[goal]||1) / 50) * 50);
+  return {b: Math.round(bmr), t: Math.round(tdee), k};
+}
+function readCalc(){
+  state.profile = {sex: (document.querySelector('input[name=sex]:checked')||{}).value || "f", age: $("cAge").value, h: $("cH").value, w: $("cW").value, act: +$("cAct").value};
+}
+function renderCalc(){
+  const c = calcKcal();
+  $("calcRes").innerHTML = c ? t("calcRes").replace("{b}",c.b).replace("{t}",c.t).replace("{k}",c.k) : t("calcMissing");
+  $("calcUse").disabled = !c;
+}
+function buildCalc(){
+  const p = state.profile || {}, li = L();
+  $("sexChips").innerHTML = "";
+  chip("sexChips","radio","sex","f",t("sexF"),(p.sex||"f")==="f");
+  chip("sexChips","radio","sex","m",t("sexM"),p.sex==="m");
+  $("cAct").innerHTML = UI.acts[li].map((l,k) => `<option value="${k}" ${(p.act ?? 1)===k?"selected":""}>${l}</option>`).join("");
+  $("cAge").value = p.age || ""; $("cH").value = p.h || "";
+  const lastW = (state.progress||[]).filter(e => e.w).slice(-1)[0];
+  $("cW").value = p.w || (lastW ? lastW.w : "");
+  renderCalc();
+}
+$("calcToggle").onclick = () => { $("calcBox").hidden = !$("calcBox").hidden; if(!$("calcBox").hidden) buildCalc(); };
+$("calcBox").addEventListener("input", () => { readCalc(); renderCalc(); save(); });
+$("calcBox").addEventListener("change", () => { readCalc(); renderCalc(); save(); });
+document.addEventListener("change", e => { if(e.target.name === "goal" && !$("calcBox").hidden) renderCalc(); });
+$("calcUse").onclick = () => { const c = calcKcal(); if(!c) return; $("kcalTarget").value = c.k; run(); };
+
+/* progreso: peso y medidas */
+const PFIELDS = [["w","weight","kg"],["waist","waist","cm"],["hip","hip","cm"],["chest","chest","cm"]];
+let pMetric = "w";
+const numFmt = (v, d=1) => (+v).toLocaleString(LOCALE[state.lang], {maximumFractionDigits:d});
+function renderProgress(){
+  const li = L(), list = (state.progress||[]).slice().sort((a,b) => a.d.localeCompare(b.d));
+  if(!$("pDate").value) $("pDate").value = new Date().toISOString().slice(0,10);
+  const avail = PFIELDS.filter(f => list.some(e => e[f[0]] != null));
+  if(!avail.find(f => f[0] === pMetric) && avail.length) pMetric = avail[0][0];
+  const lab = f => t(f[1]).replace(/\s*\(.*\)/,"");
+  $("pTabs").innerHTML = avail.length > 1 ? avail.map(f => `<button class="ghost ${f[0]===pMetric?"on":""}" data-m="${f[0]}">${lab(f)}</button>`).join("") : "";
+  const F = PFIELDS.find(f => f[0] === pMetric), pts = list.filter(e => e[pMetric] != null);
+  if(!pts.length){ $("pStats").innerHTML = ""; $("pChart").innerHTML = `<p class="hint">${t("noEntries")}</p>`; $("pTable").innerHTML = ""; return; }
+  const first = pts[0][pMetric], last = pts[pts.length-1][pMetric], diff = last - first, unit = F[2];
+  const h = +((state.profile||{}).h);
+  $("pStats").innerHTML = `<div class="stat"><b>${numFmt(first)} ${unit}</b><small>${t("pStart")} · ${fmt(new Date(pts[0].d+"T12:00:00"),{day:"numeric",month:"short"})}</small></div>
+    <div class="stat"><b>${numFmt(last)} ${unit}</b><small>${t("pNow")} · ${fmt(new Date(pts[pts.length-1].d+"T12:00:00"),{day:"numeric",month:"short"})}</small></div>
+    <div class="stat"><b>${diff>0?"+":diff<0?"−":""}${numFmt(Math.abs(diff))} ${unit}</b><small>${t("pChange")}</small></div>
+    ${pMetric==="w" && h > 0 ? `<div class="stat"><b>${numFmt(last/((h/100)**2))}</b><small>${t("bmi")}</small></div>` : ""}`;
+  $("pChart").innerHTML = pts.length < 2 ? `<p class="hint">${t("needTwo")}</p>` : progressSVG(pts, F, lab(F));
+  $("pTable").innerHTML = `<thead><tr><th>${t("date")}</th>${PFIELDS.map(f => `<th>${t(f[1])}</th>`).join("")}<th></th></tr></thead><tbody>` +
+    list.slice().reverse().map(e => `<tr><td>${fmt(new Date(e.d+"T12:00:00"),{day:"numeric",month:"short",year:"numeric"})}</td>${PFIELDS.map(f => `<td>${e[f[0]] != null ? numFmt(e[f[0]]) : "—"}</td>`).join("")}<td><button type="button" data-del="${e.d}" title="${t("del")}" aria-label="${t("del")}">✕</button></td></tr>`).join("") + `</tbody>`;
+}
+function progressSVG(pts, F, label){
+  const W = Math.max(280, Math.round($("pChart").clientWidth || 640)), H = 230, ml = 44, mr = 14, mt = 14, mb = 28, key = F[0];
+  const xs = pts.map(e => new Date(e.d+"T12:00:00").getTime()), ys = pts.map(e => e[key]);
+  let lo = Math.min(...ys), hi = Math.max(...ys); const padY = Math.max(0.5, (hi-lo)*0.15); lo -= padY; hi += padY;
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), X = v => ml + (x1===x0 ? 0.5 : (v-x0)/(x1-x0)) * (W-ml-mr), Y = v => mt + (1-(v-lo)/(hi-lo)) * (H-mt-mb);
+  const ticks = Array.from({length:4},(_,k) => lo + (hi-lo)*(k+0.5)/4);
+  const xl = [0, Math.floor((pts.length-1)/2), pts.length-1].filter((v,k,a) => a.indexOf(v)===k);
+  const path = pts.map((e,k) => (k?"L":"M") + X(xs[k]).toFixed(1) + " " + Y(ys[k]).toFixed(1)).join(" ");
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("pChartAria")} ${label}">
+    <g class="grid">${ticks.map(v => `<line x1="${ml}" x2="${W-mr}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${ml-8}" y="${Y(v)+4}" text-anchor="end">${numFmt(v)}</text>`).join("")}</g>
+    ${xl.map(k => `<text x="${X(xs[k])}" y="${H-8}" text-anchor="${k===0?"start":k===pts.length-1?"end":"middle"}">${fmt(new Date(xs[k]),{day:"numeric",month:"short"})}</text>`).join("")}
+    <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${pts.map((e,k) => `<circle cx="${X(xs[k])}" cy="${Y(ys[k])}" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/><circle class="hit" cx="${X(xs[k])}" cy="${Y(ys[k])}" r="14" fill="transparent" data-tip="${fmt(new Date(xs[k]),{day:"numeric",month:"short",year:"numeric"})}: ${numFmt(ys[k])} ${F[2]}"/>`).join("")}
+  </svg>`;
+}
+$("pChart").addEventListener("mousemove", e => {
+  const tip = $("tip"), c = e.target.closest("[data-tip]");
+  if(!c){ tip.hidden = true; return; }
+  tip.textContent = c.dataset.tip; tip.hidden = false;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (e.clientY + 14) + "px";
+});
+let rsT; window.addEventListener("resize", () => { clearTimeout(rsT); rsT = setTimeout(renderProgress, 150); });
+$("pChart").addEventListener("mouseleave", () => $("tip").hidden = true);
+$("pTabs").addEventListener("click", e => { const b = e.target.closest("button[data-m]"); if(b){ pMetric = b.dataset.m; renderProgress(); } });
+$("pTable").addEventListener("click", e => { const b = e.target.closest("button[data-del]"); if(!b) return; state.progress = (state.progress||[]).filter(x => x.d !== b.dataset.del); save(); renderProgress(); });
+$("pSave").onclick = () => {
+  const d = $("pDate").value || new Date().toISOString().slice(0,10), e = {d};
+  PFIELDS.forEach(([k], j) => { const v = parseFloat([$("pW"),$("pWaist"),$("pHip"),$("pChest")][j].value.replace(",",".")); if(v > 0) e[k] = Math.round(v*10)/10; });
+  const msg = $("pMsg");
+  if(Object.keys(e).length < 2){ msg.textContent = t("entryReq"); msg.className = "addmsg err"; return; }
+  const old = (state.progress||[]).find(x => x.d === d) || {};
+  state.progress = (state.progress||[]).filter(x => x.d !== d).concat({...old, ...e});
+  if(e.w){ state.profile = {...(state.profile||{}), w: e.w}; }
+  ["pW","pWaist","pHip","pChest"].forEach(id => $(id).value = "");
+  msg.textContent = t("entrySaved"); msg.className = "addmsg ok";
+  save(); renderProgress();
+};
 
 let chartRange = "m";
 function groupOf(line){
@@ -977,7 +1413,7 @@ $("openAll").onclick = () => { state.closed = []; save(); applySections(); };
 $("closeAll").onclick = () => { state.closed = [...document.querySelectorAll("[data-sec]")].map(s=>s.dataset.sec); save(); applySections(); };
 
 function run(){
-  readForm(); updateKcalF(); generate(); updateKcalF(); renderSummary(); renderCalendar(); renderChart(); renderShop(); applySections();
+  readForm(); updateKcalF(); generate(); updateKcalF(); renderSummary(); renderCalendar(); renderChart(); renderShop(); renderProgress(); applySections();
   if($("dlg").open && openIdx!=null) openDay(openIdx);
 }
 
@@ -999,10 +1435,11 @@ $("kcalTarget").addEventListener("change", () => run());
 $("budget").placeholder = "—";
 buildForm();
 $("gen").onclick = () => { run(); $("summary").scrollIntoView({behavior:"smooth"}); };
-$("shuffle").onclick = () => { state.seed++; run(); };
+$("shuffle").onclick = () => { state.seed++; state.swaps = {}; run(); };
+$("people").addEventListener("change", () => run());
 $("reset").onclick = () => {
   readForm();
-  Object.assign(state, {diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:""});
+  Object.assign(state, {diet:["omni"], goal:"mantener", protein:"normal", kcal:"", meals:["d","l","s","c"], dislikes:[], favs:[], custom:"", customFav:"", swaps:{}, people:1});
   $("custom").value = ""; $("customFav").value = ""; $("kcalTarget").value = "";
   buildForm(); run();
 };
@@ -1010,6 +1447,17 @@ $("close").onclick = () => $("dlg").close();
 $("dlgBody").addEventListener("click", e => { const m = e.target.closest(".mk"); if(m && openIdx!=null) mark(openIdx, m.dataset.v); });
 $("dlg").addEventListener("click", e => { if(e.target === $("dlg")) $("dlg").close(); });
 run();
+
+/* ---- app instalable (PWA) ---- */
+if("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+let installEvt = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; $("installBtn").classList.add("on"); });
+window.addEventListener("appinstalled", () => { installEvt = null; $("installBtn").classList.remove("on"); });
+$("installBtn").onclick = async () => { if(!installEvt) return; installEvt.prompt(); try { await installEvt.userChoice; } catch(e){} installEvt = null; $("installBtn").classList.remove("on"); };
+(function(){
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !navigator.standalone;
+  if(ios){ $("iosHint").hidden = false; $("iosHint").textContent = t("iosInstall"); }
+})();
 </script>
 <script src="auth.js"></script>
 </body>

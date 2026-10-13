@@ -80,7 +80,7 @@ function render(){
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 /* ---------- sincronización ---------- */
-const SYNC_KEYS = ["diet","goal","protein","kcal","meals","dislikes","favs","custom","customFav","start","seed","closed","done","budget","country"];
+const SYNC_KEYS = ["diet","goal","protein","kcal","meals","dislikes","favs","custom","customFav","start","seed","closed","done","budget","country","people","swaps","pantry","bought","profile","progress"];
 const pick = () => { const o = {}; SYNC_KEYS.forEach(k => { if(state[k] !== undefined) o[k] = state[k]; }); return o; };
 
 function applyCloud(data){
@@ -88,7 +88,7 @@ function applyCloud(data){
   SYNC_KEYS.forEach(k => { if(data[k] !== undefined) state[k] = data[k]; });
   try { localStorage.setItem("planfit", JSON.stringify(state)); } catch(e){}
   buildForm();
-  [["custom","custom"],["customFav","customFav"],["start","start"],["budget","budget"],["kcalTarget","kcal"]]
+  [["custom","custom"],["customFav","customFav"],["start","start"],["budget","budget"],["kcalTarget","kcal"],["people","people"]]
     .forEach(([id,k]) => { const i = document.getElementById(id); if(i) i.value = state[k] || ""; });
   run();
   applying = false;
