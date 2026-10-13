@@ -11,6 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="FitDeliMenu">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
@@ -33,6 +35,8 @@ body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-
 .wrap{max-width:1180px;margin:0 auto;padding:24px 16px 64px}
 header h1{font-family:Fraunces,Georgia,serif;font-size:clamp(28px,5vw,44px);margin:0 0 4px;letter-spacing:-.5px}
 header p{margin:0;color:var(--muted)}
+h1.logo{margin:0 0 10px;line-height:0}
+h1.logo img{height:clamp(120px,22vw,180px);width:auto;display:block}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-top:20px}
 h2{font-size:18px;margin:0 0 4px}
 .hint{color:var(--muted);font-size:13px;margin:0 0 14px}
@@ -254,7 +258,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 <div class="wrap">
 <header>
   <div class="langs" id="langs"></div>
-  <h1 data-i="title"></h1>
+  <h1 class="logo"><picture><source srcset="icons/logo-dark.png" media="(prefers-color-scheme: dark)"><img src="icons/logo.png" alt="FitDeliMenu" width="640" height="537"></picture></h1>
   <p data-i="subtitle"></p>
   <div class="row" style="margin-top:12px">
     <button class="ghost small" id="openAll" data-i="openAll"></button>
