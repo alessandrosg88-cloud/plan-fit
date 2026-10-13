@@ -1,4 +1,4 @@
-/* Plan Fit · inicio de sesión (Firebase), sincronización y aviso de cookies */
+/* FitDeliMenu · inicio de sesión (Firebase), sincronización y aviso de cookies */
 (function(){
 /* ▼ Pega aquí la configuración de tu proyecto de Firebase (no es secreta) */
 const firebaseConfig = {

@@ -1,4 +1,4 @@
-/* Plan Fit · ingredientes canónicos para la lista de la compra (agrupa duplicados, ordena por pasillo)
+/* FitDeliMenu · ingredientes canónicos para la lista de la compra (agrupa duplicados, ordena por pasillo)
    y para estimar hidratos y grasa de cada receta.
    [id, pasillo, palabras clave (texto en español, sin tildes; el orden importa: lo más específico primero),
     hidratos g/100 g, grasa g/100 g, gramos por unidad, [es, en, nl, it]] */

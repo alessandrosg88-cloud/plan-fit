@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Plan Fit 30 días</title>
+<title>FitDeliMenu · Tu mes de comidas sanas</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#3f7d3a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Plan Fit">
+<meta name="apple-mobile-web-app-title" content="FitDeliMenu">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -495,7 +495,8 @@ if(typeof RX !== "undefined") for(const t in RX) RX[t].forEach(([es,...x]) => { 
 const LANGS = ["es","en","nl","it"];
 const LOCALE = {es:"es-ES",en:"en-GB",nl:"nl-NL",it:"it-IT"};
 const UI = {
-title:["Plan Fit · 30 días","Fit Plan · 30 days","Fit Plan · 30 dagen","Piano Fit · 30 giorni"],
+title:["FitDeliMenu","FitDeliMenu","FitDeliMenu","FitDeliMenu"],
+tagline:["Tu mes de comidas sanas","Your month of healthy meals","Jouw maand gezonde maaltijden","Il tuo mese di pasti sani"],
 subtitle:["Dime qué no puedes o no quieres comer y qué te encanta, y te monto un mes de comidas sanas con calendario y lista de la compra.","Tell me what you can't or won't eat and what you love, and I'll build a month of healthy meals with a calendar and shopping list.","Vertel wat je niet mag of wilt eten en waar je dol op bent, en je krijgt een maand gezonde maaltijden met kalender en boodschappenlijst.","Dimmi cosa non puoi o non vuoi mangiare e cosa ami, e ti preparo un mese di pasti sani con calendario e lista della spesa."],
 s1:["1. Tus restricciones y gustos","1. Your restrictions and tastes","1. Jouw beperkingen en voorkeuren","1. Le tue restrizioni e preferenze"],
 s1hint:["Marca todo lo que aplique. Se guarda en este navegador.","Tick everything that applies. It's saved in this browser.","Vink alles aan wat van toepassing is. Wordt in deze browser opgeslagen.","Seleziona tutto ciò che vale per te. Viene salvato in questo browser."],
@@ -667,7 +668,7 @@ water7:["Últimos 7 días","Last 7 days","Laatste 7 dagen","Ultimi 7 giorni"],
 remindBtn:["🔔 Recordatorios en mi calendario (.ics)","🔔 Reminders in my calendar (.ics)","🔔 Herinneringen in mijn agenda (.ics)","🔔 Promemoria nel calendario (.ics)"],
 remindHint:["Crea avisos que se repiten: beber agua (10:00, 12:30, 16:00 y 18:30) y pesarte los lunes a las 8:00. Las comidas del archivo del calendario ya avisan 15 min antes.","Creates repeating alerts: drink water (10:00, 12:30, 16:00 and 18:30) and weigh yourself on Mondays at 8:00. Meals in the calendar file already alert 15 min before.","Maakt terugkerende meldingen: water drinken (10:00, 12:30, 16:00 en 18:30) en wegen op maandag om 8:00. Maaltijden in het agendabestand geven al 15 min van tevoren een melding.","Crea avvisi ricorrenti: bere acqua (10:00, 12:30, 16:00 e 18:30) e pesarti il lunedì alle 8:00. I pasti nel file del calendario avvisano già 15 min prima."],
 remWater:["💧 Bebe un vaso de agua","💧 Drink a glass of water","💧 Drink een glas water","💧 Bevi un bicchiere d'acqua"],
-remWeigh:["⚖️ Pésate y apúntalo en Plan Fit","⚖️ Weigh yourself and log it in Fit Plan","⚖️ Weeg jezelf en noteer het in Fit Plan","⚖️ Pesati e segnalo in Piano Fit"],
+remWeigh:["⚖️ Pésate y apúntalo en FitDeliMenu","⚖️ Weigh yourself and log it in FitDeliMenu","⚖️ Weeg jezelf en noteer het in FitDeliMenu","⚖️ Pesati e segnalo in FitDeliMenu"],
 adaptTitle:["Ajuste de calorías","Calorie check-in","Calorie-check","Verifica calorie"],
 adaptNeed:["Con al menos dos pesos separados por 10 días o más te diré si conviene ajustar las calorías.","Log at least two weights 10+ days apart and I'll tell you whether to adjust your calories.","Noteer minstens twee gewichten met 10+ dagen ertussen en ik vertel je of je calorieën moeten worden aangepast.","Con almeno due pesate a 10+ giorni di distanza ti dirò se conviene modificare le calorie."],
 adaptRate:["Tendencia: <b>{r}</b> por semana ({p} % de tu peso).","Trend: <b>{r}</b> per week ({p}% of your weight).","Trend: <b>{r}</b> per week ({p}% van je gewicht).","Tendenza: <b>{r}</b> a settimana ({p}% del tuo peso)."],
@@ -1002,7 +1003,7 @@ function chip(container, type, name, value, label, checked, cls=""){
 function buildForm(){
   const i = L();
   document.documentElement.lang = state.lang;
-  document.title = UI.title[i];
+  document.title = UI.title[i] + " · " + UI.tagline[i];
   document.querySelectorAll("[data-i]").forEach(el => el.textContent = t(el.dataset.i));
   document.querySelectorAll("[data-t]").forEach(el => el.textContent = TYPES[el.dataset.t][i]);
   $("customIn").placeholder = t("otherAvoidPh");
@@ -1470,7 +1471,7 @@ function icsText(){
   const esc_ = v => String(v).replace(/\\/g,"\\\\").replace(/;/g,"\;").replace(/,/g,"\\,").replace(/\n/g,"\\n");
   const fold = l => { const out = []; while(l.length > 74){ out.push(l.slice(0,74)); l = " " + l.slice(74); } out.push(l); return out.join("\r\n"); };
   const now = new Date(), stamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}00Z`;
-  const L_ = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Plan Fit//Plan Fit 30//ES","CALSCALE:GREGORIAN","X-WR-CALNAME:"+esc_(t("title"))];
+  const L_ = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//FitDeliMenu//FitDeliMenu//ES","CALSCALE:GREGORIAN","X-WR-CALNAME:"+esc_(t("title"))];
   plan.forEach((day,i) => state.meals.forEach(x => {
     if(day[x] == null) return;
     const r = tr(x, day[x]), d = dayDate(i), [h,mi] = MEAL_TIME[x], es = R[x][day[x]][4];
@@ -1485,7 +1486,7 @@ function icsText(){
 $("icsBtn").onclick = () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([icsText()], {type:"text/calendar"}));
-  a.download = "plan-fit.ics"; document.body.appendChild(a); a.click();
+  a.download = "fitdelimenu.ics"; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 };
 $("printBtn").onclick = printPlan;
@@ -1595,12 +1596,12 @@ $("remindBtn").onclick = () => {
   const d = new Date(), ymd = ymdC(d), stamp = ymd + "T000000Z";
   const ev = (uid, hh, mm, rule, text) => ["BEGIN:VEVENT", `UID:planfit-${uid}@plan-fit`, "DTSTAMP:"+stamp, `DTSTART:${ymd}T${pad(hh)}${pad(mm)}00`, "DURATION:PT5M", "RRULE:"+rule,
     "SUMMARY:"+esc_(text), "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:PT0M", "DESCRIPTION:"+esc_(text), "END:VALARM", "END:VEVENT"];
-  const lines = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Plan Fit//Recordatorios//ES","CALSCALE:GREGORIAN"]
+  const lines = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//FitDeliMenu//Recordatorios//ES","CALSCALE:GREGORIAN"]
     .concat(...[[10,0],[12,30],[16,0],[18,30]].map(([h,m],k) => ev("agua"+k, h, m, "FREQ=DAILY", t("remWater"))))
     .concat(ev("peso", 8, 0, "FREQ=WEEKLY;BYDAY=MO", t("remWeigh")), ["END:VCALENDAR"]);
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([lines.join("\r\n")], {type:"text/calendar"}));
-  a.download = "plan-fit-recordatorios.ics"; document.body.appendChild(a); a.click();
+  a.download = "fitdelimenu-recordatorios.ics"; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 };
 /* ajuste de calorías según la tendencia de peso (últimas 5 semanas) */
@@ -1638,7 +1639,7 @@ $("csvBtn").onclick = () => {
   const csv = "\ufeff" + [head].concat(rows).map(r => r.join(sep)).join("\r\n");
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"}));
-  a.download = "plan-fit-progreso.csv"; document.body.appendChild(a); a.click();
+  a.download = "fitdelimenu-progreso.csv"; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 };
 function progressSVG(pts, F, label){

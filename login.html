@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Iniciar sesión · Plan Fit</title>
+<title>Iniciar sesión · FitDeliMenu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
 <style>
@@ -84,11 +84,11 @@ const firebaseConfig = {
 };
 const LANGS = ["es","en","nl","it"];
 const TX = {
-  back:["← Volver a Plan Fit","← Back to Plan Fit","← Terug naar Plan Fit","← Torna a Plan Fit"],
+  back:["← Volver a FitDeliMenu","← Back to FitDeliMenu","← Terug naar FitDeliMenu","← Torna a FitDeliMenu"],
   loading:["Cargando…","Loading…","Laden…","Caricamento…"],
   title:["Iniciar sesión","Sign in","Inloggen","Accedi"],
   why:["Guarda tus preferencias, calorías y días cumplidos en la nube y míralos en todos tus dispositivos.","Save your preferences, calories and completed days in the cloud and see them on all your devices.","Bewaar je voorkeuren, calorieën en voltooide dagen in de cloud en bekijk ze op al je apparaten.","Salva preferenze, calorie e giorni completati nel cloud e vedili su tutti i tuoi dispositivi."],
-  age:["Confirmo que tengo la edad mínima para usar Plan Fit: <b>13 años en Estados Unidos</b> y <b>16 años en la Unión Europea</b> (o la edad que fije mi país, entre 13 y 16).","I confirm I meet the minimum age to use Plan Fit: <b>13 in the United States</b> and <b>16 in the European Union</b> (or the age set by my country, between 13 and 16).","Ik bevestig dat ik de minimumleeftijd heb om Plan Fit te gebruiken: <b>13 jaar in de Verenigde Staten</b> en <b>16 jaar in de Europese Unie</b> (of de leeftijd die mijn land bepaalt, tussen 13 en 16).","Confermo di avere l'età minima per usare Plan Fit: <b>13 anni negli Stati Uniti</b> e <b>16 anni nell'Unione Europea</b> (o l'età fissata dal mio paese, tra 13 e 16)."],
+  age:["Confirmo que tengo la edad mínima para usar FitDeliMenu: <b>13 años en Estados Unidos</b> y <b>16 años en la Unión Europea</b> (o la edad que fije mi país, entre 13 y 16).","I confirm I meet the minimum age to use FitDeliMenu: <b>13 in the United States</b> and <b>16 in the European Union</b> (or the age set by my country, between 13 and 16).","Ik bevestig dat ik de minimumleeftijd heb om FitDeliMenu te gebruiken: <b>13 jaar in de Verenigde Staten</b> en <b>16 jaar in de Europese Unie</b> (of de leeftijd die mijn land bepaalt, tussen 13 en 16).","Confermo di avere l'età minima per usare FitDeliMenu: <b>13 anni negli Stati Uniti</b> e <b>16 anni nell'Unione Europea</b> (o l'età fissata dal mio paese, tra 13 e 16)."],
   ageNeeded:["Marca la casilla de edad para continuar.","Tick the age box to continue.","Vink het leeftijdsvakje aan om door te gaan.","Spunta la casella dell'età per continuare."],
   google:["Continuar con Google","Continue with Google","Doorgaan met Google","Continua con Google"],
   or:["o con tu email","or with your email","of met je e-mail","o con la tua email"],
@@ -131,7 +131,7 @@ let user = null, auth = null, db = null;
 
 function texts(){
   document.documentElement.lang = lang;
-  document.title = (user ? t("account") : t("title")) + " · Plan Fit";
+  document.title = (user ? t("account") : t("title")) + " · FitDeliMenu";
   $("back").textContent = t("back"); $("tLoading").textContent = t("loading");
   $("tTitle").textContent = t("title"); $("tWhy").textContent = t("why"); $("tAge").innerHTML = t("age");
   $("bGoogle").textContent = t("google"); $("tOr").textContent = t("or");

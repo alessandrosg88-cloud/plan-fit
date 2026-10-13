@@ -1,6 +1,6 @@
 {
-  "name": "Plan Fit · 30 días",
-  "short_name": "Plan Fit",
+  "name": "FitDeliMenu · Tu mes de comidas sanas",
+  "short_name": "FitDeliMenu",
   "description": "Plan de comidas sano de 30 días con calendario, lista de la compra y seguimiento de progreso.",
   "lang": "es",
   "start_url": "./",
