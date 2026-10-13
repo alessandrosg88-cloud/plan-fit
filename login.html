@@ -81,7 +81,6 @@ input:focus{outline:2px solid var(--accent);outline-offset:1px}
       <h2 id="tDelTitle"></h2>
       <p id="tDelIntro"></p>
       <ul id="tDelList"></ul>
-      <fieldset><legend id="tReasonQ"></legend><div id="reasons" style="display:grid;gap:6px"></div></fieldset>
       <label><input type="checkbox" id="delLocal" checked><span id="tDelLocal"></span></label>
       <label for="delType" style="display:block"><span id="tDelType"></span></label>
       <input type="text" id="delType" autocomplete="off" autocapitalize="characters" spellcheck="false">
@@ -129,9 +128,7 @@ const TX = {
   deleted:["Tu cuenta se ha eliminado para siempre y tus datos personales se han borrado.","Your account has been permanently deleted and your personal data erased.","Je account is definitief verwijderd en je persoonlijke gegevens zijn gewist.","Il tuo account è stato eliminato per sempre e i tuoi dati personali sono stati cancellati."],
   delTitle:["Eliminar cuenta · irreversible","Delete account · irreversible","Account verwijderen · onomkeerbaar","Elimina account · irreversibile"],
   delIntro:["Esto no se puede deshacer. Ni tú ni nadie (tampoco el administrador) podrá recuperar la cuenta ni los datos.","This can't be undone. Neither you nor anyone else (not even the administrator) can recover the account or the data.","Dit kan niet ongedaan worden. Niemand (ook de beheerder niet) kan het account of de gegevens herstellen.","Non si può annullare. Né tu né nessun altro (nemmeno l'amministratore) potrà recuperare l'account o i dati."],
-  delList:[["Se borra tu cuenta de acceso (email y contraseña o Google).","Se borran de la nube tu plan, preferencias, peso, medidas, agua, despensa y recetas propias.","Solo se guarda, si lo eliges, el motivo de la baja y el mes, <b>sin ningún dato que te identifique</b>: no se puede relacionar contigo."],["Your sign-in account (email and password or Google) is deleted.","Your plan, preferences, weight, measurements, water, pantry and own recipes are deleted from the cloud.","Only the reason for leaving and the month are kept, if you choose one, <b>with nothing that identifies you</b>: it can't be linked back to you."],["Je inlogaccount (e-mail en wachtwoord of Google) wordt verwijderd.","Je plan, voorkeuren, gewicht, maten, water, voorraad en eigen recepten worden uit de cloud verwijderd.","Alleen de reden van vertrek en de maand worden bewaard, als je er een kiest, <b>zonder iets dat jou identificeert</b>: het is niet aan jou te koppelen."],["Viene eliminato il tuo account di accesso (email e password o Google).","Vengono eliminati dal cloud piano, preferenze, peso, misure, acqua, dispensa e ricette personali.","Si conserva solo, se lo scegli, il motivo dell'uscita e il mese, <b>senza alcun dato che ti identifichi</b>: non si può collegare a te."]],
-  reasonQ:["¿Por qué te vas? (opcional, anónimo)","Why are you leaving? (optional, anonymous)","Waarom vertrek je? (optioneel, anoniem)","Perché te ne vai? (facoltativo, anonimo)"],
-  reasons:[["Prefiero no decirlo","Ya no uso la app","No me gustan las recetas","Es difícil de usar","Me he pasado a otra app","Me preocupa la privacidad","Otro motivo"],["I'd rather not say","I don't use the app any more","I don't like the recipes","It's hard to use","I've moved to another app","I'm worried about privacy","Other reason"],["Zeg ik liever niet","Ik gebruik de app niet meer","De recepten bevallen me niet","Het is lastig te gebruiken","Ik gebruik een andere app","Ik maak me zorgen om privacy","Andere reden"],["Preferisco non dirlo","Non uso più l'app","Le ricette non mi piacciono","È difficile da usare","Sono passato a un'altra app","Mi preoccupa la privacy","Altro motivo"]],
+  delList:[["Se borra tu cuenta de acceso (email y contraseña o Google).","Se borran de la nube tu plan, preferencias, peso, medidas, agua, despensa y recetas propias.","No se guarda <b>nada</b>: ni copia, ni historial, ni motivo de la baja."],["Your sign-in account (email and password or Google) is deleted.","Your plan, preferences, weight, measurements, water, pantry and own recipes are deleted from the cloud.","<b>Nothing</b> is kept: no copy, no history, no reason for leaving."],["Je inlogaccount (e-mail en wachtwoord of Google) wordt verwijderd.","Je plan, voorkeuren, gewicht, maten, water, voorraad en eigen recepten worden uit de cloud verwijderd.","Er wordt <b>niets</b> bewaard: geen kopie, geen geschiedenis, geen reden van vertrek."],["Viene eliminato il tuo account di accesso (email e password o Google).","Vengono eliminati dal cloud piano, preferenze, peso, misure, acqua, dispensa e ricette personali.","Non si conserva <b>nulla</b>: né copie, né cronologia, né motivo dell'uscita."]],
   delLocal:["Borrar también lo guardado en este navegador","Also erase what's saved in this browser","Ook wissen wat in deze browser is opgeslagen","Cancella anche quanto salvato in questo browser"],
   delType:["Para confirmar, escribe <b>{w}</b>:","To confirm, type <b>{w}</b>:","Typ ter bevestiging <b>{w}</b>:","Per confermare, scrivi <b>{w}</b>:"],
   delWord:["ELIMINAR","DELETE","VERWIJDEREN","ELIMINA"],
@@ -173,9 +170,6 @@ function texts(){
   $("bGo").textContent = t("go"); $("bOut").textContent = t("logout"); $("bDel").textContent = t("del");
   $("tDelTitle").textContent = t("delTitle"); $("tDelIntro").textContent = t("delIntro");
   $("tDelList").innerHTML = t("delList").map(x => `<li>${x}</li>`).join("");
-  $("tReasonQ").textContent = t("reasonQ");
-  const curR = (document.querySelector('input[name=reason]:checked')||{}).value || "0";
-  $("reasons").innerHTML = t("reasons").map((x,k) => `<label><input type="radio" name="reason" value="${k}" ${String(k)===curR?"checked":""}><span>${x}</span></label>`).join("");
   $("tDelLocal").textContent = t("delLocal"); $("tDelType").innerHTML = t("delType").replace("{w}", t("delWord"));
   $("delType").placeholder = t("delWord"); $("bDelCancel").textContent = t("cancel"); $("bDelGo").textContent = t("delGo");
   $("bDelGo").disabled = $("delType").value.trim().toUpperCase() !== t("delWord");
@@ -219,14 +213,9 @@ function load(src){ return new Promise((ok, ko) => { const s = document.createEl
   $("bNew").onclick = () => { if(!ageOk()) return; auth.createUserWithEmailAndPassword($("email").value.trim(), $("pass").value).then(goHome).catch(e => fail(e)); };
   $("bForgot").onclick = () => { const em = $("email").value.trim(); if(!em) return msg(t("needEmail")); auth.sendPasswordResetEmail(em).then(() => msg(t("resetSent"), true)).catch(e => fail(e)); };
   $("bOut").onclick = () => auth.signOut();
-  /* Eliminación irreversible con anonimización:
-     1) solo si el inicio de sesión es reciente (Firebase lo exige para borrar la cuenta);
-     2) si la persona elige un motivo, se guarda en "bajas" un documento con id aleatorio y SOLO {motivo, mes}:
-        sin uid, email ni fecha exacta, así que no se puede relacionar con nadie;
-     3) se borra el documento users/{uid} con todos los datos personales;
-     4) se borra la cuenta de Firebase Authentication (email, proveedor, uid);
-     5) opcionalmente se borra lo guardado en este navegador. */
-  const REASON_IDS = ["nodice","nouso","recetas","dificil","otraapp","privacidad","otro"];
+  /* Eliminación irreversible: solo con inicio de sesión reciente (Firebase lo exige); se borra el documento users/{uid}
+     con todos los datos, después la cuenta de Firebase Authentication (email, proveedor, uid) y, si se marca, lo guardado
+     en este navegador. No se guarda ninguna copia ni motivo. */
   $("bDel").onclick = () => { $("delBox").hidden = false; $("bDel").hidden = true; $("delType").value = ""; texts(); $("delBox").scrollIntoView({behavior:"smooth", block:"start"}); };
   $("bDelCancel").onclick = () => { $("delBox").hidden = true; $("bDel").hidden = false; msg("", false, "msg2"); };
   $("delType").addEventListener("input", () => { $("bDelGo").disabled = $("delType").value.trim().toUpperCase() !== t("delWord"); });
@@ -235,9 +224,7 @@ function load(src){ return new Promise((ok, ko) => { const s = document.createEl
     const last = Date.parse(user.metadata && user.metadata.lastSignInTime || 0);
     if(!(Date.now() - last < 4.5*60*1000)){ await auth.signOut(); $("delBox").hidden = true; $("bDel").hidden = false; return msg(t("relogin")); }
     const go = $("bDelGo"); go.disabled = true; go.textContent = t("deleting");
-    const rk = +((document.querySelector('input[name=reason]:checked')||{}).value || 0), d = new Date();
     try {
-      if(rk > 0){ try { await db.collection("bajas").add({motivo: REASON_IDS[rk], mes: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}); } catch(e){} }
       await db.collection("users").doc(user.uid).delete();
       await user.delete();
       if($("delLocal").checked){ try { localStorage.removeItem("planfit"); sessionStorage.clear(); } catch(e){} }
