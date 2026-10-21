@@ -1510,7 +1510,7 @@ function calcKcal(){
   const p = state.profile || {}, a = +p.age, h = +p.h, w = +p.w;
   if(!(a > 0 && h > 0 && w > 0)) return null;
   const bmr = 10*w + 6.25*h - 5*a + (p.sex === "m" ? 5 : -161);
-  const tdee = bmr * (ACT[p.act ?? 1] || 1.375);
+  const tdee = bmr * (ACT[actLevel(p)] || 1.375);
   const goal = (document.querySelector('input[name=goal]:checked')||{}).value || state.goal;
   const k = Math.max(p.sex === "m" ? 1500 : 1200, Math.round(tdee * (GOAL_ADJ[goal]||1) / 50) * 50);
   return {b: Math.round(bmr), t: Math.round(tdee), k};
@@ -1519,6 +1519,7 @@ function readCalc(){
   state.profile = {sex: (document.querySelector('input[name=sex]:checked')||{}).value || "f", age: $("cAge").value, h: $("cH").value, w: $("cW").value, act: +$("cAct").value, actTxt: $("cActTxt").value};
 }
 /* deduce el nivel a partir de lo que escribe el usuario */
+function actLevel(p){ return (p.actTxt || "").trim() ? (guessAct(p.actTxt) ?? 1) : (p.act ?? 1); }
 function guessAct(txt){
   const parts = (txt||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").split(/[,;+\n]|\by\b|\band\b|\ben\b|\be\b/).map(x=>x.trim()).filter(Boolean);
   if(!parts.length) return null;
@@ -1542,7 +1543,7 @@ function guessAct(txt){
 }
 function renderCalc(){
   const c = calcKcal();
-  const lv = UI.acts[L()][(state.profile||{}).act ?? 1];
+  const lv = UI.acts[L()][actLevel(state.profile||{})];
   $("calcRes").innerHTML = (lv ? `<span style="display:block;font-size:12.5px;color:var(--muted)">${t("actEst")}: ${lv}</span>` : "") + (c ? t("calcRes").replace("{b}",c.b).replace("{t}",c.t).replace("{k}",c.k) : t("calcMissing"));
   $("calcUse").disabled = !c;
 }
