@@ -53,6 +53,7 @@ legend{font-weight:600;font-size:14px;margin-bottom:8px}
 .star{color:var(--d)}
 .chip input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
 .adder{display:flex;gap:8px}.adder input{flex:1;min-width:0}.adder button{flex:none}
+#actOpts{gap:6px}#actOpts button{padding:4px 10px;border:1px dashed var(--line);border-radius:999px;font-size:12.5px;font-weight:500;line-height:1.3;background:var(--surface2);color:inherit;cursor:pointer}#actOpts button:hover{border-color:var(--accent)}
 .tags{margin-top:10px}.tags:empty{display:none}
 .utag{display:inline-flex;align-items:center;gap:6px;padding:5px 6px 5px 12px;border-radius:999px;font-size:13.5px;color:var(--surface)}
 .utag.fav{background:var(--d)}.utag.no{background:var(--warn)}
@@ -280,8 +281,9 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
       <div class="calc" id="calcBox" hidden>
         <div class="chips" id="sexChips"></div>
         <div class="f3"><label><span data-i="age"></span><input type="number" id="cAge" min="14" max="99" inputmode="numeric"></label><label><span data-i="height"></span><input type="number" id="cH" min="120" max="230" inputmode="numeric"></label><label><span data-i="weight"></span><input type="number" id="cW" min="30" max="300" step="0.1" inputmode="decimal"></label></div>
-        <label style="font-size:12.5px;color:var(--muted);display:grid;gap:4px"><span data-i="actWhat"></span><input type="text" id="cActTxt" maxlength="120" autocomplete="off"></label>
-        <label style="font-size:12.5px;color:var(--muted);display:grid;gap:4px"><span data-i="activity"></span><select id="cAct"></select></label>
+        <label style="font-size:12.5px;color:var(--muted);display:grid;gap:4px"><span data-i="actWhat"></span><input type="text" id="cActTxt" maxlength="160" autocomplete="off"></label>
+        <div class="chips actopts" id="actOpts"></div>
+        <select id="cAct" hidden></select>
         <p class="res" id="calcRes"></p>
         <div><button type="button" class="primary small" id="calcUse" data-i="calcUse"></button></div>
         <p class="hint" style="margin:0" data-i="calcNote"></p>
@@ -628,6 +630,8 @@ height:["Altura (cm)","Height (cm)","Lengte (cm)","Altezza (cm)"],
 weight:["Peso (kg)","Weight (kg)","Gewicht (kg)","Peso (kg)"],
 activity:["Nivel de actividad","Activity level","Activiteitsniveau","Livello di attività"],
 actWhat:["¿Qué actividad haces?","What activity do you do?","Welke activiteit doe je?","Che attività fai?"],
+actOpts:[["Trabajo de oficina","Caminar 30 min al día","Gimnasio 2-3 días/sem.","Gimnasio 4-5 días/sem.","Correr 3 días/sem.","Fútbol o pádel 2 días/sem.","Entreno todos los días","Trabajo físico (obra, almacén…)","Entreno 2 veces al día"],["Office job","Walking 30 min a day","Gym 2-3 days/wk","Gym 4-5 days/wk","Running 3 days/wk","Football or padel 2 days/wk","Training every day","Physical job (construction, warehouse…)","Training twice a day"],["Kantoorwerk","30 min per dag wandelen","Sportschool 2-3 dagen/week","Sportschool 4-5 dagen/week","Hardlopen 3 dagen/week","Voetbal of padel 2 dagen/week","Elke dag trainen","Fysiek werk (bouw, magazijn…)","2 keer per dag trainen"],["Lavoro d'ufficio","Camminare 30 min al giorno","Palestra 2-3 giorni/sett.","Palestra 4-5 giorni/sett.","Corsa 3 giorni/sett.","Calcio o padel 2 giorni/sett.","Allenamento ogni giorno","Lavoro fisico (edilizia, magazzino…)","Allenamento 2 volte al giorno"]],
+actEst:["Nivel estimado","Estimated level","Geschat niveau","Livello stimato"],
 actPh:["Ej.: gimnasio 4 días/sem., correr, trabajo de pie…","E.g. gym 4 days/wk, running, on my feet at work…","Bijv. sportschool 4 dagen/week, hardlopen…","Es.: palestra 4 giorni/sett., corsa, lavoro in piedi…"],
 acts:[["Sedentaria (poco o nada de ejercicio)","Ligera (ejercicio 1-3 días/sem.)","Moderada (3-5 días/sem.)","Alta (6-7 días/sem.)","Muy alta (trabajo físico o 2 sesiones/día)"],["Sedentary (little or no exercise)","Light (exercise 1-3 days/wk)","Moderate (3-5 days/wk)","High (6-7 days/wk)","Very high (physical job or twice a day)"],["Zittend (weinig of geen sport)","Licht (1-3 dagen/week)","Gemiddeld (3-5 dagen/week)","Hoog (6-7 dagen/week)","Zeer hoog (fysiek werk of 2× per dag)"],["Sedentaria (poco o niente sport)","Leggera (1-3 giorni/sett.)","Moderata (3-5 giorni/sett.)","Alta (6-7 giorni/sett.)","Molto alta (lavoro fisico o 2 sessioni/giorno)"]],
 calcUse:["Usar estas kcal","Use these kcal","Gebruik deze kcal","Usa queste kcal"],
@@ -1515,18 +1519,30 @@ function readCalc(){
 }
 /* deduce el nivel a partir de lo que escribe el usuario */
 function guessAct(txt){
-  const s = (txt||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  if(!s.trim()) return null;
-  if(/(obra|construcc|albanil|mudanza|campo|fisico|physical|construction|bouw|edilizia|(2|dos) (veces|sesiones|entrenos) (al|por|cada) dia|twice a day|2x (al )?dia|due volte al giorno|2 keer per dag)/.test(s)) return 4;
-  if(/(nada|ninguna|sedentari|oficina|none|nothing|office|geen|niente|ufficio)/.test(s) && !/\d/.test(s)) return 0;
-  const n = (s.match(/\b([1-7])\b/)||[])[1] || ({uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,diario:7,todos:7,daily:7,every:7,ogni:7,dagelijks:7}[(s.match(/\b(uno|una|dos|tres|cuatro|cinco|seis|siete|diario|todos|daily|every|ogni|dagelijks)\b/)||[])[1]]);
-  if(n) return n >= 6 ? 3 : n >= 4 ? 2 : 1;
-  if(/(gym|gimnas|correr|running|futbol|football|soccer|crossfit|nadar|swim|bici|cycl|pesas|weights|yoga|pilates|padel|tenis|tennis|baloncesto|basket|caminar|walk|andar|sport|deporte|palestra|corsa|hardlopen|fitness)/.test(s)) return 2;
-  return null;
+  const parts = (txt||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").split(/[,;+\n]|\by\b|\band\b|\ben\b|\be\b/).map(x=>x.trim()).filter(Boolean);
+  if(!parts.length) return null;
+  const NUM = {uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,due:2,tre:3,quattro:4,cinque:5,sei:6,sette:7,twee:2,drie:3,vier:4,vijf:5,zes:6,zeven:7};
+  const WALK = /(camin|andar|pasear|walk|wandel|cammin|passeggi)/, SPORT = /(gym|gimnas|correr|running|run\b|futbol|football|soccer|voetbal|calcio|crossfit|nadar|swim|zwem|nuot|bici|cycl|fiets|pesas|weights|yoga|pilates|padel|tenis|tennis|balonc|basket|sport|deporte|palestra|corsa|hardlop|fitness|entren|training|train|allenam|boxeo|boxing|artes marciales|baile|dance|danza|escalada|climb)/;
+  let best = null;
+  for(const s of parts){
+    let lv = null;
+    if(/(obra|construcc|albanil|mudanza|almacen|campo|reparto|camarer|fisico|physical|construction|warehouse|bouw|magazijn|fysiek|edilizia|magazzino|fisico)/.test(s)) lv = 4;
+    else if(/((2|dos|two|due|twee) (veces|sesiones|entrenos|times|sessions|volte|keer)( al| por| cada| a| per)? (dia|day|giorno|dag))|twice a day|2x/.test(s)) lv = 4;
+    else {
+      const n = +((s.match(/\b([1-7])\b/)||[])[1] || NUM[(s.match(/\b(uno|una|dos|tres|cuatro|cinco|seis|siete|one|two|three|four|five|six|seven|due|tre|quattro|cinque|sei|sette|twee|drie|vier|vijf|zes|zeven)\b/)||[])[1]] || 0);
+      const daily = /(diario|todos los dias|cada dia|al dia|every day|daily|a day|ogni giorno|al giorno|elke dag|per dag|dagelijks)/.test(s);
+      if(WALK.test(s) && !SPORT.test(s)) lv = 1;
+      else if(SPORT.test(s) || n) lv = n ? (n >= 6 ? 3 : n >= 4 ? 2 : 1) : daily ? 3 : 2;
+      else if(/(nada|ninguna|sedentari|oficina|sentad|none|nothing|office|desk|geen|kantoor|niente|ufficio)/.test(s)) lv = 0;
+    }
+    if(lv !== null) best = Math.max(best ?? 0, lv);
+  }
+  return best;
 }
 function renderCalc(){
   const c = calcKcal();
-  $("calcRes").innerHTML = c ? t("calcRes").replace("{b}",c.b).replace("{t}",c.t).replace("{k}",c.k) : t("calcMissing");
+  const lv = UI.acts[L()][(state.profile||{}).act ?? 1];
+  $("calcRes").innerHTML = (lv ? `<span style="display:block;font-size:12.5px;color:var(--muted)">${t("actEst")}: ${lv}</span>` : "") + (c ? t("calcRes").replace("{b}",c.b).replace("{t}",c.t).replace("{k}",c.k) : t("calcMissing"));
   $("calcUse").disabled = !c;
 }
 function buildCalc(){
@@ -1536,13 +1552,21 @@ function buildCalc(){
   chip("sexChips","radio","sex","m",t("sexM"),p.sex==="m");
   $("cAct").innerHTML = UI.acts[li].map((l,k) => `<option value="${k}" ${(p.act ?? 1)===k?"selected":""}>${l}</option>`).join("");
   $("cActTxt").value = p.actTxt || ""; $("cActTxt").placeholder = t("actPh");
+  $("actOpts").innerHTML = UI.actOpts[li].map(o => `<button type="button">${o}</button>`).join("");
   $("cAge").value = p.age || ""; $("cH").value = p.h || "";
   const lastW = (state.progress||[]).filter(e => e.w).slice(-1)[0];
   $("cW").value = p.w || (lastW ? lastW.w : "");
   renderCalc();
 }
+$("actOpts").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  const inp = $("cActTxt"), cur = inp.value.trim().replace(/[,;]\s*$/,"");
+  if(cur.toLowerCase().includes(b.textContent.toLowerCase())) return;
+  inp.value = cur ? cur + ", " + b.textContent : b.textContent;
+  inp.dispatchEvent(new Event("input", {bubbles:true})); inp.focus();
+});
 $("calcToggle").onclick = () => { $("calcBox").hidden = !$("calcBox").hidden; if(!$("calcBox").hidden) buildCalc(); };
-$("calcBox").addEventListener("input", e => { if(e.target.id === "cActTxt"){ const g = guessAct(e.target.value); if(g !== null) $("cAct").value = g; } readCalc(); renderCalc(); save(); });
+$("calcBox").addEventListener("input", e => { if(e.target.id === "cActTxt"){ const g = guessAct(e.target.value); $("cAct").value = g ?? 1; } readCalc(); renderCalc(); save(); });
 $("calcBox").addEventListener("change", () => { readCalc(); renderCalc(); save(); });
 document.addEventListener("change", e => { if(e.target.name === "goal" && !$("calcBox").hidden) renderCalc(); });
 $("calcUse").onclick = () => { const c = calcKcal(); if(!c) return; $("kcalTarget").value = c.k; run(); };
