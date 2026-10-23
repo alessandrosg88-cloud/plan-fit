@@ -1,7 +1,7 @@
 /* FitDeliMenu · service worker: funciona sin conexión (p. ej. en el supermercado).
    Archivos propios: primero la red (para ver siempre la última versión) y, sin conexión, la copia guardada.
    Fuentes de Google: copia guardada y se refresca en segundo plano. Firebase no se toca. */
-const CACHE = "planfit-v7";
+const CACHE = "planfit-v8";
 const CORE = ["./", "index.html", "recetas-i18n.js", "recetas-extra.js", "ingredientes.js", "auth.js", "login.html",
   "privacidad.html", "terminos.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/logo.png", "icons/logo-dark.png", "icons/favicon-32.png"];
 

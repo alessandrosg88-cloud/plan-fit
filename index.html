@@ -503,6 +503,7 @@ if(typeof RX !== "undefined") for(const t in RX) RX[t].forEach(([es,...x]) => { 
 const LANGS = ["es","en","nl","it"];
 const LOCALE = {es:"es-ES",en:"en-GB",nl:"nl-NL",it:"it-IT"};
 const UI = {
+eggWhites:["claras","egg whites","eiwitten","albumi"],
 title:["FitDeliMenu","FitDeliMenu","FitDeliMenu","FitDeliMenu"],
 tagline:["Tu mes de comidas sanas","Your month of healthy meals","Jouw maand gezonde maaltijden","Il tuo mese di pasti sani"],
 subtitle:["Dime qué no puedes o no quieres comer y qué te encanta, y te monto un mes de comidas sanas con calendario y lista de la compra.","Tell me what you can't or won't eat and what you love, and I'll build a month of healthy meals with a calendar and shopping list.","Vertel wat je niet mag of wilt eten en waar je dol op bent, en je krijgt een maand gezonde maaltijden met kalender en boodschappenlijst.","Dimmi cosa non puoi o non vuoi mangiare e cosa ami, e ti preparo un mese di pasti sani con calendario e lista della spesa."],
@@ -864,6 +865,21 @@ const ingMemo = {};
 const ingOf = line => { const n = norm(line); if(n in ingMemo) return ingMemo[n]; return ingMemo[n] = (typeof INGR !== "undefined" && INGR.find(g => g[2].some(w => wordRe(w).test(n)))) || null; };
 const QTY_RE = /^(\d+\/\d+|\d+(?:[.,]\d+)?)\s*(g|ml|cdas?|cdta|cacito|rebanadas?|puñados?|dientes?|manojo|lata|onzas|rama)?\b/i;
 const parseNum = x => x.includes("/") ? (([a,b]) => a/b)(x.split("/").map(Number)) : parseFloat(x.replace(",","."));
+/* huevos: como mucho 2 enteros por ración y 3 al día (recomendación médica); si la ración crece, el resto pasa a claras */
+const EGG_MAX = 2, WHITE_MAX = 6, EGG_DAY = 3;
+const isWhite = line => /\bclaras?\b/.test(norm(line));
+const isEggLine = line => /\bhuevos?\b/.test(norm(line)) && !isWhite(line);
+const eggBase = line => { const q = line.match(/^(\d+\/\d+|\d+(?:[.,]\d+)?)(?=\s)/); return q ? parseNum(q[1]) : 1; };
+/* nº de huevos enteros y claras por ración con el factor m: {e, w} o null si la línea no es de huevo */
+function eggSplit(es, m){
+  if(isWhite(es)) return {e:0, w:Math.min(WHITE_MAX, Math.max(1, Math.round(eggBase(es)*m)))};
+  if(!isEggLine(es)) return null;
+  const v = eggBase(es)*m, e = Math.min(EGG_MAX, Math.ceil(eggBase(es)), Math.max(1, Math.round(v)));
+  return {e, w:Math.min(WHITE_MAX, Math.max(0, Math.round((v-e)*2)))};
+}
+/* huevos enteros (sin escalar, con el tope por ración) de una receta */
+const eggsOf = (type, idx) => idx == null ? 0 : R[type][idx][4].reduce((a,l) => a + (isEggLine(l) ? Math.min(EGG_MAX, eggBase(l)) : 0), 0);
+const dayEggs = (day, skip) => state.meals.reduce((a,x) => a + (x !== skip ? eggsOf(x, day[x]) : 0), 0);
 /* cantidad de una línea (en español): k = g | ml | ud | sl (rebanadas) | cl (dientes); g = gramos aprox. */
 function lineAmt(line, ing){
   const q = line.match(QTY_RE); if(!q) return null;
@@ -1140,6 +1156,11 @@ function generate(){
       let pick = queues[t].shift();
       const prev = plan[i-1] && plan[i-1][t];
       if(prev === pick && queues[t].length){ queues[t].push(pick); pick = queues[t].shift(); }
+      /* no pasar del máximo de huevos al día: coger el siguiente plato de la cola que encaje */
+      if(dayEggs(day) + eggsOf(t, pick) > EGG_DAY){
+        const j = queues[t].findIndex(r => r !== prev && dayEggs(day) + eggsOf(t, r) <= EGG_DAY);
+        if(j >= 0){ const alt = queues[t].splice(j, 1)[0]; queues[t].push(pick); pick = alt; }
+      }
       day[t] = pick;
     });
     plan.push(day);
@@ -1153,6 +1174,12 @@ function generate(){
   /* platos cambiados a mano: mandan sobre el generador */
   let sw = false;
   plan.forEach((day,i) => state.meals.forEach(x => { const s = (state.swaps||{})[dkey(i)+"|"+x]; if(s != null && pools[x].includes(s) && day[x] !== s){ day[x] = s; sw = true; } }));
+  plan.forEach((day,i) => { for(const x of ["s","d","c","l"]){
+    if(dayEggs(day) <= EGG_DAY) break;
+    if(day[x]==null || !eggsOf(x, day[x]) || isSwapped(i, x) || batchRole(i, x)) continue;
+    const alt = pools[x].find(r => r !== (plan[i-1]||{})[x] && r !== (plan[i+1]||{})[x] && dayEggs(day, x) + eggsOf(x, r) <= EGG_DAY);
+    if(alt != null){ day[x] = alt; sw = true; }
+  }});
   if(sw && parseFloat(state.budget) > 0) overWeeks = Array.from({length:Math.ceil(30/7)},(_,w)=>w).filter(w => weekCost(w) > budgetFor(w) + 0.01);
 }
 const batchRole = (i, x) => state.batch !== "double" || !["l","c"].includes(x) ? null : i % 2 ? "left" : (i+1 < plan.length ? "cook" : null);
@@ -1177,7 +1204,7 @@ function fitBudget(){
         const cc = cost(x,cur);
         const prev = plan[k-1] && plan[k-1][x], next = plan[k+1] && plan[k+1][x];
         const used = new Set(weekDays(w).map(j => plan[j][x]));
-        const cands = pools[x].filter(r => r!==prev && r!==next && cost(x,r) < cc - 0.05);
+        const cands = pools[x].filter(r => r!==prev && r!==next && cost(x,r) < cc - 0.05 && dayEggs(plan[k], x) + eggsOf(x, r) <= EGG_DAY);
         if(!cands.length) return;
         // preferir alternativas no repetidas en la semana y favoritas
         cands.sort((a,c) => (used.has(a)-used.has(c)) || (isFav(x,c)-isFav(x,a)) || (cost(x,c)-cost(x,a)));
@@ -1314,8 +1341,16 @@ function mark(i, v){
 const FRAC = {0.25:"¼",0.5:"½",0.75:"¾"};
 function fmtCount(v){ const q = Math.round(v*4)/4, w = Math.floor(q), f = q - w; return (w || !f ? String(w) : "") + (FRAC[f] || ""); }
 /* cantidades de la receta: gramos según objetivo (y proteína) y nº de personas; unidades según personas */
-function scaleQty(line, m, isP, n=1){
+function scaleQty(line, m, isP, n=1, es=line){
   if(isP) m *= pFactor();
+  const eg = isP && eggSplit(es, m);
+  if(eg){
+    const q = line.match(/^(\d+\/\d+|\d+(?:[.,]\d+)?)(?=\s)/);
+    const pl = (k, txt) => k > 1 ? txt.replace(/^(\s*)clara\b/, "$1claras").replace(/^(\s*)huevo\b/, "$1huevos") : txt;
+    if(eg.e === 0) return q ? eg.w*n + pl(eg.w*n, line.slice(q[1].length)) : line;
+    const base = q ? eg.e*n + pl(eg.e*n, line.slice(q[1].length)) : line;
+    return eg.w ? `${base} + ${eg.w*n} ${t("eggWhites")}` : base;
+  }
   const gm = m*n, um = isP ? m*n : n;
   if(/^\d+(?:[.,]\d+)?\s*(g|ml)\b/.test(line))
     return gm===1 ? line : line.replace(/^(\d+(?:[.,]\d+)?)/, x => Math.round(parseFloat(x.replace(",","."))*gm/5)*5);
@@ -1361,7 +1396,7 @@ function openDay(i){
       <div class="macro">${macroTxt(mc, m)} · ≈ ${money(cost(x,day[x]))} · ${timeTxt(x,day[x])}</div>${macroBar(mc)}
       <div class="micro">${microTxt(microOf(x,day[x]), m)}</div>
       ${batchRole(i,x) ? `<p class="macro" style="color:var(--accent);font-weight:600">${t(batchRole(i,x)==="cook" ? "batchCook" : "batchLeft")}</p>` : ""}
-      <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]),n)}</li>`).join("")}</ul><p>${r[5]}</p>${sw}</div>`;
+      <ul>${r[4].map((y,k)=>`<li>${scaleQty(y,m,isProtIng(es[k]),n,es[k])}</li>`).join("")}</ul><p>${r[5]}</p>${sw}</div>`;
   }).join("");
   if(!$("dlg").open) $("dlg").showModal();
 }
@@ -1399,7 +1434,8 @@ function shopItems(w){
       const it = items[id] || (items[id] = {id, name, aisle, amt:{}, n:0, cost:0});
       it.n++;
       it.cost += priceLine(line) * m * (isP ? f : 1) * cf * n;
-      const am = lineAmt(line, ing);
+      const am = lineAmt(line, ing), eg = isP && eggSplit(line, m*f);
+      if(eg){ it.amt.ud = (it.amt.ud||0) + (eg.e + eg.w)*n; return; }
       if(am){ const sc = (am.k==="g" || am.k==="ml") ? m*(isP ? f : 1) : (isP ? m*f : 1); it.amt[am.k] = (it.amt[am.k]||0) + am.v*sc*n; }
     });
   }));
@@ -1487,7 +1523,7 @@ function icsText(){
   plan.forEach((day,i) => state.meals.forEach(x => {
     if(day[x] == null) return;
     const r = tr(x, day[x]), d = dayDate(i), [h,mi] = MEAL_TIME[x], es = R[x][day[x]][4];
-    const ing = r[4].map((y,k) => "- " + scaleQty(y, mult(), isProtIng(es[k]), ppl())).join("\n");
+    const ing = r[4].map((y,k) => "- " + scaleQty(y, mult(), isProtIng(es[k]), ppl(), es[k])).join("\n");
     L_.push("BEGIN:VEVENT", `UID:planfit-${dkey(i)}-${x}-${day[x]}@plan-fit`, "DTSTAMP:"+stamp, `DTSTART:${ymdC(d)}T${pad(h)}${pad(mi)}00`, "DURATION:PT30M",
       "SUMMARY:"+esc_(`${TYPES[x][L()]}: ${r[0]}`), "DESCRIPTION:"+esc_(`${ing}\n\n${r[5]}`),
       "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT15M", "DESCRIPTION:"+esc_(`${TYPES[x][L()]}: ${r[0]}`), "END:VALARM", "END:VEVENT");
@@ -1867,7 +1903,7 @@ function openRecipe(x, i){
   $("dlgBody").innerHTML = `<div class="recipe"><span class="tag" style="color:${COLORS[x]}">${TYPES[x][li]}${isUser(x,i) ? ` · ${t("myRecipe")}` : ""}</span>
     <div class="macro" style="margin-top:6px">${macroTxt(mc, m)} · ≈ ${money(cost(x,i))} · ${timeTxt(x,i)}</div>${macroBar(mc)}
     <div class="micro">${microTxt(microOf(x,i), m)}</div>${n>1 ? `<p class="macro">${t("forPeople").replace("{n}",n)}</p>` : ""}
-    <ul>${r[4].map((y,k)=>`<li>${escH(scaleQty(y,m,isProtIng(es[k]),n))}</li>`).join("")}</ul><p>${escH(r[5])}</p>
+    <ul>${r[4].map((y,k)=>`<li>${escH(scaleQty(y,m,isProtIng(es[k]),n,es[k]))}</li>`).join("")}</ul><p>${escH(r[5])}</p>
     <div class="swapbar"><button type="button" class="primary small" data-cookr="1">${t("cookMode")}</button>
       <button type="button" class="ibtn fav ${isFavR(x,i)?"on":""}" data-favr="1">♥ ${t("favR")}</button>
       <button type="button" class="ibtn ${isBanned(x,i)?"on":""}" data-banr="1">🚫 ${t("banR")}</button>
@@ -1946,7 +1982,7 @@ document.addEventListener("visibilitychange", () => { if(cook && document.visibi
 function openCook(x, i){
   const r = tr(x, i), es = R[x][i][4], m = mult(), n = ppl();
   const steps = String(r[5]).split(/(?<=[.!?])\s+(?=\S)/).map(v => v.trim()).filter(Boolean);
-  cook = {x, i, step: 0, steps: steps.length ? steps : [r[5]], ing: r[4].map((y,k) => scaleQty(y, m, isProtIng(es[k]), n)), name: r[0]};
+  cook = {x, i, step: 0, steps: steps.length ? steps : [r[5]], ing: r[4].map((y,k) => scaleQty(y, m, isProtIng(es[k]), n, es[k])), name: r[0]};
   if($("dlg").open) $("dlg").close();
   $("cook").hidden = false; document.body.style.overflow = "hidden";
   keepAwake(); renderCook();
