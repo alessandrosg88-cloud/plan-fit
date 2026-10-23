@@ -167,7 +167,11 @@ input[type=number],select{padding:9px 12px;border:1px solid var(--line);border-r
 .slist input{accent-color:var(--accent);width:17px;height:17px;flex:none;align-self:center}
 .slist .amt{color:var(--muted);font-size:12.5px;white-space:nowrap}
 .slist .cost{white-space:nowrap}
+.sthumb{width:40px;height:40px;flex:none;align-self:center;border-radius:9px;object-fit:cover;background:var(--line);opacity:.35;transition:opacity .25s}
+.sthumb.ok{opacity:1}
+.sthumb.none{display:inline-block;opacity:.25}
 .slist li.got .nm,.slist li.got .amt{text-decoration:line-through;opacity:.55}
+.slist li.got .sthumb{opacity:.4;filter:grayscale(1)}
 .pbtn{background:none;border:1px solid var(--line);border-radius:8px;padding:2px 6px;font-size:13px;line-height:1.2;flex:none}
 .pantry{margin-top:6px;padding:12px 14px;background:var(--surface2);border-radius:12px}
 .pantry h4{margin:0 0 4px;font-size:14px}
@@ -413,6 +417,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
 <script src="recetas-i18n.js"></script>
 <script src="recetas-extra.js"></script>
 <script src="ingredientes.js"></script>
+<script src="fotos.js"></script>
 <script>
 /* Flags: g gluten, l lactosa, m carne roja, c cerdo, p pollo/pavo, f pescado, s marisco, e huevo, n frutos secos */
 const R = {
@@ -1462,7 +1467,8 @@ function renderShop(){
   const byAisle = AISLES.map(([id, lbl]) => [lbl[li], shopCache.filter(it => it.aisle === id).sort((a,b) => a.name.localeCompare(b.name, state.lang))]).filter(g => g[1].length);
   $("shop").innerHTML = byAisle.length ? `<div class="aisles">${byAisle.map(([lbl, its]) => `<div class="aisle"><h4>${lbl}</h4><ul class="slist">${its.map(it => {
     const got = !!state.bought[bk(it)], am = fmtAmt(it.amt);
-    return `<li class="${got?"got":""}"><label><input type="checkbox" data-b="${escH(it.id)}" ${got?"checked":""}><span class="nm">${escH(it.name)}</span><span class="amt">${am ? am + " · " : ""}×${it.n}</span></label><span class="cost">${money(it.cost)}</span><button type="button" class="pbtn" data-p="${escH(it.id)}" title="${t("haveIt")}" aria-label="${t("haveIt")}: ${escH(it.name)}">🏠</button></li>`; }).join("")}</ul></div>`).join("")}</div>` : `<p>${t("noIngr")}</p>`;
+    return `<li class="${got?"got":""}"><label><input type="checkbox" data-b="${escH(it.id)}" ${got?"checked":""}>${typeof FOTO !== "undefined" ? FOTO.img(it.id) : ""}<span class="nm">${escH(it.name)}</span><span class="amt">${am ? am + " · " : ""}×${it.n}</span></label><span class="cost">${money(it.cost)}</span><button type="button" class="pbtn" data-p="${escH(it.id)}" title="${t("haveIt")}" aria-label="${t("haveIt")}: ${escH(it.name)}">🏠</button></li>`; }).join("")}</ul></div>`).join("")}</div>` : `<p>${t("noIngr")}</p>`;
+  if(typeof FOTO !== "undefined") FOTO.load().then(() => FOTO.fill($("shop")));
   const left = shopCache.filter(it => !state.bought[bk(it)]);
   const total = weekCost(week), b = parseFloat(state.budget);
   let html = `<div class="shop-total"><span>${t("estTotal")} <b>${money(total)}</b></span><span>${t("toBuy")} <b>${money(left.reduce((a,it)=>a+it.cost,0))}</b> · ${left.length} ${t("itemsLbl")}</span>`;
